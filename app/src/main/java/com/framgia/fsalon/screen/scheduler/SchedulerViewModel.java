@@ -3,6 +3,7 @@ package com.framgia.fsalon.screen.scheduler;
 import android.databinding.BaseObservable;
 import android.databinding.Bindable;
 import android.support.annotation.IntDef;
+import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 
 import com.framgia.fsalon.BR;
@@ -14,6 +15,7 @@ import org.zakariya.stickyheaders.StickyHeaderLayoutManager;
 
 import java.lang.annotation.ElementType;
 import java.lang.annotation.Target;
+import java.util.ArrayList;
 import java.util.List;
 
 import static com.framgia.fsalon.screen.scheduler.SchedulerViewModel.TabFilter.TAB_CALENDAR;
@@ -30,11 +32,31 @@ public class SchedulerViewModel extends BaseObservable implements SchedulerContr
     private SchedulerAdapter mAdapter;
     private Navigator mNavigator;
     private RecyclerView.LayoutManager mLayoutManager;
+    private boolean mIsLoadingMore = false;
+    private RecyclerView.OnScrollListener mScrollListenner = new RecyclerView.OnScrollListener() {
+        @Override
+        public void onScrolled(RecyclerView recyclerView, int dx, int dy) {
+            super.onScrolled(recyclerView, dx, dy);
+            if (dy <= 0) {
+                return;
+            }
+            LinearLayoutManager layoutManager =
+                (LinearLayoutManager) recyclerView.getLayoutManager();
+            int visibleItemCount = layoutManager.getChildCount();
+            int totalItemCount = layoutManager.getItemCount();
+            int pastVisiblesItems = layoutManager.findFirstVisibleItemPosition();
+            if (!mIsLoadingMore && (visibleItemCount + pastVisiblesItems) >= totalItemCount) {
+                mIsLoadingMore = true;
+                mPresenter.loadMoreData();
+            }
+        }
+    };
 
     public SchedulerViewModel(SchedulerFragment fragment) {
         setTabFilter(TAB_TODAY);
         mNavigator = new Navigator(fragment);
         mLayoutManager = new StickyHeaderLayoutManager();
+        setAdapter(new SchedulerAdapter(new ArrayList<SchedulerSection>()));
     }
 
     @Override
@@ -69,12 +91,22 @@ public class SchedulerViewModel extends BaseObservable implements SchedulerContr
 
     @Override
     public void onSchedulerSuccessful(List<SchedulerSection> sections) {
-        setAdapter(new SchedulerAdapter(sections));
+        mAdapter.updateData(sections);
     }
 
     @Override
     public void onSchedulerFail() {
         mNavigator.showToast(R.string.title_scheduler_failure);
+    }
+
+    @Override
+    public void showLoadMore() {
+        setLoadingMore(true);
+    }
+
+    @Override
+    public void hideLoadMore() {
+        setLoadingMore(false);
     }
 
     @Bindable
@@ -95,6 +127,21 @@ public class SchedulerViewModel extends BaseObservable implements SchedulerContr
     public void setLayoutManager(RecyclerView.LayoutManager layoutManager) {
         mLayoutManager = layoutManager;
         notifyPropertyChanged(BR.layoutManager);
+    }
+
+    @Bindable
+    public boolean isLoadingMore() {
+        return mIsLoadingMore;
+    }
+
+    public void setLoadingMore(boolean loadingMore) {
+        mIsLoadingMore = loadingMore;
+        notifyPropertyChanged(BR.loadingMore);
+    }
+
+    @Bindable
+    public RecyclerView.OnScrollListener getScrollListenner() {
+        return mScrollListenner;
     }
 
     @IntDef({TAB_TODAY, TAB_YESTERDAY, TAB_TOMORROW, TAB_CALENDAR})

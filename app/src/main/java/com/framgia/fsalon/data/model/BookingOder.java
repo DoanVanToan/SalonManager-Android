@@ -39,6 +39,9 @@ public class BookingOder implements Parcelable {
     @SerializedName("updated_at")
     @Expose
     private Date mUpdatedAt;
+    /**
+     * status for order: waiting, finished or canceled
+     */
     @SerializedName("status")
     @Expose
     private int mStatus;

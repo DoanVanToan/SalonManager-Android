@@ -28,7 +28,8 @@
             android:layout_marginTop="?attr/actionBarSize"
             android:background="@color/color_grey_100"
             bind:layoutManager="@{viewModel.layoutManager}"
-            bind:recyclerAdapter="@{viewModel.adapter}"/>
+            bind:recyclerAdapter="@{viewModel.adapter}"
+            bind:scrollListenner="@{viewModel.scrollListenner}"/>
 
         <LinearLayout
             android:layout_width="match_parent"
