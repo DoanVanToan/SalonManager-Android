@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:bind="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    >
+
+    <data>
+
+        <variable
+            name="viewModel"
+            type="com.framgia.fsalon.screen.home.HomeViewModel"
+            />
+
+    </data>
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        tools:context="com.framgia.fsalon.screen.home.HomeActivity">
+
+        <com.framgia.fsalon.wiget.NonSwipeViewPager
+            android:id="@+id/pager_user_home"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_above="@+id/bottom_user_home"
+            bind:viewPagerAdapter="@{viewModel.pagerAdapter}"
+            bind:tabSelect="@{viewModel.tabPosition}"/>
+
+        <android.support.design.widget.BottomNavigationView
+            android:id="@+id/bottom_user_home"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_alignParentBottom="true"
+            bind:itemBackground="@drawable/tab_state"
+            bind:itemIconTint="@drawable/nav_state"
+            bind:itemTextColor="@drawable/nav_state"
+            bind:menu="@menu/menu_bottom_user"
+            bind:listener="@{viewModel.listener}"/>
+    </RelativeLayout>
+</layout>

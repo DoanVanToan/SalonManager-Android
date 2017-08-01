@@ -1,0 +1,175 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    >
+
+    <data>
+
+        <variable
+            name="viewModel"
+            type="com.framgia.fsalon.screen.success.SuccessViewModel"
+            />
+
+    </data>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical"
+        android:padding="@dimen/dp_12"
+        tools:context="com.framgia.fsalon.screen.success.SuccessActivity"
+        >
+
+        <ImageView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:layout_margin="@dimen/dp_24"
+            android:contentDescription="@string/msg_book_success"
+            android:scaleType="fitCenter"
+            android:src="@drawable/ic_success"/>
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            android:text="@string/title_congrat"
+            android:textColor="@android:color/holo_orange_light"
+            android:textSize="@dimen/sp_50"
+            android:textStyle="bold"/>
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="@dimen/dp_24"
+            android:layout_marginTop="@dimen/dp_5"
+            android:gravity="center"
+            android:text="@string/msg_success_booking"
+            android:textColor="@color/colorAccent"
+            android:textSize="@dimen/sp_16"/>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_margin="@dimen/dp_12"
+            android:background="@drawable/bg_info"
+            android:orientation="vertical"
+            android:paddingBottom="@dimen/dp_12"
+            android:paddingEnd="@dimen/dp_20"
+            android:paddingLeft="@dimen/dp_30"
+            android:paddingRight="@dimen/dp_20"
+            android:paddingStart="@dimen/dp_30"
+            android:paddingTop="@dimen/dp_12">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:layout_margin="@dimen/dp_5"
+                android:text="@{viewModel.bookingOder.name}"
+                android:textColor="@color/color_red"
+                android:textSize="@dimen/sp_32"
+                android:textStyle="bold"/>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/dp_24"
+                android:orientation="horizontal">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/title_phone"
+                    android:textColor="@color/color_black"
+                    android:textSize="@dimen/sp_18"/>
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:gravity="end"
+                    android:text="@{viewModel.bookingOder.phone}"
+                    android:textColor="@color/color_black"
+                    android:textSize="@dimen/sp_18"/>
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/dp_12"
+                android:orientation="horizontal">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/title_salon"
+                    android:textColor="@color/color_black"
+                    android:textSize="@dimen/sp_18"/>
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:gravity="end"
+                    android:text="@{viewModel.bookingOder.department.name}"
+                    android:textColor="@color/color_black"
+                    android:textSize="@dimen/sp_18"/>
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/dp_12"
+                android:orientation="horizontal">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/title_stylist"
+                    android:textColor="@color/color_black"
+                    android:textSize="@dimen/sp_18"/>
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:gravity="end"
+                    android:text="@{viewModel.bookingOder.stylist.name}"
+                    android:textColor="@color/color_black"
+                    android:textSize="@dimen/sp_18"/>
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/dp_12"
+                android:orientation="horizontal">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/title_date"
+                    android:textColor="@color/color_black"
+                    android:textSize="@dimen/sp_18"/>
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:gravity="end"
+                    android:text="@{viewModel.bookingOder.render.timeStart}"
+                    android:textColor="@color/color_black"
+                    android:textSize="@dimen/sp_18"/>
+            </LinearLayout>
+        </LinearLayout>
+
+        <Button
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:layout_margin="@dimen/dp_12"
+            android:background="@drawable/bg_round_button"
+            android:onClick="@{viewModel::onOkClick}"
+            android:text="@string/action_ok"
+            android:textColor="@color/color_white"
+            android:textSize="@dimen/sp_18"/>
+    </LinearLayout>
+</layout>
