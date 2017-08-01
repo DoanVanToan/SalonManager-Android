@@ -22,6 +22,10 @@ public class Constant {
         public static final String NAME = "name";
         public static final String RENDER_BOOKING_ID = "render_booking_id";
         public static final String STYLIST_CHOSEN = "stylist_chosen";
+        public static final String PAGE = "page";
+        public static final String PER_PAGE = "per_page";
+        public static final String NON_FILTER = "null";
+        public static final int OUT_OF_INDEX = -1;
     }
 
     public class Permission {

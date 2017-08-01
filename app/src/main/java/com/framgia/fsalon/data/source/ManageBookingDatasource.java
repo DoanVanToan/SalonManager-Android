@@ -10,5 +10,10 @@ import io.reactivex.Observable;
  * Created by beepi on 01/08/2017.
  */
 public interface ManageBookingDatasource {
-    Observable<List<ManageBookingResponse>> getListBooking();
+    Observable<List<ManageBookingResponse>> getListBooking(String filterChoice, int page,
+                                                           int perpage,
+                                                           String status, String startDate,
+                                                           String endDate,
+                                                           String monthInput,
+                                                           String weekInput);
 }

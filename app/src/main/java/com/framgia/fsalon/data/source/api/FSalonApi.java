@@ -37,6 +37,6 @@ public interface FSalonApi {
                                               @Query("name") String name,
                                               @Query("phone") String phone);
     @GET("api/v0/booking_filter_by_day")
-    Observable<Respone<ManageBookingResponse>> getManageBookings(@QueryMap Map<String, String>
-                                                                     parrams);
+    Observable<Respone<List<ManageBookingResponse>>> getManageBookings(@QueryMap Map<String, String>
+                                                                           parrams);
 }
