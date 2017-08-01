@@ -1,0 +1,60 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<layout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:bind="http://schemas.android.com/apk/res-auto"
+    >
+
+    <data>
+
+        <import type="com.framgia.fsalon.utils.Constant"/>
+
+        <variable
+            name="viewHolderModel"
+            type="com.framgia.fsalon.screen.booking.TimeBookingAdapter.ViewHolderModel"/>
+
+    </data>
+
+    <android.support.v7.widget.CardView
+        xmlns:car_view="http://schemas.android.com/tools"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_margin="@dimen/dp_3"
+        android:elevation="@dimen/dp_5"
+        bind:cardBackgroundColor="@{viewHolderModel.selected ? @color/colorPrimaryDark : @color/color_white}"
+        bind:cardCornerRadius="@dimen/dp_2"
+        car_view:cardElevation="@dimen/dp1"
+        >
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:clickable="@{viewHolderModel.timeBooking.status == Constant.AVAILABLE}"
+            android:onClick="@{() -> viewHolderModel.viewModel.selectedTimePosition(viewHolderModel.position, viewHolderModel.timeBooking)}"
+            android:orientation="vertical"
+            android:padding="@dimen/dp_5"
+            bind:resourceId="@{viewHolderModel.timeBooking.resourceId}">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:text="@{viewHolderModel.timeBooking.timeStart}"
+                android:textColor="@{viewHolderModel.selected ? @color/color_white : @color/color_black}"
+                android:textSize="@dimen/sp_15"
+                android:textStyle="bold"
+                />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:text="@{viewHolderModel.timeBooking.statusLabel}"
+                android:textColor="@{viewHolderModel.selected ? @color/color_white : @color/color_black}"
+                android:textSize="@dimen/sp_12"
+                bind:colorId="@{viewHolderModel.timeBooking.colorId}"
+                />
+        </LinearLayout>
+    </android.support.v7.widget.CardView>
+</layout>
+

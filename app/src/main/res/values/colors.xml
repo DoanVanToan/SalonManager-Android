@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <color name="color_cyan_400">#26C6DA</color>
+    <color name="colorPrimaryDark">#00494F</color>
+    <color name="colorPrimary">#00838F</color>
+    <color name="colorAccent">#00838F</color>
+    <color name="color_material_brown_100">#CCCCCC</color>
+    <color name="color_material_brown_300">#888888</color>
+    <color name="color_pink_accent_200">#880e4f</color>
+    <color name="color_white">#FFFFFF</color>
+    <color name="color_black">#000000</color>
+    <color name="color_pink_50">#FCE4EC</color>
+    <color name="color_gray_400">#BDBDBD</color>
+    <color name="color_cyan_300">#4DD0E1</color>
+    <color name="color_cyan_800">#00838F</color>
+    <color name="color_grey_800">#424242</color>
+    <color name="color_grey_300">#E0E0E0</color>
+    <color name="color_grey_400">#BDBDBD</color>
+    <color name="color_cyan_900">#006064</color>
+    <color name="color_red">#F44336</color>
+    <color name="color_green">#4CAF50</color>
+    <color name="color_teal_500">#00a388</color>
+    <color name="color_green_300">#79bd8f</color>
+    <color name="color_brown_50">#ebebeb</color>
+    <color name="color_grey_100">#F5F5F5</color>
+    <color name="color_grey_500">#9E9E9E</color>
+    <color name="color_grey_200">#EEEEEE</color>
+    <color name="color_accent_700">#FF6A00</color>
+    <color name="color_yellow_200">#FFFF9D</color>
+    <color name="color_black_transprarent">#B2000000</color>
+    <color name="color_white_transparent">#ccffffff</color>
+</resources>
