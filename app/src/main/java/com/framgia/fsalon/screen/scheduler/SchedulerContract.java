@@ -22,6 +22,7 @@ public interface SchedulerContract {
         void showLoadMore();
         void hideLoadMore();
         void onBookingItemClick(int id);
+        void onClickTopSheet(View topSheet);
     }
 
     /**

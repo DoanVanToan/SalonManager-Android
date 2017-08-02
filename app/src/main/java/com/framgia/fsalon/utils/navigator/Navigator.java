@@ -14,13 +14,11 @@ import android.text.TextUtils;
 import android.util.Patterns;
 
 public class Navigator {
-
     public static final int NONE = 0;
     public static final int RIGHT_LEFT = 1;
     public static final int BOTTOM_UP = 2;
     public static final int FADED = 3;
     public static final int LEFT_RIGHT = 4;
-
     @NonNull
     private Activity mActivity;
     private Fragment mFragment;
@@ -72,7 +70,7 @@ public class Navigator {
     }
 
     public void startActivityForResult(@NonNull Class<? extends Activity> clazz, Bundle args,
-            int requestCode) {
+                                       int requestCode) {
         Intent intent = new Intent(mActivity, clazz);
         intent.putExtras(args);
         startActivityForResult(intent, requestCode);
@@ -91,11 +89,11 @@ public class Navigator {
         mActivity.startActivity(intent);
     }
 
-    @IntDef({ RIGHT_LEFT, BOTTOM_UP, FADED, NONE, LEFT_RIGHT })
+    @IntDef({RIGHT_LEFT, BOTTOM_UP, FADED, NONE, LEFT_RIGHT})
     public @interface NavigateAnim {
     }
 
-    @IntDef({ ActivityTransition.START, ActivityTransition.FINISH })
+    @IntDef({ActivityTransition.START, ActivityTransition.FINISH})
     @interface ActivityTransition {
         int START = 0x00;
         int FINISH = 0x01;
@@ -103,18 +101,18 @@ public class Navigator {
 
     public void showToast(@StringRes int stringId) {
         Activity activity =
-                mActivity != null ? mActivity : mFragment != null ? mFragment.getActivity() : null;
+            mActivity != null ? mActivity : mFragment != null ? mFragment.getActivity() : null;
         if (activity == null) return;
         Snackbar.make(activity.findViewById(android.R.id.content), stringId, Snackbar.LENGTH_LONG)
-                .show();
+            .show();
     }
 
     public void showToast(String message) {
         Activity activity =
-                mActivity != null ? mActivity : mFragment != null ? mFragment.getActivity() : null;
+            mActivity != null ? mActivity : mFragment != null ? mFragment.getActivity() : null;
         if (activity == null) return;
         Snackbar.make(activity.findViewById(android.R.id.content), message, Snackbar.LENGTH_LONG)
-                .show();
+            .show();
     }
 
     public String getStringById(int stringId) {

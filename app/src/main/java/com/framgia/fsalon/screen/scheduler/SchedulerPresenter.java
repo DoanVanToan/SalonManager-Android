@@ -2,7 +2,6 @@ package com.framgia.fsalon.screen.scheduler;
 
 import com.framgia.fsalon.data.model.ManageBookingResponse;
 import com.framgia.fsalon.data.source.ManageBookingRepository;
-import com.framgia.fsalon.utils.Utils;
 
 import java.util.List;
 
@@ -26,6 +25,7 @@ public class SchedulerPresenter implements SchedulerContract.Presenter {
     private final SchedulerContract.ViewModel mViewModel;
     private ManageBookingRepository mRepository;
     private int mPage = FIRST_PAGE;
+    private int mPerPage = 20;
     private CompositeDisposable mCompositeDisposable;
 
     SchedulerPresenter(SchedulerContract.ViewModel viewModel, ManageBookingRepository
@@ -33,8 +33,6 @@ public class SchedulerPresenter implements SchedulerContract.Presenter {
         mViewModel = viewModel;
         mRepository = repository;
         mCompositeDisposable = new CompositeDisposable();
-        getSchedulers(FILTER_DAY, mPage, OUT_OF_INDEX, OUT_OF_INDEX,
-            Utils.createTimeStamp(SchedulerViewModel.TabFilter.TAB_TODAY), OUT_OF_INDEX);
     }
 
     @Override

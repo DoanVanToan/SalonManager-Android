@@ -86,4 +86,9 @@
     <string name="title_select_date">Select date</string>
     <string name="title_select_start_day">Start date</string>
     <string name="title_select_end_day">End date</string>
+    <string-array name="title_status">
+        <item>Canceled</item>
+        <item>Pending</item>
+        <item>Finished</item>
+    </string-array>
 </resources>

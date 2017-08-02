@@ -85,4 +85,12 @@ public class Utils {
         SimpleDateFormat sfd = new SimpleDateFormat("hh:mm:ss", Locale.US);
         return sfd.format(date);
     }
+
+    public static String convertDate(Date date) {
+        if (date == null) {
+            return null;
+        }
+        SimpleDateFormat sfd = new SimpleDateFormat("dd:MM:yyyy", Locale.US);
+        return sfd.format(date);
+    }
 }
