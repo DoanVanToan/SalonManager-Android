@@ -1,7 +1,7 @@
-package com.framgia.fsalon.screen.detail;
+package com.framgia.fsalon.screen.booking.detail;
 
 /**
- * Listens to user actions from the UI ({@link DetailActivity}), retrieves the data and updates
+ * Listens to user actions from the UI ({@link DetailFragment}), retrieves the data and updates
  * the UI as required.
  */
 final class DetailPresenter implements DetailContract.Presenter {

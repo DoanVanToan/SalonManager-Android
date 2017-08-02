@@ -5,20 +5,23 @@ import android.databinding.Bindable;
 import android.support.annotation.IntDef;
 import android.support.annotation.NonNull;
 import android.support.design.widget.BottomNavigationView;
+import android.support.v4.app.Fragment;
 import android.support.v4.view.PagerAdapter;
-import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
-import android.util.Log;
 import android.view.MenuItem;
 
 import com.framgia.fsalon.BR;
 import com.framgia.fsalon.R;
+import com.framgia.fsalon.screen.booking.BookingFragment;
+import com.framgia.fsalon.screen.booking.detail.DetailFragment;
+
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * Exposes the data to be used in the Home screen.
  */
 public class HomeViewModel extends BaseObservable implements HomeContract.ViewModel {
-    public static final int FUNCTION_COUNT = 4;
     public static final int BOOKING_FUNC = 0;
     public static final int DETAIL_FUNC = 1;
     public static final int HISTORY_FUNC = 2;
@@ -26,25 +29,22 @@ public class HomeViewModel extends BaseObservable implements HomeContract.ViewMo
     private HomeContract.Presenter mPresenter;
     private PagerAdapter mPagerAdapter;
     private int mTabPosition;
-    private BottomNavigationView.OnNavigationItemSelectedListener mListener;
-
-    public HomeViewModel(AppCompatActivity activity) {
-        mPagerAdapter = new HomePagerAdapter(activity.getSupportFragmentManager());
-        mListener = new BottomNavigationView.OnNavigationItemSelectedListener() {
+    private BottomNavigationView.OnNavigationItemSelectedListener mListener =
+        new BottomNavigationView.OnNavigationItemSelectedListener() {
             @Override
             public boolean onNavigationItemSelected(@NonNull MenuItem item) {
                 switch (item.getItemId()) {
                     case R.id.menu_book:
-                        onBookingClick();
+                        setTabPosition(Tab.BOOKING_FUNC);
                         break;
                     case R.id.menu_detail:
-                        onDetailListClick();
+                        setTabPosition(Tab.DETAIL_FUNC);
                         break;
                     case R.id.menu_history:
-                        onHistoryClick();
+                        setTabPosition(Tab.HISTORY_FUNC);
                         break;
                     case R.id.menu_user:
-                        onUserClick();
+                        setTabPosition(Tab.USER_FUNC);
                         break;
                     default:
                         break;
@@ -52,6 +52,12 @@ public class HomeViewModel extends BaseObservable implements HomeContract.ViewMo
                 return true;
             }
         };
+
+    public HomeViewModel(AppCompatActivity activity) {
+        List<Fragment> fragments = new ArrayList<>();
+        fragments.add(BookingFragment.newInstance());
+        fragments.add(DetailFragment.newInstance());
+        mPagerAdapter = new HomePagerAdapter(activity.getSupportFragmentManager(), fragments);
     }
 
     @Bindable
@@ -90,26 +96,6 @@ public class HomeViewModel extends BaseObservable implements HomeContract.ViewMo
     @Override
     public void setPresenter(HomeContract.Presenter presenter) {
         mPresenter = presenter;
-    }
-
-    @Override
-    public void onUserClick() {
-        setTabPosition(Tab.USER_FUNC);
-    }
-
-    @Override
-    public void onBookingClick() {
-        setTabPosition(Tab.BOOKING_FUNC);
-    }
-
-    @Override
-    public void onDetailListClick() {
-        setTabPosition(Tab.DETAIL_FUNC);
-    }
-
-    @Override
-    public void onHistoryClick() {
-        setTabPosition(Tab.HISTORY_FUNC);
     }
 
     @IntDef({BOOKING_FUNC, DETAIL_FUNC, HISTORY_FUNC, USER_FUNC})

@@ -1,4 +1,4 @@
-package com.framgia.fsalon.screen.detail;
+package com.framgia.fsalon.screen.booking.detail;
 
 import com.framgia.fsalon.BasePresenter;
 import com.framgia.fsalon.BaseViewModel;

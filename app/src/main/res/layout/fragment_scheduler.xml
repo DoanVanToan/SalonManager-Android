@@ -110,7 +110,7 @@
                     android:layout_height="wrap_content"
                     android:layout_marginEnd="@dimen/dp_20"
                     android:layout_marginRight="@dimen/dp_20"
-                    android:src="@drawable/ic_swipe_down_24dp"/>
+                    bind:srcCompat="@drawable/ic_swipe_down_24dp"/>
             </LinearLayout>
         </LinearLayout>
 
@@ -134,7 +134,7 @@
             <com.github.clans.fab.FloatingActionButton
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:src="@drawable/ic_smile_24dp"
+                bind:srcCompat="@drawable/ic_smile_24dp"
                 app:rippleColor="@color/color_white"
                 fab:fab_colorNormal="@color/color_white"
                 fab:fab_label="@string/tilte_finished"
@@ -143,7 +143,7 @@
             <com.github.clans.fab.FloatingActionButton
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:src="@drawable/ic_broken_heart_24dp"
+                bind:srcCompat="@drawable/ic_broken_heart_24dp"
                 fab:fab_colorNormal="@color/color_white"
                 fab:fab_label="@string/title_cancel"
                 fab:fab_size="mini"
