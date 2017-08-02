@@ -29,10 +29,10 @@ public class ManageBookingRemoteDataSource extends BaseRemoteDataSource
     private static final String END_DATE = "end_date";
     private static final String MONTH_INPUT = "month_input";
     private static final String WEEK_INPUT = "week_input";
-    private static final String FILTER_DAY = "day";
-    private static final String FILTER_MONTH = "month";
-    private static final String FILTER_WEEK = "week";
-    private static final String STATUS = "status";
+    public static final String FILTER_DAY = "day";
+    public static final String FILTER_MONTH = "month";
+    public static final String FILTER_WEEK = "week";
+    public static final String STATUS = "status";
 
     public ManageBookingRemoteDataSource(FSalonApi api) {
         super(api);

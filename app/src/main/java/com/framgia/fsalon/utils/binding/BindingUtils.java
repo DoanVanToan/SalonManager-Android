@@ -36,13 +36,16 @@ public class BindingUtils {
         view.setImageResource(src);
     }
 
-    @BindingAdapter(value = {"recyclerAdapter", "layoutManager"}, requireAll = false)
+    @BindingAdapter(value = {"recyclerAdapter", "layoutManager", "scrollListenner"},
+        requireAll = false)
     public static void setAdapterForRecyclerView(RecyclerView recyclerView,
                                                  RecyclerView.Adapter adapter,
-                                                 RecyclerView.LayoutManager layoutManager) {
+                                                 RecyclerView.LayoutManager layoutManager,
+                                                 RecyclerView.OnScrollListener listener) {
         recyclerView.setAdapter(adapter);
         recyclerView.setLayoutManager(layoutManager);
         recyclerView.addItemDecoration(new DeviderItemDecoration(1));
+        recyclerView.addOnScrollListener(listener);
     }
 
     @BindingAdapter({"searchableSpinnerAdapter"})

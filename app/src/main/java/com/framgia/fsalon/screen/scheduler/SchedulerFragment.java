@@ -9,6 +9,9 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import com.framgia.fsalon.R;
+import com.framgia.fsalon.data.source.ManageBookingRepository;
+import com.framgia.fsalon.data.source.api.FSalonServiceClient;
+import com.framgia.fsalon.data.source.remote.ManageBookingRemoteDataSource;
 import com.framgia.fsalon.databinding.FragmentSchedulerBinding;
 
 /**
@@ -26,7 +29,9 @@ public class SchedulerFragment extends Fragment {
         super.onCreate(savedInstanceState);
         mViewModel = new SchedulerViewModel(this);
         SchedulerContract.Presenter presenter =
-            new SchedulerPresenter(mViewModel);
+            new SchedulerPresenter(mViewModel, new ManageBookingRepository(
+                new ManageBookingRemoteDataSource(
+                    FSalonServiceClient.getInstance())));
         mViewModel.setPresenter(presenter);
     }
 
