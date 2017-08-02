@@ -8,7 +8,7 @@ import android.support.v7.widget.RecyclerView;
 
 import com.framgia.fsalon.BR;
 import com.framgia.fsalon.R;
-import com.framgia.fsalon.data.model.SchedulerSection;
+import com.framgia.fsalon.data.model.ManageBookingResponse;
 import com.framgia.fsalon.utils.navigator.Navigator;
 
 import org.zakariya.stickyheaders.StickyHeaderLayoutManager;
@@ -33,6 +33,7 @@ public class SchedulerViewModel extends BaseObservable implements SchedulerContr
     private Navigator mNavigator;
     private RecyclerView.LayoutManager mLayoutManager;
     private boolean mIsLoadingMore = false;
+    private String mTimeBook;
     private RecyclerView.OnScrollListener mScrollListenner = new RecyclerView.OnScrollListener() {
         @Override
         public void onScrolled(RecyclerView recyclerView, int dx, int dy) {
@@ -56,7 +57,7 @@ public class SchedulerViewModel extends BaseObservable implements SchedulerContr
         setTabFilter(TAB_TODAY);
         mNavigator = new Navigator(fragment);
         mLayoutManager = new StickyHeaderLayoutManager();
-        setAdapter(new SchedulerAdapter(new ArrayList<SchedulerSection>()));
+        setAdapter(new SchedulerAdapter(new ArrayList<ManageBookingResponse>()));
     }
 
     @Override
@@ -90,7 +91,7 @@ public class SchedulerViewModel extends BaseObservable implements SchedulerContr
     }
 
     @Override
-    public void onSchedulerSuccessful(List<SchedulerSection> sections) {
+    public void onSchedulerSuccessful(List<ManageBookingResponse> sections) {
         mAdapter.updateData(sections);
     }
 
@@ -142,6 +143,16 @@ public class SchedulerViewModel extends BaseObservable implements SchedulerContr
     @Bindable
     public RecyclerView.OnScrollListener getScrollListenner() {
         return mScrollListenner;
+    }
+
+    @Bindable
+    public String getTimeBook() {
+        return mTimeBook;
+    }
+
+    public void setTimeBook(String timeBook) {
+        mTimeBook = timeBook;
+        notifyPropertyChanged(BR.timeBook);
     }
 
     @IntDef({TAB_TODAY, TAB_YESTERDAY, TAB_TOMORROW, TAB_CALENDAR})

@@ -2,7 +2,7 @@ package com.framgia.fsalon.screen.scheduler;
 
 import com.framgia.fsalon.BasePresenter;
 import com.framgia.fsalon.BaseViewModel;
-import com.framgia.fsalon.data.model.SchedulerSection;
+import com.framgia.fsalon.data.model.ManageBookingResponse;
 
 import java.util.List;
 
@@ -15,7 +15,7 @@ interface SchedulerContract {
      */
     interface ViewModel extends BaseViewModel<Presenter> {
         void onItemFilterClick(@SchedulerViewModel.TabFilter int tab);
-        void onSchedulerSuccessful(List<SchedulerSection> sections);
+        void onSchedulerSuccessful(List<ManageBookingResponse> sections);
         void onSchedulerFail();
         void showLoadMore();
         void hideLoadMore();

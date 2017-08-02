@@ -12,6 +12,9 @@ import java.util.Date;
  * Created by framgia on 7/21/17.
  */
 public class BookingOder implements Parcelable {
+    public static final int STATUS_FINISHED = 0;
+    public static final int STATUS_CANCELED = 1;
+    public static final int STATUS_PENDING = 2;
     @SerializedName("id")
     @Expose
     private int mId;
