@@ -44,8 +44,10 @@ public class BindingUtils {
                                                  RecyclerView.LayoutManager layoutManager,
                                                  RecyclerView.OnScrollListener listener) {
         recyclerView.setAdapter(adapter);
-        recyclerView.setLayoutManager(layoutManager);
-        recyclerView.addItemDecoration(new DeviderItemDecoration(1));
+        if (recyclerView.getLayoutManager() == null) {
+            recyclerView.setLayoutManager(layoutManager);
+            recyclerView.addItemDecoration(new DeviderItemDecoration(1));
+        }
         recyclerView.addOnScrollListener(listener);
     }
 
@@ -87,6 +89,7 @@ public class BindingUtils {
     @BindingAdapter("bind:viewPagerAdapter")
     public static void setViewPagerAdapter(ViewPager viewPager, PagerAdapter pagerAdapter) {
         viewPager.setAdapter(pagerAdapter);
+        viewPager.setOffscreenPageLimit(pagerAdapter.getCount());
     }
 
     @BindingAdapter("bind:listener")

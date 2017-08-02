@@ -25,8 +25,8 @@ interface SchedulerContract {
      * Presenter.
      */
     interface Presenter extends BasePresenter {
-        void getSchedulers(String filterChoice, int page, int perpage, String status,
-                           String startDate, String endDate, String monthInput, String weekInput);
+        void getSchedulers(String filterChoice, int page, int perpage, int status, int startDate,
+                           int endDate);
         void loadMoreData();
     }
 }

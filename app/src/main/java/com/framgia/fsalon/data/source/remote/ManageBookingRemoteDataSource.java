@@ -15,7 +15,6 @@ import io.reactivex.ObservableSource;
 import io.reactivex.annotations.NonNull;
 import io.reactivex.functions.Function;
 
-import static com.framgia.fsalon.utils.Constant.ApiParram.NON_FILTER;
 import static com.framgia.fsalon.utils.Constant.ApiParram.PAGE;
 import static com.framgia.fsalon.utils.Constant.ApiParram.PER_PAGE;
 import static com.framgia.fsalon.utils.Constant.OUT_OF_INDEX;
@@ -27,11 +26,8 @@ public class ManageBookingRemoteDataSource extends BaseRemoteDataSource
     implements ManageBookingDatasource {
     private static final String START_DATE = "start_date";
     private static final String END_DATE = "end_date";
-    private static final String MONTH_INPUT = "month_input";
-    private static final String WEEK_INPUT = "week_input";
     public static final String FILTER_DAY = "day";
-    public static final String FILTER_MONTH = "month";
-    public static final String FILTER_WEEK = "week";
+    public static final String FILTER_SPACE = "space";
     public static final String STATUS = "status";
 
     public ManageBookingRemoteDataSource(FSalonApi api) {
@@ -40,13 +36,10 @@ public class ManageBookingRemoteDataSource extends BaseRemoteDataSource
 
     @Override
     public Observable<List<ManageBookingResponse>> getListBooking(String filterChoice, int page,
-                                                                  int perpage,
-                                                                  String status, String startDate,
-                                                                  String endDate,
-                                                                  String monthInput,
-                                                                  String weekInput) {
+                                                                  int perpage, int status,
+                                                                  int startDate, int endDate) {
         return mFSalonApi.getManageBookings(createParams(filterChoice, page, perpage, status,
-            startDate, endDate, monthInput, weekInput))
+            startDate, endDate))
             .flatMap(new Function<Respone<List<ManageBookingResponse>>,
                 ObservableSource<List<ManageBookingResponse>>>() {
                 @Override
@@ -59,8 +52,7 @@ public class ManageBookingRemoteDataSource extends BaseRemoteDataSource
     }
 
     private Map<String, String> createParams(String filterChoice, int page, int perpage,
-                                             String status, String startDate, String endDate,
-                                             String monthInput, String weekInput) {
+                                             int status, int startDate, int endDate) {
         Map<String, String> params = new HashMap<>();
         if (page != OUT_OF_INDEX) {
             params.put(PAGE, String.valueOf(page));
@@ -68,26 +60,21 @@ public class ManageBookingRemoteDataSource extends BaseRemoteDataSource
         if (perpage != OUT_OF_INDEX) {
             params.put(PER_PAGE, String.valueOf(page));
         }
-        if (!status.equals(NON_FILTER)) {
-            params.put(STATUS, status);
+        if (status != OUT_OF_INDEX) {
+            params.put(STATUS, String.valueOf(status));
         }
         switch (filterChoice) {
             case FILTER_DAY:
-                if (!startDate.equals(NON_FILTER)) {
-                    params.put(START_DATE, startDate);
-                }
-                if (!endDate.equals(NON_FILTER)) {
-                    params.put(END_DATE, endDate);
+                if (startDate > 0) {
+                    params.put(START_DATE, String.valueOf(startDate));
                 }
                 break;
-            case FILTER_MONTH:
-                if (!monthInput.equals(NON_FILTER)) {
-                    params.put(MONTH_INPUT, monthInput);
+            case FILTER_SPACE:
+                if (startDate > 0) {
+                    params.put(START_DATE, String.valueOf(startDate));
                 }
-                break;
-            case FILTER_WEEK:
-                if (!weekInput.equals(NON_FILTER)) {
-                    params.put(WEEK_INPUT, weekInput);
+                if (endDate > 0) {
+                    params.put(END_DATE, String.valueOf(endDate));
                 }
                 break;
             default:

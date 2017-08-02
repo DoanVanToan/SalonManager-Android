@@ -11,9 +11,6 @@ import io.reactivex.Observable;
  */
 public interface ManageBookingDatasource {
     Observable<List<ManageBookingResponse>> getListBooking(String filterChoice, int page,
-                                                           int perpage,
-                                                           String status, String startDate,
-                                                           String endDate,
-                                                           String monthInput,
-                                                           String weekInput);
+                                                           int perpage, int status,
+                                                           int startDate, int endDate);
 }
