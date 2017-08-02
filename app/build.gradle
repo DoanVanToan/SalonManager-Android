@@ -51,6 +51,7 @@ dependencies {
     compile 'org.zakariya.stickyheaders:stickyheaders:0.7.6'
     compile 'com.github.clans:fab:1.6.4'
     compile 'com.wdullaer:materialdatetimepicker:3.2.2'
+    compile 'com.github.PhilJay:MPAndroidChart:v2.2.4'
     compile('com.crashlytics.sdk.android:crashlytics:2.6.8@aar') {
         transitive = true;
     }
@@ -71,6 +72,7 @@ buildscript {
 
 repositories {
     maven { url 'https://maven.fabric.io/public' }
+    maven { url "https://jitpack.io" }
 }
 
 crashlytics {

@@ -19,16 +19,15 @@
             android:theme="@style/AppTheme.Register"/>
         <activity
             android:name=".screen.login.LoginActivity"
+            android:screenOrientation="portrait"/>
+        <activity
+            android:name=".screen.homeadmin.AdminHomeActivity"
             android:screenOrientation="portrait">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN"/>
                 <category android:name="android.intent.category.LAUNCHER"/>
             </intent-filter>
         </activity>
-
-        <activity
-            android:name=".screen.homeadmin.AdminHomeActivity"
-            android:screenOrientation="portrait"/>
 
         <activity
             android:name=".screen.success.SuccessActivity"
