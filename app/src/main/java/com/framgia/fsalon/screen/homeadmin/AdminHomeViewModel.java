@@ -11,7 +11,6 @@ import android.view.MenuItem;
 
 import com.framgia.fsalon.BR;
 import com.framgia.fsalon.R;
-import com.framgia.fsalon.screen.customer.CustomerAdapter;
 import com.framgia.fsalon.screen.customer.CustomerFragment;
 import com.framgia.fsalon.screen.scheduler.SchedulerFragment;
 

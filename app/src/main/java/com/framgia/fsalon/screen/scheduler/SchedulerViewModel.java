@@ -33,7 +33,6 @@ public class SchedulerViewModel extends BaseObservable implements SchedulerContr
     private Navigator mNavigator;
     private RecyclerView.LayoutManager mLayoutManager;
     private boolean mIsLoadingMore = false;
-    private String mTimeBook;
     private RecyclerView.OnScrollListener mScrollListenner = new RecyclerView.OnScrollListener() {
         @Override
         public void onScrolled(RecyclerView recyclerView, int dx, int dy) {
@@ -43,6 +42,9 @@ public class SchedulerViewModel extends BaseObservable implements SchedulerContr
             }
             LinearLayoutManager layoutManager =
                 (LinearLayoutManager) recyclerView.getLayoutManager();
+            if (layoutManager == null) {
+                return;
+            }
             int visibleItemCount = layoutManager.getChildCount();
             int totalItemCount = layoutManager.getItemCount();
             int pastVisiblesItems = layoutManager.findFirstVisibleItemPosition();
@@ -56,7 +58,7 @@ public class SchedulerViewModel extends BaseObservable implements SchedulerContr
     public SchedulerViewModel(SchedulerFragment fragment) {
         setTabFilter(TAB_TODAY);
         mNavigator = new Navigator(fragment);
-        mLayoutManager = new StickyHeaderLayoutManager();
+        setLayoutManager(new StickyHeaderLayoutManager());
         setAdapter(new SchedulerAdapter(new ArrayList<ManageBookingResponse>()));
     }
 
@@ -143,16 +145,6 @@ public class SchedulerViewModel extends BaseObservable implements SchedulerContr
     @Bindable
     public RecyclerView.OnScrollListener getScrollListenner() {
         return mScrollListenner;
-    }
-
-    @Bindable
-    public String getTimeBook() {
-        return mTimeBook;
-    }
-
-    public void setTimeBook(String timeBook) {
-        mTimeBook = timeBook;
-        notifyPropertyChanged(BR.timeBook);
     }
 
     @IntDef({TAB_TODAY, TAB_YESTERDAY, TAB_TOMORROW, TAB_CALENDAR})

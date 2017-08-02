@@ -14,7 +14,6 @@ import io.reactivex.observers.DisposableObserver;
 import io.reactivex.schedulers.Schedulers;
 
 import static com.framgia.fsalon.data.source.remote.ManageBookingRemoteDataSource.FILTER_DAY;
-import static com.framgia.fsalon.utils.Constant.ApiParram.NON_FILTER;
 import static com.framgia.fsalon.utils.Constant.OUT_OF_INDEX;
 
 /**
@@ -22,7 +21,6 @@ import static com.framgia.fsalon.utils.Constant.OUT_OF_INDEX;
  * the UI as required.
  */
 public class SchedulerPresenter implements SchedulerContract.Presenter {
-    private static final String TAG = SchedulerPresenter.class.getName();
     private final SchedulerContract.ViewModel mViewModel;
     private ManageBookingRepository mRepository;
     private int mPage = OUT_OF_INDEX;
@@ -33,8 +31,7 @@ public class SchedulerPresenter implements SchedulerContract.Presenter {
         mViewModel = viewModel;
         mRepository = repository;
         mCompositeDisposable = new CompositeDisposable();
-        getSchedulers(FILTER_DAY, mPage, -1, NON_FILTER, NON_FILTER, NON_FILTER, NON_FILTER,
-            NON_FILTER);
+        getSchedulers(FILTER_DAY, mPage, OUT_OF_INDEX, OUT_OF_INDEX, OUT_OF_INDEX, OUT_OF_INDEX);
     }
 
     @Override
@@ -47,11 +44,10 @@ public class SchedulerPresenter implements SchedulerContract.Presenter {
     }
 
     @Override
-    public void getSchedulers(String filterChoice, int page, int perpage, String status,
-                              String startDate, String endDate, String monthInput,
-                              String weekInput) {
+    public void getSchedulers(String filterChoice, int page, int perpage, int status, int startDate,
+                              int endDate) {
         Disposable disposable = mRepository.getListBooking(filterChoice, page, perpage, status,
-            startDate, endDate, monthInput, weekInput)
+            startDate, endDate)
             .subscribeOn(Schedulers.io())
             .observeOn(AndroidSchedulers.mainThread())
             .doOnSubscribe(new Consumer<Disposable>() {
@@ -81,7 +77,6 @@ public class SchedulerPresenter implements SchedulerContract.Presenter {
     @Override
     public void loadMoreData() {
         mPage++;
-        getSchedulers(FILTER_DAY, mPage, OUT_OF_INDEX, NON_FILTER, NON_FILTER, NON_FILTER,
-            NON_FILTER, NON_FILTER);
+        getSchedulers(FILTER_DAY, mPage, OUT_OF_INDEX, OUT_OF_INDEX, OUT_OF_INDEX, OUT_OF_INDEX);
     }
 }
