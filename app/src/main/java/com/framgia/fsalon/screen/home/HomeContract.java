@@ -13,10 +13,6 @@ interface HomeContract {
      * View.
      */
     interface ViewModel extends BaseViewModel<Presenter> {
-        void onUserClick();
-        void onBookingClick();
-        void onDetailListClick();
-        void onHistoryClick();
     }
 
     /**

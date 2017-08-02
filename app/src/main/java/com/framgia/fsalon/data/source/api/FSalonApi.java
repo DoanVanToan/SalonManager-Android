@@ -46,3 +46,4 @@ public interface FSalonApi {
     @GET("api/v0/service")
     Observable<Respone<List<Service>>> getServices();
 }
+

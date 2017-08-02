@@ -62,4 +62,5 @@
     <string name="tilte_finished">Finished</string>
     <string name="title_cancel">Cancel</string>
     <string name="title_waiting">Waiting</string>
+    <string name="title_no_booking">You have no booking yet</string>
 </resources>

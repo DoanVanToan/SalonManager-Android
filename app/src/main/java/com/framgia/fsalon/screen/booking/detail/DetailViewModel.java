@@ -1,20 +1,34 @@
-package com.framgia.fsalon.screen.detail;
+package com.framgia.fsalon.screen.booking.detail;
 
-import android.databinding.BaseObservable;
-import android.databinding.ObservableField;
 import android.view.View;
+
+import com.framgia.fsalon.data.model.BookingOder;
 
 /**
  * Exposes the data to be used in the Detail screen.
  */
 public class DetailViewModel implements DetailContract.ViewModel {
     private DetailContract.Presenter mPresenter;
+    private BookingOder mBookingOder;
+    private boolean mIsHide;
 
     public DetailViewModel() {
     }
 
-    public void setValueFromUser(){
-        // TODO: 7/20/2017
+    public BookingOder getBookingOder() {
+        return mBookingOder;
+    }
+
+    public void setBookingOder(BookingOder bookingOder) {
+        mBookingOder = bookingOder;
+    }
+
+    public boolean isHide() {
+        return mIsHide;
+    }
+
+    public void setHide(boolean hide) {
+        mIsHide = hide;
     }
 
     @Override
@@ -32,7 +46,7 @@ public class DetailViewModel implements DetailContract.ViewModel {
         mPresenter = presenter;
     }
 
-    public void onDetailClicked(View view){
+    public void onEditClicked(View view) {
         // TODO: 7/20/2017 switch to edit activity
     }
 }
