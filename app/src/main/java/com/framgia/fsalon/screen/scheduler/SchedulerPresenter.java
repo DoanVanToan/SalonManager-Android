@@ -62,6 +62,7 @@ public class SchedulerPresenter implements SchedulerContract.Presenter {
             }).subscribeWith(new DisposableObserver<List<ManageBookingResponse>>() {
                 @Override
                 public void onNext(@NonNull List<ManageBookingResponse> manageBookingResponse) {
+                    mViewModel.onSchedulerSuccessful(manageBookingResponse);
                 }
 
                 @Override

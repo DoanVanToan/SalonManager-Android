@@ -148,6 +148,15 @@
                 fab:fab_label="@string/title_cancel"
                 fab:fab_size="mini"
                 />
+
+            <com.github.clans.fab.FloatingActionButton
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:src="@drawable/ic_waiting_room_24_dp"
+                fab:fab_colorNormal="@color/color_white"
+                fab:fab_label="@string/title_waiting"
+                fab:fab_size="mini"
+                />
         </com.github.clans.fab.FloatingActionMenu>
     </android.support.design.widget.CoordinatorLayout>
 </layout>

@@ -5,8 +5,8 @@ import android.view.LayoutInflater;
 import android.view.ViewGroup;
 
 import com.framgia.fsalon.R;
-import com.framgia.fsalon.data.model.Scheduler;
-import com.framgia.fsalon.data.model.SchedulerSection;
+import com.framgia.fsalon.data.model.BookingOder;
+import com.framgia.fsalon.data.model.ManageBookingResponse;
 import com.framgia.fsalon.databinding.ItemContentSchedulerBinding;
 import com.framgia.fsalon.databinding.ItemHeaderSchedulerBinding;
 
@@ -19,13 +19,13 @@ import java.util.List;
  * Created by beepi on 28/07/2017.
  */
 public class SchedulerAdapter extends SectioningAdapter {
-    private List<SchedulerSection> mSections = new ArrayList<>();
+    private List<ManageBookingResponse> mSections = new ArrayList<>();
 
-    public SchedulerAdapter(List<SchedulerSection> sections) {
+    public SchedulerAdapter(List<ManageBookingResponse> sections) {
         mSections = sections;
     }
 
-    public void updateData(List<SchedulerSection> sections) {
+    public void updateData(List<ManageBookingResponse> sections) {
         if (sections == null) return;
         mSections.clear();
         mSections.addAll(sections);
@@ -56,8 +56,8 @@ public class SchedulerAdapter extends SectioningAdapter {
     @Override
     public void onBindItemViewHolder(SectioningAdapter.ItemViewHolder viewHolder, int sectionIndex,
                                      int itemIndex, int itemUserType) {
-        ((ItemViewHolder) viewHolder).bind(mSections.get(sectionIndex).getSections().get
-            (itemIndex));
+        ((ItemViewHolder) viewHolder).bind(mSections.get(sectionIndex).getListBook()
+            .get(itemIndex));
     }
 
     @Override
@@ -73,7 +73,7 @@ public class SchedulerAdapter extends SectioningAdapter {
 
     @Override
     public int getNumberOfItemsInSection(int sectionIndex) {
-        return mSections.get(sectionIndex).getSections().size();
+        return mSections.get(sectionIndex).getListBook().size();
     }
 
     @Override
@@ -94,9 +94,12 @@ public class SchedulerAdapter extends SectioningAdapter {
             mContentBinding = binding;
         }
 
-        private void bind(Scheduler scheduler) {
-            if (scheduler == null) return;
-            mContentBinding.setScheduler(scheduler);
+        private void bind(BookingOder bookingOrder) {
+            if (bookingOrder == null) {
+                return;
+            }
+            mContentBinding.setOrder(bookingOrder);
+            mContentBinding.setTimeBook(bookingOrder.getUpdatedAt().toString());
             mContentBinding.executePendingBindings();
         }
     }
@@ -109,8 +112,10 @@ public class SchedulerAdapter extends SectioningAdapter {
             mHeaderBinding = bind;
         }
 
-        private void bind(SchedulerSection section) {
-            if (section == null) return;
+        private void bind(ManageBookingResponse section) {
+            if (section == null) {
+                return;
+            }
             mHeaderBinding.setSection(section);
             mHeaderBinding.executePendingBindings();
         }

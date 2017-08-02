@@ -5,8 +5,12 @@
     <data>
 
         <variable
-            name="scheduler"
-            type="com.framgia.fsalon.data.model.Scheduler"/>
+            name="order"
+            type="com.framgia.fsalon.data.model.BookingOder"/>
+
+        <variable
+            name="timeBook"
+            type="String"/>
     </data>
 
     <android.support.v7.widget.CardView
@@ -53,7 +57,7 @@
                         android:layout_height="match_parent"
                         android:layout_weight="1"
                         android:gravity="center_vertical"
-                        android:text="@{scheduler.nameCustomer}"
+                        android:text="@{order.name}"
                         android:textColor="@color/color_black"
                         android:textSize="@dimen/sp_16"/>
 
@@ -84,7 +88,7 @@
                         android:layout_weight="1"
                         android:drawablePadding="@dimen/dp_5"
                         android:gravity="center_vertical"
-                        android:text="@{scheduler.date}"
+                        android:text="@{timeBook}"
                         android:textColor="@color/color_grey_500"
                         android:textSize="@dimen/sp_10"/>
                 </LinearLayout>
@@ -94,11 +98,11 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginBottom="@dimen/dp_20"
-                android:layout_marginRight="@dimen/dp_10"
                 android:layout_marginEnd="@dimen/dp_10"
+                android:layout_marginRight="@dimen/dp_10"
                 android:layout_marginTop="@dimen/dp_20"
                 android:gravity="center"
-                android:src="@{scheduler.status ?@drawable/ic_smile_24dp:@drawable/ic_broken_heart_24dp}"/>
+                android:src="@{order.status == order.STATUS_FINISHED ?@drawable/ic_smile_24dp: order.status == order.STATUS_CANCELED?  @drawable/ic_broken_heart_24dp: @drawable/ic_waiting_room_24_dp}"/>
         </LinearLayout>
     </android.support.v7.widget.CardView>
 </layout>
