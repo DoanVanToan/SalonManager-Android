@@ -17,6 +17,10 @@
         <variable
             name="tabFilter"
             type="int"/>
+
+        <variable
+            name="topSheetLayout"
+            type="android.view.View"/>
     </data>
 
     <LinearLayout
@@ -35,7 +39,7 @@
             android:layout_marginLeft="@dimen/dp_5"
             android:layout_marginStart="@dimen/dp_5"
             android:layout_marginTop="@dimen/dp_5"
-            android:onClick="@{()->viewModel.onItemFilterClick(tabFilter)}"
+            android:onClick="@{()->viewModel.onItemFilterClick(tabFilter,topSheetLayout)}"
             app:cardBackgroundColor="@{tabFilter == viewModel.tabFilter?@color/color_green_300:@color/color_white}"
             app:cardElevation="@dimen/dp_5">
 

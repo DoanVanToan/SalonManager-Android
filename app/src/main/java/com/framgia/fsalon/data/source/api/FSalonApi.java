@@ -37,7 +37,7 @@ public interface FSalonApi {
                                               @Query("password_confirmation") String rePassword,
                                               @Query("name") String name,
                                               @Query("phone") String phone);
-    @GET("api/v0/booking_filter_by_day")
+    @GET("api/v0/filter-order-booking")
     Observable<Respone<List<ManageBookingResponse>>> getManageBookings(@QueryMap Map<String, String>
                                                                            parrams);
     @GET("api/v0/service")

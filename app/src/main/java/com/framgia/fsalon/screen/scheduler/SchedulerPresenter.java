@@ -2,6 +2,7 @@ package com.framgia.fsalon.screen.scheduler;
 
 import com.framgia.fsalon.data.model.ManageBookingResponse;
 import com.framgia.fsalon.data.source.ManageBookingRepository;
+import com.framgia.fsalon.utils.Utils;
 
 import java.util.List;
 
@@ -14,6 +15,7 @@ import io.reactivex.observers.DisposableObserver;
 import io.reactivex.schedulers.Schedulers;
 
 import static com.framgia.fsalon.data.source.remote.ManageBookingRemoteDataSource.FILTER_DAY;
+import static com.framgia.fsalon.utils.Constant.ApiParram.FIRST_PAGE;
 import static com.framgia.fsalon.utils.Constant.OUT_OF_INDEX;
 
 /**
@@ -23,7 +25,7 @@ import static com.framgia.fsalon.utils.Constant.OUT_OF_INDEX;
 public class SchedulerPresenter implements SchedulerContract.Presenter {
     private final SchedulerContract.ViewModel mViewModel;
     private ManageBookingRepository mRepository;
-    private int mPage = OUT_OF_INDEX;
+    private int mPage = FIRST_PAGE;
     private CompositeDisposable mCompositeDisposable;
 
     SchedulerPresenter(SchedulerContract.ViewModel viewModel, ManageBookingRepository
@@ -31,7 +33,8 @@ public class SchedulerPresenter implements SchedulerContract.Presenter {
         mViewModel = viewModel;
         mRepository = repository;
         mCompositeDisposable = new CompositeDisposable();
-        getSchedulers(FILTER_DAY, mPage, OUT_OF_INDEX, OUT_OF_INDEX, OUT_OF_INDEX, OUT_OF_INDEX);
+        getSchedulers(FILTER_DAY, mPage, OUT_OF_INDEX, OUT_OF_INDEX,
+            Utils.createTimeStamp(SchedulerViewModel.TabFilter.TAB_TODAY), OUT_OF_INDEX);
     }
 
     @Override
@@ -72,11 +75,20 @@ public class SchedulerPresenter implements SchedulerContract.Presenter {
                 }
             });
         mCompositeDisposable.add(disposable);
+        mPage = page;
     }
 
     @Override
     public void loadMoreData() {
         mPage++;
         getSchedulers(FILTER_DAY, mPage, OUT_OF_INDEX, OUT_OF_INDEX, OUT_OF_INDEX, OUT_OF_INDEX);
+    }
+
+    public int getPage() {
+        return mPage;
+    }
+
+    public void setPage(int page) {
+        mPage = page;
     }
 }

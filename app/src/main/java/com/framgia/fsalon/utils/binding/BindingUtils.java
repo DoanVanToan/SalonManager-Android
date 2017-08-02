@@ -14,7 +14,6 @@ import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.ImageView;
-import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
@@ -35,11 +34,6 @@ public class BindingUtils {
         layout.setError(text);
     }
 
-    @BindingAdapter("android:src")
-    public static void setImage(ImageView view, int src) {
-        view.setImageResource(src);
-    }
-
     @BindingAdapter(value = {"recyclerAdapter", "layoutManager", "scrollListenner"},
         requireAll = false)
     public static void setAdapterForRecyclerView(RecyclerView recyclerView,
@@ -51,7 +45,9 @@ public class BindingUtils {
             recyclerView.setLayoutManager(layoutManager);
             recyclerView.addItemDecoration(new DeviderItemDecoration(1));
         }
-        recyclerView.addOnScrollListener(listener);
+        if (listener != null) {
+            recyclerView.addOnScrollListener(listener);
+        }
     }
 
     @BindingAdapter({"searchableSpinnerAdapter"})
@@ -60,7 +56,7 @@ public class BindingUtils {
     }
 
     @BindingAdapter({"resourceId"})
-    public static void setResourceId(LinearLayout layout, int resId) {
+    public static void setResourceId(View layout, int resId) {
         layout.setBackgroundResource(resId);
     }
 

@@ -29,6 +29,7 @@ public class ManageBookingRemoteDataSource extends BaseRemoteDataSource
     public static final String FILTER_DAY = "day";
     public static final String FILTER_SPACE = "space";
     public static final String STATUS = "status";
+    public static final String FILTER_TYPE = "type";
 
     public ManageBookingRemoteDataSource(FSalonApi api) {
         super(api);
@@ -54,6 +55,7 @@ public class ManageBookingRemoteDataSource extends BaseRemoteDataSource
     private Map<String, String> createParams(String filterChoice, int page, int perpage,
                                              int status, int startDate, int endDate) {
         Map<String, String> params = new HashMap<>();
+        params.put(FILTER_TYPE, filterChoice);
         if (page != OUT_OF_INDEX) {
             params.put(PAGE, String.valueOf(page));
         }
