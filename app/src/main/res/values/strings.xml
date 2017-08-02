@@ -63,4 +63,14 @@
     <string name="title_cancel">Cancel</string>
     <string name="title_waiting">Waiting</string>
     <string name="title_no_booking">You have no booking yet</string>
+    <string name="title_booking_id">Booking ID</string>
+    <string name="action_search">Search</string>
+    <string name="title_customer_name">Customer Name</string>
+    <string name="title_customer_phone">Customer Phone</string>
+    <string name="title_service">Service</string>
+    <string name="title_price">Price</string>
+    <string name="title_number">Number</string>
+    <string name="title_add">Add</string>
+    <string name="title_create">Create</string>
+    <string name="action_x">x</string>
 </resources>
