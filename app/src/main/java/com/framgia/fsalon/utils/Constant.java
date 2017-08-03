@@ -13,6 +13,7 @@ public class Constant {
     public static final int AVAILABLE = 1;
     public static final int OFF_WORK = 2;
     public static final String BUNDLE_ORDER = "BUNDLE_ORDER";
+    public static final String BOOKING_ID = "BOOKING_ID";
 
     public class ApiParram {
         public static final String DEPARTMENT_ID = "department_id";

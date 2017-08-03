@@ -35,4 +35,9 @@ public class BookingRepository implements BookingDataSource {
     public Observable<BookingOder> getBookingByPhone(String phone) {
         return mRemoteDataSource.getBookingByPhone(phone);
     }
+
+    @Override
+    public Observable<BookingOder> getBookingById(int id) {
+        return mRemoteDataSource.getBookingById(id);
+    }
 }
