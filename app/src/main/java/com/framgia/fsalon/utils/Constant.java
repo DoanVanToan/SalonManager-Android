@@ -28,6 +28,15 @@ public class Constant {
         public static final String NON_FILTER = "null";
         public static final int OUT_OF_INDEX = -1;
         public static final int FIRST_PAGE = 1;
+        public static final String ID = "id";
+        public static final String CUSTOMER_ID = "customer_id";
+        public static final String CUSTOMER_NAME = "customer_name";
+        public static final String ORDER_BOOKING_ID = "order_booking_id";
+        public static final String STATUS = "status";
+        public static final String GRAND_TOTAL = "grand_total";
+        public static final String CREATED_AT = "created_at";
+        public static final String UPDATED_AT = "updated_at";
+        public static final String BILL_ITEMS = "bill_items";
     }
 
     public class Permission {
@@ -35,5 +44,14 @@ public class Constant {
         public static final int PERMISSION_ASSISTANT = 1;
         public static final int PERMISSION_MAIN_WORKER = 2;
         public static final int PERMISSION_ADMIN = 3;
+    }
+
+    /**
+     * Status for Bill
+     */
+    public class Status {
+        public static final int STATUS_PENDING = 0;
+        public static final int STATUS_COMPLETE = 1;
+        public static final int STATUS_CANCEL = 2;
     }
 }
