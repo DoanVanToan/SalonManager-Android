@@ -9,7 +9,7 @@ import android.widget.ArrayAdapter;
 
 import com.framgia.fsalon.BR;
 import com.framgia.fsalon.R;
-import com.framgia.fsalon.data.model.Bill;
+import com.framgia.fsalon.data.model.BillItemRequest;
 import com.framgia.fsalon.data.model.BillRequest;
 import com.framgia.fsalon.data.model.Service;
 import com.framgia.fsalon.data.model.Stylist;
@@ -18,7 +18,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
- * Exposes the data to be used in the Bill screen.
+ * Exposes the data to be used in the BillItemRequest screen.
  */
 public class BillViewModel extends BaseObservable implements BillContract.ViewModel {
     private BillContract.Presenter mPresenter;
@@ -36,7 +36,7 @@ public class BillViewModel extends BaseObservable implements BillContract.ViewMo
     public BillViewModel(Activity activity) {
         mActivity = activity;
         mContext = activity.getApplicationContext();
-        mAdapter = new BillAdapter(mContext, new ArrayList<Bill>(), this);
+        mAdapter = new BillAdapter(mContext, new ArrayList<BillItemRequest>(), this);
     }
 
     @Override
@@ -60,7 +60,7 @@ public class BillViewModel extends BaseObservable implements BillContract.ViewMo
             .isEmpty(mQty)) {
             return;
         }
-        Bill bill = new Bill.Builder()
+        BillItemRequest bill = new BillItemRequest.Builder()
             .setId(mService.getId())
             .setStylistId(mStylist.getId())
             .setPrice(Float.valueOf(mPrice))

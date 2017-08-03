@@ -15,7 +15,7 @@ import com.framgia.fsalon.data.source.remote.StylistRemoteDataSource;
 import com.framgia.fsalon.databinding.ActivityBillBinding;
 
 /**
- * Bill Screen.
+ * BillItemRequest Screen.
  */
 public class BillActivity extends AppCompatActivity {
     private BillContract.ViewModel mViewModel;

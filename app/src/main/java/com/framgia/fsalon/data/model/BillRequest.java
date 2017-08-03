@@ -1,40 +1,15 @@
 package com.framgia.fsalon.data.model;
 
-import android.databinding.BaseObservable;
 import android.databinding.Bindable;
 
 import com.framgia.fsalon.BR;
-import com.google.gson.annotations.Expose;
-import com.google.gson.annotations.SerializedName;
 
 import java.util.List;
 
 /**
  * Created by MyPC on 02/08/2017.
  */
-public class BillRequest extends BaseObservable{
-    @Expose
-    @SerializedName("customer_id")
-    private int mCustomerId;
-    @Expose
-    @SerializedName("phone")
-    private String mPhone;
-    @Expose
-    @SerializedName("status")
-    private int mStatus;
-    @Expose
-    @SerializedName("customer_name")
-    private String mCustomerName;
-    @Expose
-    @SerializedName("order_booking_id")
-    private int mOrderBookingId;
-    @Expose
-    @SerializedName("grand_total")
-    private float mGrandTotal;
-    @Expose
-    @SerializedName("bill_items")
-    private List<Bill> mBillItems;
-
+public class BillRequest extends BillModel.Bill<BillItemRequest> {
     @Bindable
     public int getCustomerId() {
         return mCustomerId;
@@ -96,11 +71,11 @@ public class BillRequest extends BaseObservable{
     }
 
     @Bindable
-    public List<Bill> getBillItems() {
+    public List<BillItemRequest> getBillItems() {
         return mBillItems;
     }
 
-    public void setBillItems(List<Bill> billItems) {
+    public void setBillItems(List<BillItemRequest> billItems) {
         mBillItems = billItems;
         notifyPropertyChanged(BR.billItems);
     }

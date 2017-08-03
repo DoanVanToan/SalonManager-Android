@@ -12,7 +12,7 @@
 
         <variable
             name="item"
-            type="com.framgia.fsalon.data.model.Bill"/>
+            type="com.framgia.fsalon.data.model.BillItemRequest"/>
 
         <variable
             name="position"

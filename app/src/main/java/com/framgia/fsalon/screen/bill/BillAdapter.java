@@ -9,7 +9,7 @@ import android.view.ViewGroup;
 
 import com.framgia.fsalon.BaseRecyclerViewAdapter;
 import com.framgia.fsalon.R;
-import com.framgia.fsalon.data.model.Bill;
+import com.framgia.fsalon.data.model.BillItemRequest;
 import com.framgia.fsalon.databinding.ItemBillBinding;
 
 import java.util.List;
@@ -17,11 +17,11 @@ import java.util.List;
 /**
  * Created by MyPC on 02/08/2017.
  */
-public class BillAdapter extends BaseRecyclerViewAdapter<Bill, BillAdapter
+public class BillAdapter extends BaseRecyclerViewAdapter<BillItemRequest, BillAdapter
     .ViewHolder> {
-    private List<Bill> mData;
+    private List<BillItemRequest> mData;
     private BillViewModel mViewModel;
-    protected BillAdapter(@NonNull Context context, List<Bill> data,
+    protected BillAdapter(@NonNull Context context, List<BillItemRequest> data,
                           BillViewModel viewModel) {
         super(context);
         mData = data;
@@ -29,7 +29,7 @@ public class BillAdapter extends BaseRecyclerViewAdapter<Bill, BillAdapter
     }
 
     @Override
-    public void onUpdatePage(List<Bill> data) {
+    public void onUpdatePage(List<BillItemRequest> data) {
         if (data == null) {
             return;
         }
@@ -55,7 +55,7 @@ public class BillAdapter extends BaseRecyclerViewAdapter<Bill, BillAdapter
         return mData == null ? 0 : mData.size();
     }
 
-    public void onAddItem(Bill bill) {
+    public void onAddItem(BillItemRequest bill) {
         if (bill == null) {
             return;
         }
@@ -84,7 +84,7 @@ public class BillAdapter extends BaseRecyclerViewAdapter<Bill, BillAdapter
             mViewModel = viewModel;
         }
 
-        void bindData(Bill bill) {
+        void bindData(BillItemRequest bill) {
             if (bill == null) {
                 return;
             }
