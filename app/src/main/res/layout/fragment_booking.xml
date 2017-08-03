@@ -6,6 +6,8 @@
 
     <data>
 
+        <import type="com.framgia.fsalon.utils.LayoutManager"/>
+
         <variable
             name="viewModel"
             type="com.framgia.fsalon.screen.booking.BookingViewModel"
@@ -15,8 +17,7 @@
 
     <android.support.v4.widget.NestedScrollView
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:fitsSystemWindows="true">
+        android:layout_height="match_parent">
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -99,9 +100,8 @@
             <android.support.v7.widget.RecyclerView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                bind:layoutManager="StaggeredGridLayoutManager"
-                bind:recyclerAdapter="@{viewModel.salonAdapter}"
-                bind:spanCount="3"/>
+                bind:layoutManager="@{LayoutManager.grid(@integer/span_3)}"
+                bind:adapter="@{viewModel.salonAdapter}"/>
 
             <android.support.v7.widget.AppCompatTextView
                 android:layout_width="match_parent"
@@ -156,9 +156,8 @@
             <android.support.v7.widget.RecyclerView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                bind:layoutManager="StaggeredGridLayoutManager"
-                bind:recyclerAdapter="@{viewModel.dateAdapter}"
-                bind:spanCount="3"/>
+                bind:layoutManager="@{LayoutManager.grid(@integer/span_3)}"
+                bind:adapter="@{viewModel.dateAdapter}"/>
 
             <android.support.design.widget.TextInputLayout
                 android:layout_width="match_parent"
@@ -182,9 +181,8 @@
             <android.support.v7.widget.RecyclerView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                bind:layoutManager="StaggeredGridLayoutManager"
-                bind:recyclerAdapter="@{viewModel.timeAdapter}"
-                bind:spanCount="4"/>
+                bind:layoutManager="@{LayoutManager.grid(@integer/span_4)}"
+                bind:adapter="@{viewModel.timeAdapter}"/>
 
             <android.support.v7.widget.AppCompatButton
                 android:layout_width="match_parent"

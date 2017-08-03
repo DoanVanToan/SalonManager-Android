@@ -38,4 +38,6 @@
     <dimen name="dp_7">7dp</dimen>
     <dimen name="dp_16">16dp</dimen>
     <dimen name="dp_4">4dp</dimen>
+    <integer name="span_3">3</integer>
+    <integer name="span_4">4</integer>
 </resources>
