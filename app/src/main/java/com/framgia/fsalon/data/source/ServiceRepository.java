@@ -1,6 +1,8 @@
 package com.framgia.fsalon.data.source;
 
-import android.app.Service;
+
+
+import com.framgia.fsalon.data.model.Service;
 
 import java.util.List;
 

@@ -1,11 +1,10 @@
 package com.framgia.fsalon.data.source.api;
 
-import android.app.Service;
-
 import com.framgia.fsalon.data.model.BookingOder;
 import com.framgia.fsalon.data.model.BookingResponse;
 import com.framgia.fsalon.data.model.ManageBookingResponse;
 import com.framgia.fsalon.data.model.Salon;
+import com.framgia.fsalon.data.model.Service;
 import com.framgia.fsalon.data.model.Stylist;
 import com.framgia.fsalon.data.model.UserRespone;
 
@@ -38,11 +37,9 @@ public interface FSalonApi {
                                               @Query("password_confirmation") String rePassword,
                                               @Query("name") String name,
                                               @Query("phone") String phone);
-
     @GET("api/v0/booking_filter_by_day")
     Observable<Respone<List<ManageBookingResponse>>> getManageBookings(@QueryMap Map<String, String>
                                                                            parrams);
-
     @GET("api/v0/service")
     Observable<Respone<List<Service>>> getServices();
 }

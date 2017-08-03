@@ -149,4 +149,9 @@ public class Service implements Parcelable {
         dest.writeDouble(mAvgRate);
         dest.writeInt(mTotalRate);
     }
+
+    @Override
+    public String toString() {
+        return mName;
+    }
 }
