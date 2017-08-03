@@ -1,7 +1,8 @@
 package com.framgia.fsalon.data.source.remote;
 
-import android.app.Service;
 
+
+import com.framgia.fsalon.data.model.Service;
 import com.framgia.fsalon.data.source.ServiceDataSource;
 import com.framgia.fsalon.data.source.api.FSalonApi;
 import com.framgia.fsalon.utils.Utils;

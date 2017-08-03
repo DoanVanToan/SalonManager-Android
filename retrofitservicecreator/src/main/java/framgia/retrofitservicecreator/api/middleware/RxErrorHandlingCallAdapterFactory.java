@@ -67,7 +67,7 @@ public final class RxErrorHandlingCallAdapterFactory extends CallAdapter.Factory
                 return ((Single) result).onErrorResumeNext(new Function<Throwable, SingleSource>() {
                     @Override
                     public SingleSource apply(@NonNull Throwable throwable) throws Exception {
-                        return Single.error(asRetrofitException(throwable));
+                        return Single.error(convertToBaseException(throwable));
                     }
                 });
             }
@@ -77,7 +77,7 @@ public final class RxErrorHandlingCallAdapterFactory extends CallAdapter.Factory
                         @Override
                         public ObservableSource apply(@NonNull Throwable throwable)
                             throws Exception {
-                            return Observable.error(asRetrofitException(throwable));
+                            return Observable.error(convertToBaseException(throwable));
                         }
                     });
             }
@@ -87,7 +87,7 @@ public final class RxErrorHandlingCallAdapterFactory extends CallAdapter.Factory
                         @Override
                         public CompletableSource apply(@NonNull Throwable throwable)
                             throws Exception {
-                            return Completable.error(asRetrofitException(throwable));
+                            return Completable.error(convertToBaseException(throwable));
                         }
                     });
             }
@@ -109,24 +109,24 @@ public final class RxErrorHandlingCallAdapterFactory extends CallAdapter.Factory
             // We don't know what happened. We need to simply convert to an unknown error
             return RetrofitException.unexpectedError(throwable);
         }
-    }
 
-    private BaseException convertToBaseException(Throwable throwable) {
-        if (throwable instanceof BaseException) {
-            return (BaseException) throwable;
-        }
-        if (throwable instanceof IOException) {
-            return BaseException.toNetworkError(throwable);
-        }
-        if (throwable instanceof HttpException) {
-            HttpException httpException = (HttpException) throwable;
-            Response response = httpException.response();
-            if (response.errorBody() != null) {
-                return BaseException.toServerError(throwable);
-            } else {
-                return BaseException.toHttpError(response);
+        private BaseException convertToBaseException(Throwable throwable) {
+            if (throwable instanceof BaseException) {
+                return (BaseException) throwable;
             }
+            if (throwable instanceof IOException) {
+                return BaseException.toNetworkError(throwable);
+            }
+            if (throwable instanceof HttpException) {
+                HttpException httpException = (HttpException) throwable;
+                Response response = httpException.response();
+                if (response.errorBody() != null) {
+                    return BaseException.toServerError(throwable);
+                } else {
+                    return BaseException.toHttpError(response);
+                }
+            }
+            return BaseException.toUnexpectedError(throwable);
         }
-        return BaseException.toUnexpectedError(throwable);
     }
 }

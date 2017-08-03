@@ -10,7 +10,6 @@ import android.support.v4.view.PagerAdapter;
 import android.support.v4.view.ViewPager;
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
-import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.ImageView;
@@ -19,14 +18,17 @@ import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
 import com.framgia.fsalon.R;
+import com.framgia.fsalon.data.model.Service;
 import com.framgia.fsalon.data.model.Stylist;
 import com.framgia.fsalon.screen.booking.BookingViewModel;
+import com.framgia.fsalon.utils.LayoutManager;
 import com.toptoche.searchablespinnerlibrary.SearchableSpinner;
 
 /**
  * Created by MyPC on 20/07/2017.
  */
 public class BindingUtils {
+
     @BindingAdapter("errorText")
     public static void setErrorText(TextInputLayout layout, String text) {
         layout.setError(text);
@@ -54,8 +56,6 @@ public class BindingUtils {
     @BindingAdapter({"searchableSpinnerAdapter"})
     public static void setSearchableSpinnerAdapter(SearchableSpinner view, ArrayAdapter adapter) {
         view.setAdapter(adapter);
-        view.setTitle(view.getContext().getResources().getString(R.string.title_stylist));
-        view.setPositiveButton(view.getContext().getResources().getString(R.string.action_close));
     }
 
     @BindingAdapter({"resourceId"})
@@ -120,5 +120,61 @@ public class BindingUtils {
             Glide.with(view.getContext()).load(imageUrl).centerCrop().placeholder(error).into
                 (view);
         }
+    }
+
+    @InverseBindingAdapter(attribute = "bind:stylist", event = "stylistAttrChanged")
+    public static Stylist captureStylist(SearchableSpinner view) {
+        Object selectedItem = view.getSelectedItem();
+        return (Stylist) selectedItem;
+    }
+
+    @BindingAdapter(value = {"bind:stylist", "stylistAttrChanged"}, requireAll = false)
+    public static void setStylist(SearchableSpinner view, Stylist value,
+                                  final InverseBindingListener bindingListener) {
+        AdapterView.OnItemSelectedListener listener = new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+                bindingListener.onChange();
+            }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> parent) {
+            }
+        };
+        view.setOnItemSelectedListener(listener);
+    }
+
+    @InverseBindingAdapter(attribute = "bind:service", event = "serviceAttrChanged")
+    public static Service captureService(SearchableSpinner view) {
+        Object selectedItem = view.getSelectedItem();
+        return (Service) selectedItem;
+    }
+
+    @BindingAdapter(value = {"bind:service", "serviceAttrChanged"}, requireAll = false)
+    public static void setService(SearchableSpinner view, final Service value,
+                                  final InverseBindingListener bindingListener) {
+        AdapterView.OnItemSelectedListener listener = new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+                bindingListener.onChange();
+            }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> parent) {
+            }
+        };
+        view.setOnItemSelectedListener(listener);
+    }
+
+    @BindingAdapter(value = {"layoutManager", "adapter"}, requireAll = false)
+    public static void setRecyclerView(RecyclerView view,
+                                       LayoutManager.LayoutManagerFactory factory,
+                                       RecyclerView.Adapter adapter) {
+        if (adapter == null) {
+            return;
+        }
+        view.setAdapter(adapter);
+        view.setLayoutManager(factory.create(view));
+        view.addItemDecoration(new DeviderItemDecoration(1));
     }
 }
