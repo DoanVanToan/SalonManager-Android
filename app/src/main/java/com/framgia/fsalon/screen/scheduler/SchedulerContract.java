@@ -1,5 +1,7 @@
 package com.framgia.fsalon.screen.scheduler;
 
+import android.view.View;
+
 import com.framgia.fsalon.BasePresenter;
 import com.framgia.fsalon.BaseViewModel;
 import com.framgia.fsalon.data.model.ManageBookingResponse;
@@ -14,11 +16,12 @@ interface SchedulerContract {
      * View.
      */
     interface ViewModel extends BaseViewModel<Presenter> {
-        void onItemFilterClick(@SchedulerViewModel.TabFilter int tab);
+        void onItemFilterClick(@SchedulerViewModel.TabFilter int tab, View topSheet);
         void onSchedulerSuccessful(List<ManageBookingResponse> sections);
         void onSchedulerFail();
         void showLoadMore();
         void hideLoadMore();
+        void filterRandomCalendar();
     }
 
     /**

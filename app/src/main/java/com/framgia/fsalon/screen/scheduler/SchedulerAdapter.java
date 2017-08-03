@@ -9,6 +9,7 @@ import com.framgia.fsalon.data.model.BookingOder;
 import com.framgia.fsalon.data.model.ManageBookingResponse;
 import com.framgia.fsalon.databinding.ItemContentSchedulerBinding;
 import com.framgia.fsalon.databinding.ItemHeaderSchedulerBinding;
+import com.framgia.fsalon.utils.Utils;
 
 import org.zakariya.stickyheaders.SectioningAdapter;
 
@@ -99,7 +100,7 @@ public class SchedulerAdapter extends SectioningAdapter {
                 return;
             }
             mContentBinding.setOrder(bookingOrder);
-            mContentBinding.setTimeBook(bookingOrder.getUpdatedAt().toString());
+            mContentBinding.setTimeBook(Utils.convertTime(bookingOrder.getTimeStart()));
             mContentBinding.executePendingBindings();
         }
     }

@@ -5,10 +5,21 @@ import android.support.design.internal.BottomNavigationMenuView;
 import android.support.design.widget.BottomNavigationView;
 import android.util.Log;
 
+import com.framgia.fsalon.screen.scheduler.SchedulerViewModel;
+
 import java.lang.reflect.Field;
+import java.text.SimpleDateFormat;
+import java.util.Calendar;
+import java.util.Date;
+import java.util.Locale;
 
 import framgia.retrofitservicecreator.api.model.Respone;
 import io.reactivex.Observable;
+
+import static com.framgia.fsalon.screen.scheduler.SchedulerViewModel.TabFilter.TAB_TODAY;
+import static com.framgia.fsalon.screen.scheduler.SchedulerViewModel.TabFilter.TAB_TOMORROW;
+import static com.framgia.fsalon.screen.scheduler.SchedulerViewModel.TabFilter.TAB_YESTERDAY;
+import static com.framgia.fsalon.utils.Constant.ApiParram.OUT_OF_INDEX;
 
 /**
  * Created by MyPC on 20/07/2017.
@@ -44,5 +55,30 @@ public class Utils {
         } catch (IllegalAccessException e) {
             Log.e("BNVHelper", "Unable to change value of shift mode", e);
         }
+    }
+
+    public static int createTimeStamp(@SchedulerViewModel.TabFilter int tab) {
+        Calendar calendar = Calendar.getInstance();
+        switch (tab) {
+            case TAB_TODAY:
+                return (int) (calendar.getTime().getTime() / 1000);
+            case TAB_TOMORROW:
+                calendar.add(Calendar.DAY_OF_YEAR, 1);
+                return (int) (calendar.getTime().getTime() / 1000);
+            case TAB_YESTERDAY:
+                calendar.add(Calendar.DAY_OF_YEAR, -1);
+                return (int) (calendar.getTime().getTime() / 1000);
+            default:
+                break;
+        }
+        return OUT_OF_INDEX;
+    }
+
+    public static String convertTime(Date date) {
+        if (date == null) {
+            return null;
+        }
+        SimpleDateFormat sfd = new SimpleDateFormat("hh:mm:ss", Locale.US);
+        return sfd.format(date);
     }
 }

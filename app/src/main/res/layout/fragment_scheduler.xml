@@ -32,6 +32,7 @@
             bind:scrollListenner="@{viewModel.scrollListenner}"/>
 
         <LinearLayout
+            android:id="@+id/layout_top_sheet"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:background="@color/color_grey_100"
@@ -50,6 +51,7 @@
                     layout="@layout/item_top_sheet"
                     bind:description="@{@string/title_tomorrow}"
                     bind:tabFilter="@{TabFilter.TAB_TOMORROW}"
+                    bind:topSheetLayout="@{layoutTopSheet}"
                     bind:viewModel="@{viewModel}"/>
 
                 <include
@@ -57,6 +59,7 @@
                     layout="@layout/item_top_sheet"
                     bind:description="@{@string/title_calendar}"
                     bind:tabFilter="@{TabFilter.TAB_CALENDAR}"
+                    bind:topSheetLayout="@{layoutTopSheet}"
                     bind:viewModel="@{viewModel}"
                     />
 
@@ -73,6 +76,7 @@
                     layout="@layout/item_top_sheet"
                     bind:description="@{@string/title_today}"
                     bind:tabFilter="@{TabFilter.TAB_TODAY}"
+                    bind:topSheetLayout="@{layoutTopSheet}"
                     bind:viewModel="@{viewModel}"
                     />
 
@@ -81,6 +85,7 @@
                     layout="@layout/item_top_sheet"
                     bind:description="@{@string/title_yesterday}"
                     bind:tabFilter="@{TabFilter.TAB_YESTERDAY}"
+                    bind:topSheetLayout="@{layoutTopSheet}"
                     bind:viewModel="@{viewModel}"
                     />
 
@@ -134,8 +139,9 @@
             <com.github.clans.fab.FloatingActionButton
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                bind:srcCompat="@drawable/ic_smile_24dp"
+                android:src="@drawable/ic_smile_24dp"
                 app:rippleColor="@color/color_white"
+                bind:ignore="VectorDrawableCompat"
                 fab:fab_colorNormal="@color/color_white"
                 fab:fab_label="@string/tilte_finished"
                 fab:fab_size="mini"/>
@@ -143,20 +149,20 @@
             <com.github.clans.fab.FloatingActionButton
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                bind:srcCompat="@drawable/ic_broken_heart_24dp"
+                android:src="@drawable/ic_broken_heart_24dp"
+                bind:ignore="VectorDrawableCompat"
                 fab:fab_colorNormal="@color/color_white"
                 fab:fab_label="@string/title_cancel"
-                fab:fab_size="mini"
-                />
+                fab:fab_size="mini"/>
 
             <com.github.clans.fab.FloatingActionButton
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:src="@drawable/ic_waiting_room_24_dp"
+                bind:ignore="VectorDrawableCompat"
                 fab:fab_colorNormal="@color/color_white"
                 fab:fab_label="@string/title_waiting"
-                fab:fab_size="mini"
-                />
+                fab:fab_size="mini"/>
         </com.github.clans.fab.FloatingActionMenu>
     </android.support.design.widget.CoordinatorLayout>
 </layout>

@@ -27,7 +27,7 @@ public class SchedulerFragment extends Fragment {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        mViewModel = new SchedulerViewModel(this);
+        mViewModel = new SchedulerViewModel(this, getActivity().getFragmentManager());
         SchedulerContract.Presenter presenter =
             new SchedulerPresenter(mViewModel, new ManageBookingRepository(
                 new ManageBookingRemoteDataSource(

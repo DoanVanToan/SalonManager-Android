@@ -13,8 +13,8 @@ import java.util.Date;
  */
 public class BookingOder implements Parcelable {
     public static final int STATUS_FINISHED = 0;
-    public static final int STATUS_CANCELED = 1;
-    public static final int STATUS_PENDING = 2;
+    public static final int STATUS_CANCELED = 2;
+    public static final int STATUS_PENDING = 1;
     @SerializedName("id")
     @Expose
     private int mId;
@@ -57,6 +57,9 @@ public class BookingOder implements Parcelable {
     @SerializedName("department")
     @Expose
     private Salon mDepartment;
+    @SerializedName("time_start")
+    @Expose
+    private Date mTimeStart;
 
     protected BookingOder(Parcel in) {
         mId = in.readInt();
@@ -194,6 +197,14 @@ public class BookingOder implements Parcelable {
 
     public void setRender(BookingRender render) {
         mRender = render;
+    }
+
+    public Date getTimeStart() {
+        return mTimeStart;
+    }
+
+    public void setTimeStart(Date timeStart) {
+        mTimeStart = timeStart;
     }
 
     @Override

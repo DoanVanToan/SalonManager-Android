@@ -26,6 +26,7 @@ public class Constant {
         public static final String PER_PAGE = "per_page";
         public static final String NON_FILTER = "null";
         public static final int OUT_OF_INDEX = -1;
+        public static final int FIRST_PAGE = 1;
     }
 
     public class Permission {
