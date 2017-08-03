@@ -62,7 +62,8 @@
     <string name="tilte_finished">Finished</string>
     <string name="title_cancel">Cancel</string>
     <string name="title_waiting">Waiting</string>
-    <string name="title_no_booking">You have no booking yet</string>
+    <string name="msg_no_booking">You have no booking yet</string>
+    <string name="msg_not_login">You still not login yet</string>
     <string name="title_booking_id">Booking ID</string>
     <string name="action_search">Search</string>
     <string name="title_customer_name">Customer Name</string>
