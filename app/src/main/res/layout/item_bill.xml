@@ -1,0 +1,96 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    >
+
+    <data>
+
+        <variable
+            name="viewModel"
+            type="com.framgia.fsalon.screen.bill.BillViewModel"
+            />
+
+        <variable
+            name="item"
+            type="com.framgia.fsalon.data.model.Bill"/>
+
+        <variable
+            name="position"
+            type="int"/>
+
+    </data>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="center"
+        android:orientation="horizontal"
+        android:padding="@dimen/dp_5">
+
+        <LinearLayout
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="@dimen/dp_10"
+            android:layout_marginRight="@dimen/dp_10"
+            android:layout_weight="1"
+            android:background="@color/color_white"
+            android:orientation="horizontal"
+            android:padding="@dimen/dp_10">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginEnd="@dimen/dp_30"
+                android:layout_marginRight="@dimen/dp_30"
+                android:text="@{item.serviceName}"
+                android:textColor="@color/color_black"
+                android:textSize="@dimen/sp_10"/>
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginEnd="@dimen/dp_30"
+                android:layout_marginRight="@dimen/dp_30"
+                android:text="@{item.stylistName}"
+                android:textColor="@color/color_black"
+                android:textSize="@dimen/sp_10"/>
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginEnd="@dimen/dp_30"
+                android:layout_marginRight="@dimen/dp_30"
+                android:text="@{item.price + ``}"
+                android:textColor="@color/color_black"
+                android:textSize="@dimen/sp_10"/>
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginEnd="@dimen/dp_30"
+                android:layout_marginRight="@dimen/dp_30"
+                android:text="@{item.qty + ``}"
+                android:textColor="@color/color_black"
+                android:textSize="@dimen/sp_10"/>
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@{item.rowToalBill + ``}"
+                android:textColor="@color/color_black"
+                android:textSize="@dimen/sp_10"/>
+        </LinearLayout>
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:background="@color/color_accent_700"
+            android:padding="@dimen/dp_5"
+            android:text="@string/action_x"
+            android:onClick="@{() -> viewModel.onDeleteItemClick(position)}"
+            android:textAllCaps="true"
+            android:textColor="@color/color_white"
+            android:textSize="@dimen/sp_20"
+            android:textStyle="bold"/>
+    </LinearLayout>
+</layout>
