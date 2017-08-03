@@ -1,7 +1,5 @@
 package com.framgia.fsalon.data.source.remote;
 
-
-
 import com.framgia.fsalon.data.model.Service;
 import com.framgia.fsalon.data.source.ServiceDataSource;
 import com.framgia.fsalon.data.source.api.FSalonApi;
@@ -18,7 +16,7 @@ import io.reactivex.functions.Function;
 /**
  * Created by THM on 8/1/2017.
  */
-public class ServiceRemoteDataSource extends BaseRemoteDataSource implements ServiceDataSource{
+public class ServiceRemoteDataSource extends BaseRemoteDataSource implements ServiceDataSource {
     public ServiceRemoteDataSource(FSalonApi fSalonApi) {
         super(fSalonApi);
     }
@@ -29,7 +27,7 @@ public class ServiceRemoteDataSource extends BaseRemoteDataSource implements Ser
             new Function<Respone<List<Service>>, ObservableSource<List<Service>>>() {
                 @Override
                 public ObservableSource<List<Service>> apply(@NonNull Respone<List<Service>>
-                                                             listRespone)
+                                                                 listRespone)
                     throws Exception {
                     return Utils.getResponse(listRespone);
                 }

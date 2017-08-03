@@ -114,13 +114,13 @@ public class DetailViewModel extends BaseObservable implements DetailContract.Vi
     @Override
     public void onBookingEmpty() {
         setHide(false);
-        setMessage(mFragment.getContext().getString(R.string.title_no_booking));
+        setMessage(mFragment.getContext().getString(R.string.msg_no_booking));
     }
 
     @Override
     public void onNotLogin() {
         setHide(false);
-        setMessage(mFragment.getContext().getString(R.string.title_no_booking));
+        setMessage(mFragment.getContext().getString(R.string.msg_not_login));
     }
 
     @Override
