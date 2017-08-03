@@ -43,7 +43,7 @@ public interface FSalonApi {
     @GET("api/v0/service")
     Observable<Respone<List<Service>>> getServices();
     @GET("api/v0/get_last_booking_by_phone")
-    Observable<Respone<BookingOder>> getBookingById(@Query("phone") String phone);
+    Observable<Respone<BookingOder>> getBookingByPhone(@Query("phone") String phone);
     @GET("api/v0/get_booking_by_id/{id}")
     Observable<Respone<BookingOder>> getBookingById(@Path("id") int id);
 }

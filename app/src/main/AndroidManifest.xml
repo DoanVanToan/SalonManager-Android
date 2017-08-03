@@ -45,6 +45,9 @@
         <activity
             android:name=".screen.bill.BillActivity"
             android:screenOrientation="portrait"/>
+        <activity
+            android:name=".screen.scheduler.detail.BookingDetailActivity"
+            android:screenOrientation="portrait"
+            android:theme="@style/NoActionBarTheme"/>
     </application>
-
 </manifest>
