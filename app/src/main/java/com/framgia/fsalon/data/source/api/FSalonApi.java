@@ -42,5 +42,7 @@ public interface FSalonApi {
                                                                            parrams);
     @GET("api/v0/service")
     Observable<Respone<List<Service>>> getServices();
+    @GET("api/v0/get_last_booking_by_phone")
+    Observable<Respone<BookingOder>> getBookingByPhone(@Query("phone") String phone);
 }
 

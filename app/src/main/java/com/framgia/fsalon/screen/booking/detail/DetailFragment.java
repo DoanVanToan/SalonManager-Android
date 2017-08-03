@@ -9,6 +9,13 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import com.framgia.fsalon.R;
+import com.framgia.fsalon.data.source.BookingRepository;
+import com.framgia.fsalon.data.source.UserRepository;
+import com.framgia.fsalon.data.source.api.FSalonServiceClient;
+import com.framgia.fsalon.data.source.local.UserLocalDataSource;
+import com.framgia.fsalon.data.source.local.sharepref.SharePreferenceImp;
+import com.framgia.fsalon.data.source.remote.BookingRemoteDataSource;
+import com.framgia.fsalon.data.source.remote.UserRemoteDataSource;
 import com.framgia.fsalon.databinding.FragmentDetailBinding;
 
 /**
@@ -24,8 +31,11 @@ public class DetailFragment extends Fragment {
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        mViewModel = new DetailViewModel();
-        DetailContract.Presenter presenter = new DetailPresenter(mViewModel);
+        mViewModel = new DetailViewModel(this);
+        DetailContract.Presenter presenter = new DetailPresenter(mViewModel,
+            new UserRepository(new UserRemoteDataSource(FSalonServiceClient.getInstance()),
+                new UserLocalDataSource(new SharePreferenceImp(getContext()))),
+            new BookingRepository(new BookingRemoteDataSource(FSalonServiceClient.getInstance())));
         mViewModel.setPresenter(presenter);
     }
 
