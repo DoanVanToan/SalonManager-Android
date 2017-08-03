@@ -8,6 +8,7 @@ import android.support.design.widget.BottomNavigationView;
 import android.support.design.widget.TextInputLayout;
 import android.support.v4.view.PagerAdapter;
 import android.support.v4.view.ViewPager;
+import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
 import android.widget.AdapterView;
@@ -96,6 +97,19 @@ public class BindingUtils {
     public static void setBottomNavigationViewListener(BottomNavigationView view,
                                                        BottomNavigationView.OnNavigationItemSelectedListener listener) {
         view.setOnNavigationItemSelectedListener(listener);
+    }
+
+    @BindingAdapter("bind:listener")
+    public static void setSwipeRefreshLayoutListener(SwipeRefreshLayout view, SwipeRefreshLayout
+        .OnRefreshListener listener) {
+        view.setOnRefreshListener(listener);
+    }
+
+    @BindingAdapter("bind:finish")
+    public static void setRefresh(SwipeRefreshLayout view, boolean isFinish) {
+        if (isFinish) {
+            view.setRefreshing(false);
+        }
     }
 
     @BindingAdapter("bind:tabSelect")

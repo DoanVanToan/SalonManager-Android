@@ -73,4 +73,17 @@ public class BookingRemoteDataSource extends BaseRemoteDataSource implements Boo
                 }
             });
     }
+
+    @Override
+    public Observable<BookingOder> getBookingByPhone(String phone) {
+        return mFSalonApi.getBookingByPhone(phone)
+            .flatMap(new Function<Respone<BookingOder>, ObservableSource<BookingOder>>() {
+                @Override
+                public ObservableSource<BookingOder> apply(
+                    @NonNull Respone<BookingOder> bookingOderRespone)
+                    throws Exception {
+                    return Utils.getResponse(bookingOderRespone);
+                }
+            });
+    }
 }

@@ -8,9 +8,7 @@ import io.reactivex.Observable;
 /**
  * Created by framgia on 7/21/17.
  */
-
 public class BookingRepository implements BookingDataSource {
-
     private BookingDataSource mRemoteDataSource;
 
     public BookingRepository(BookingDataSource remoteDataSource) {
@@ -31,5 +29,10 @@ public class BookingRepository implements BookingDataSource {
     public Observable<BookingOder> book(String phone, String name, int renderBookingId,
                                         int stylistId) {
         return mRemoteDataSource.book(phone, name, renderBookingId, stylistId);
+    }
+
+    @Override
+    public Observable<BookingOder> getBookingByPhone(String phone) {
+        return mRemoteDataSource.getBookingByPhone(phone);
     }
 }
