@@ -12,6 +12,7 @@ import android.view.MenuItem;
 import com.framgia.fsalon.BR;
 import com.framgia.fsalon.R;
 import com.framgia.fsalon.screen.customer.CustomerFragment;
+import com.framgia.fsalon.screen.listbill.ListBillFragment;
 import com.framgia.fsalon.screen.scheduler.SchedulerFragment;
 
 import java.lang.annotation.Retention;
@@ -74,6 +75,7 @@ public class AdminHomeViewModel extends BaseObservable implements AdminHomeContr
         mActivity = activity;
         List<Fragment> fragments = new ArrayList<>();
         fragments.add(SchedulerFragment.newInstance());
+        fragments.add(ListBillFragment.newInstance());
         fragments.add(CustomerFragment.newInstance());
         mAdapter = new HomePagerAdapter(activity.getSupportFragmentManager(), fragments);
         setAdapter(mAdapter);
@@ -98,9 +100,9 @@ public class AdminHomeViewModel extends BaseObservable implements AdminHomeContr
     @Retention(RetentionPolicy.SOURCE)
     public @interface Tab {
         int TAB_SCHEDULER = 0;
-        int TAB_CUSTOMER = 1;
-        int TAB_RECEIPT = 2;
-        int TAB_REPORT = 3;
+        int TAB_RECEIPT = 1;
+        int TAB_REPORT = 2;
+        int TAB_CUSTOMER = 3;
         int TAB_PROFILE = 4;
     }
 

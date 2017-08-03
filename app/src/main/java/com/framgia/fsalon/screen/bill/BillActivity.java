@@ -1,5 +1,7 @@
 package com.framgia.fsalon.screen.bill;
 
+import android.content.Context;
+import android.content.Intent;
 import android.databinding.DataBindingUtil;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
@@ -17,6 +19,11 @@ import com.framgia.fsalon.databinding.ActivityBillBinding;
  */
 public class BillActivity extends AppCompatActivity {
     private BillContract.ViewModel mViewModel;
+
+    public static Intent getInstance(Context context) {
+        Intent intent = new Intent(context, BillActivity.class);
+        return intent;
+    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {

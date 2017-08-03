@@ -7,6 +7,8 @@
 
     <data>
 
+        <import type="com.framgia.fsalon.utils.LayoutManager"/>
+
         <variable
             name="viewModel"
             type="com.framgia.fsalon.screen.customer.CustomerViewModel"
@@ -30,7 +32,7 @@
         <android.support.v7.widget.RecyclerView
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            bind:layoutManager="LinearLayoutManager"
-            bind:recyclerAdapter="@{viewModel.customerAdapter}"/>
+            bind:adapter="@{viewModel.customerAdapter}"
+            bind:layoutManager="@{LayoutManager.linear()}"/>
     </LinearLayout>
 </layout>
