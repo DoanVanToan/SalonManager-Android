@@ -116,4 +116,8 @@ public class Navigator {
         Snackbar.make(activity.findViewById(android.R.id.content), message, Snackbar.LENGTH_LONG)
                 .show();
     }
+
+    public String getStringById(int stringId) {
+        return mActivity.getResources().getString(stringId);
+    }
 }

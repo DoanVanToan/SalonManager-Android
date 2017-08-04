@@ -71,6 +71,18 @@ public class BillAdapter extends BaseRecyclerViewAdapter<BillItemRequest, BillAd
         notifyDataSetChanged();
     }
 
+    public List<BillItemRequest> getData() {
+        return mData;
+    }
+
+    public float getTotalPrice() {
+        float total = 0;
+        for (BillItemRequest request : mData) {
+            total += request.getPrice() * request.getQty();
+        }
+        return total;
+    }
+
     /**
      * ViewHolder
      */

@@ -1,7 +1,14 @@
 package com.framgia.fsalon.screen.bill;
 
+import android.text.TextUtils;
+
+import com.framgia.fsalon.data.model.BillRequest;
+import com.framgia.fsalon.data.model.BillResponse;
+import com.framgia.fsalon.data.model.BookingOder;
 import com.framgia.fsalon.data.model.Service;
 import com.framgia.fsalon.data.model.Stylist;
+import com.framgia.fsalon.data.source.BillRepository;
+import com.framgia.fsalon.data.source.BookingRepository;
 import com.framgia.fsalon.data.source.ServiceRepository;
 import com.framgia.fsalon.data.source.StylistRepository;
 
@@ -21,18 +28,24 @@ import io.reactivex.schedulers.Schedulers;
  */
 public class BillPresenter implements BillContract.Presenter {
     private static final String TAG = BillPresenter.class.getName();
+    private static final int DEFAULT_SALON_ID = 1;
     private final BillContract.ViewModel mViewModel;
     private CompositeDisposable mCompositeDisposable = new CompositeDisposable();
     private StylistRepository mStylistRepository;
     private ServiceRepository mServiceRepository;
+    private BillRepository mBillRepository;
+    private BookingRepository mBookingRepository;
 
     public BillPresenter(BillContract.ViewModel viewModel, StylistRepository stylistRepository,
-                         ServiceRepository serviceRepository) {
+                         ServiceRepository serviceRepository, BillRepository billRepository,
+                         BookingRepository bookingRepository) {
         mViewModel = viewModel;
         mStylistRepository = stylistRepository;
         mServiceRepository = serviceRepository;
+        mBillRepository = billRepository;
+        mBookingRepository = bookingRepository;
         getAllServices();
-        getAllStylists(1);
+        getAllStylists(DEFAULT_SALON_ID);
     }
 
     @Override
@@ -102,5 +115,104 @@ public class BillPresenter implements BillContract.Presenter {
                 }
             });
         mCompositeDisposable.add(disposable);
+    }
+
+    @Override
+    public void createBill(BillRequest billRequest) {
+        if (!validateDataInput(billRequest.getPhone(), billRequest.getCustomerName())) {
+            return;
+        }
+        Disposable disposable = mBillRepository.createBill(billRequest)
+            .subscribeOn(Schedulers.io())
+            .observeOn(AndroidSchedulers.mainThread())
+            .doOnSubscribe(new Consumer<Disposable>() {
+                @Override
+                public void accept(@NonNull Disposable disposable) throws Exception {
+                    mViewModel.showProgressbar();
+                }
+            }).subscribeWith(new DisposableObserver<BillResponse>() {
+                @Override
+                public void onNext(@NonNull BillResponse billResponse) {
+                    mViewModel.onGetBillSuccess(billResponse);
+                }
+
+                @Override
+                public void onError(@NonNull Throwable e) {
+                    mViewModel.hideProgressbar();
+                    mViewModel.onError(e.getMessage());
+                }
+
+                @Override
+                public void onComplete() {
+                    mViewModel.hideProgressbar();
+                }
+            });
+        mCompositeDisposable.add(disposable);
+    }
+
+    @Override
+    public void getBookingByPhone(String phone) {
+        if (!validatePhoneInput(phone)) {
+            return;
+        }
+        Disposable disposable = mBookingRepository.getBookingByPhone(phone)
+            .subscribeOn(Schedulers.io())
+            .observeOn(AndroidSchedulers.mainThread())
+            .doOnSubscribe(new Consumer<Disposable>() {
+                @Override
+                public void accept(@NonNull Disposable disposable) throws Exception {
+                    mViewModel.showProgressbar();
+                }
+            }).subscribeWith(new DisposableObserver<BookingOder>() {
+                @Override
+                public void onNext(@NonNull BookingOder bookingOder) {
+                    mViewModel.onGetBookingSuccess(bookingOder);
+                }
+
+                @Override
+                public void onError(@NonNull Throwable e) {
+                    mViewModel.hideProgressbar();
+                    mViewModel.onError(e.getMessage());
+                }
+
+                @Override
+                public void onComplete() {
+                    mViewModel.hideProgressbar();
+                }
+            });
+        mCompositeDisposable.add(disposable);
+    }
+
+    public boolean validatePhoneInput(String phone) {
+        boolean isValid = true;
+        if (TextUtils.isEmpty(phone)) {
+            isValid = false;
+            mViewModel.onInputPhoneError();
+        }
+        return isValid;
+    }
+
+    @Override
+    public boolean validateFormInput(Service service, Stylist stylist, String pricce, String qty) {
+        boolean isValid = true;
+        if (service == null || stylist == null || TextUtils.isEmpty(pricce) || TextUtils
+            .isEmpty(qty)) {
+            isValid = false;
+            mViewModel.onInputFormError();
+        }
+        return isValid;
+    }
+
+    public boolean validateDataInput(String phone, String name) {
+        boolean isValid = true;
+        if (TextUtils.isEmpty(phone)) {
+            isValid = false;
+            mViewModel.onInputCustomerPhoneError();
+        }
+        if (TextUtils.isEmpty(name)) {
+            isValid = false;
+            mViewModel.onInputCustomerNameError();
+        }
+        return isValid;
     }
 }

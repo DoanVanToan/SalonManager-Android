@@ -2,6 +2,9 @@ package com.framgia.fsalon.screen.bill;
 
 import com.framgia.fsalon.BasePresenter;
 import com.framgia.fsalon.BaseViewModel;
+import com.framgia.fsalon.data.model.BillRequest;
+import com.framgia.fsalon.data.model.BillResponse;
+import com.framgia.fsalon.data.model.BookingOder;
 import com.framgia.fsalon.data.model.Service;
 import com.framgia.fsalon.data.model.Stylist;
 
@@ -28,6 +31,22 @@ interface BillContract {
         void onGetServiceSuccess(List<Service> services);
 
         void onDeleteItemClick(int position);
+
+        void onGetBillSuccess(BillResponse billResponse);
+
+        void onCreateBillClick();
+
+        void onGetBookingSuccess(BookingOder bookingOder);
+
+        void onSearchBookingClick();
+
+        void onInputFormError();
+
+        void onInputCustomerNameError();
+
+        void onInputCustomerPhoneError();
+
+        void onInputPhoneError();
     }
 
     /**
@@ -37,5 +56,11 @@ interface BillContract {
         void getAllServices();
 
         void getAllStylists(int id);
+
+        void createBill(BillRequest billRequest);
+
+        void getBookingByPhone(String phone);
+
+        boolean validateFormInput(Service service, Stylist stylist, String pricce, String qty);
     }
 }

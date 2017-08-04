@@ -7,9 +7,13 @@ import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 
 import com.framgia.fsalon.R;
+import com.framgia.fsalon.data.source.BillRepository;
+import com.framgia.fsalon.data.source.BookingRepository;
 import com.framgia.fsalon.data.source.ServiceRepository;
 import com.framgia.fsalon.data.source.StylistRepository;
 import com.framgia.fsalon.data.source.api.FSalonServiceClient;
+import com.framgia.fsalon.data.source.remote.BillRemoteDataSource;
+import com.framgia.fsalon.data.source.remote.BookingRemoteDataSource;
 import com.framgia.fsalon.data.source.remote.ServiceRemoteDataSource;
 import com.framgia.fsalon.data.source.remote.StylistRemoteDataSource;
 import com.framgia.fsalon.databinding.ActivityBillBinding;
@@ -31,8 +35,10 @@ public class BillActivity extends AppCompatActivity {
         mViewModel = new BillViewModel(this);
         BillContract.Presenter presenter =
             new BillPresenter(mViewModel, new StylistRepository(new StylistRemoteDataSource(
-                FSalonServiceClient.getInstance())), new ServiceRepository(new
-                ServiceRemoteDataSource(FSalonServiceClient.getInstance())));
+                FSalonServiceClient.getInstance())), new ServiceRepository(
+                new ServiceRemoteDataSource(FSalonServiceClient.getInstance())),
+                new BillRepository(new BillRemoteDataSource(FSalonServiceClient.getInstance())), new
+                BookingRepository(new BookingRemoteDataSource(FSalonServiceClient.getInstance())));
         mViewModel.setPresenter(presenter);
         ActivityBillBinding binding =
             DataBindingUtil.setContentView(this, R.layout.activity_bill);
