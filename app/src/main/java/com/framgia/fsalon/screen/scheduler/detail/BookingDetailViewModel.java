@@ -1,35 +1,35 @@
-package com.framgia.fsalon.screen.booking.detail;
+package com.framgia.fsalon.screen.scheduler.detail;
 
 import android.databinding.BaseObservable;
 import android.databinding.Bindable;
-import android.support.v4.app.Fragment;
 import android.support.v4.widget.SwipeRefreshLayout;
-import android.view.View;
+import android.support.v7.app.AppCompatActivity;
 
 import com.framgia.fsalon.BR;
-import com.framgia.fsalon.R;
 import com.framgia.fsalon.data.model.BookingOder;
+import com.framgia.fsalon.utils.navigator.Navigator;
 
 /**
  * Exposes the data to be used in the Detail screen.
  */
-public class DetailViewModel extends BaseObservable implements DetailContract.ViewModel {
-    private DetailContract.Presenter mPresenter;
+public class BookingDetailViewModel extends BaseObservable
+    implements BookingDetailContract.ViewModel {
+    private BookingDetailContract.Presenter mPresenter;
     private BookingOder mBookingOder;
-    private boolean mIsHide;
-    private String mMessage;
-    private Fragment mFragment;
+    private int mId;
     private boolean mIsFinish = true;
+    private Navigator mNavigator;
     private SwipeRefreshLayout.OnRefreshListener mListener =
         new SwipeRefreshLayout.OnRefreshListener() {
             @Override
             public void onRefresh() {
-                mPresenter.onStart();
+                mPresenter.getBookingById(mId);
             }
         };
 
-    public DetailViewModel(Fragment fragment) {
-        mFragment = fragment;
+    public BookingDetailViewModel(AppCompatActivity activity, int id) {
+        mNavigator = new Navigator(activity);
+        mId = id;
     }
 
     public SwipeRefreshLayout.OnRefreshListener getListener() {
@@ -51,16 +51,6 @@ public class DetailViewModel extends BaseObservable implements DetailContract.Vi
     }
 
     @Bindable
-    public boolean isHide() {
-        return mIsHide;
-    }
-
-    public void setHide(boolean hide) {
-        mIsHide = hide;
-        notifyPropertyChanged(BR.hide);
-    }
-
-    @Bindable
     public boolean isFinish() {
         return mIsFinish;
     }
@@ -70,19 +60,10 @@ public class DetailViewModel extends BaseObservable implements DetailContract.Vi
         notifyPropertyChanged(BR.finish);
     }
 
-    @Bindable
-    public String getMessage() {
-        return mMessage;
-    }
-
-    public void setMessage(String message) {
-        mMessage = message;
-        notifyPropertyChanged(BR.message);
-    }
-
     @Override
     public void onStart() {
         mPresenter.onStart();
+        mPresenter.getBookingById(mId);
     }
 
     @Override
@@ -91,30 +72,18 @@ public class DetailViewModel extends BaseObservable implements DetailContract.Vi
     }
 
     @Override
-    public void setPresenter(DetailContract.Presenter presenter) {
+    public void setPresenter(BookingDetailContract.Presenter presenter) {
         mPresenter = presenter;
-    }
-
-    public void onEditClicked(View view) {
-        // TODO: 7/20/2017 switch to edit activity
     }
 
     @Override
     public void onGetBookingError(String msg) {
-        setHide(false);
-        setMessage(msg);
+        mNavigator.showToast(msg);
     }
 
     @Override
     public void onGetBookingSuccess(BookingOder bookingOder) {
         setBookingOder(bookingOder);
-        setHide(true);
-    }
-
-    @Override
-    public void onNotLogin() {
-        setHide(false);
-        setMessage(mFragment.getContext().getString(R.string.msg_not_login));
     }
 
     @Override

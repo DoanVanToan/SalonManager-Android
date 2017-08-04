@@ -1,4 +1,4 @@
-package com.framgia.fsalon.screen.booking.detail;
+package com.framgia.fsalon.screen.scheduler.detail;
 
 import com.framgia.fsalon.BasePresenter;
 import com.framgia.fsalon.BaseViewModel;
@@ -7,14 +7,13 @@ import com.framgia.fsalon.data.model.BookingOder;
 /**
  * This specifies the contract between the view and the presenter.
  */
-interface DetailContract {
+interface BookingDetailContract {
     /**
      * View.
      */
     interface ViewModel extends BaseViewModel<Presenter> {
         void onGetBookingError(String msg);
         void onGetBookingSuccess(BookingOder bookingOder);
-        void onNotLogin();
         void finishRefresh();
     }
 
@@ -22,6 +21,6 @@ interface DetailContract {
      * Presenter.
      */
     interface Presenter extends BasePresenter {
-        void getBookingByPhone();
+        void getBookingById(int id);
     }
 }
