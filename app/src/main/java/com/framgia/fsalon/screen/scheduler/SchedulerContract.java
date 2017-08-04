@@ -11,7 +11,7 @@ import java.util.List;
 /**
  * This specifies the contract between the view and the presenter.
  */
-interface SchedulerContract {
+public interface SchedulerContract {
     /**
      * View.
      */
@@ -22,6 +22,7 @@ interface SchedulerContract {
         void showLoadMore();
         void hideLoadMore();
         void filterRandomCalendar();
+        void onBookingItemClick(int id);
     }
 
     /**
