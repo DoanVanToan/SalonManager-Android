@@ -74,4 +74,10 @@
     <string name="title_add">Add</string>
     <string name="title_create">Create</string>
     <string name="action_x">x</string>
+    <string name="title_sales">Sales</string>
+    <string name="title_customers">Customers</string>
+    <string name="title_bills">Bills</string>
+    <string name="title_bill_total_demo">InCome ToDay</string>
+    <string name="title_bill_statistical">Sales Statistical</string>
+    <string name="title_bill_demo">250.000$</string>
 </resources>

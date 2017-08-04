@@ -13,6 +13,7 @@ import com.framgia.fsalon.BR;
 import com.framgia.fsalon.R;
 import com.framgia.fsalon.screen.customer.CustomerFragment;
 import com.framgia.fsalon.screen.listbill.ListBillFragment;
+import com.framgia.fsalon.screen.report.ReportFragment;
 import com.framgia.fsalon.screen.scheduler.SchedulerFragment;
 
 import java.lang.annotation.Retention;
@@ -49,9 +50,6 @@ public class AdminHomeViewModel extends BaseObservable implements AdminHomeContr
                         setTabPosition(Tab.TAB_RECEIPT);
                         break;
                     case R.id.item_report:
-                        /**
-                         * todo later
-                         */
                         setTabPosition(Tab.TAB_REPORT);
                         break;
                     case R.id.item_customer:
@@ -77,6 +75,7 @@ public class AdminHomeViewModel extends BaseObservable implements AdminHomeContr
         fragments.add(SchedulerFragment.newInstance());
         fragments.add(ListBillFragment.newInstance());
         fragments.add(CustomerFragment.newInstance());
+        fragments.add(ReportFragment.newInstance());
         mAdapter = new HomePagerAdapter(activity.getSupportFragmentManager(), fragments);
         setAdapter(mAdapter);
     }
@@ -141,8 +140,7 @@ public class AdminHomeViewModel extends BaseObservable implements AdminHomeContr
         return mListener;
     }
 
-    public void setListener(
-        BottomNavigationView.OnNavigationItemSelectedListener listener) {
+    public void setListener(BottomNavigationView.OnNavigationItemSelectedListener listener) {
         mListener = listener;
         notifyPropertyChanged(BR.listener);
     }

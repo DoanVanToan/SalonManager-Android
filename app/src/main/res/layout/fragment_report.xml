@@ -1,0 +1,118 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:app="http://schemas.android.com/apk/res-auto"
+        xmlns:bind="http://schemas.android.com/apk/res-auto"
+    >
+
+    <data>
+
+        <import type="com.framgia.fsalon.screen.report.ReportViewModel.TabButton"/>
+
+        <variable
+            name="viewModel"
+            type="com.framgia.fsalon.screen.report.ReportViewModel"
+            />
+
+    </data>
+
+    <android.support.v4.widget.DrawerLayout
+        android:id="@+id/drawer_layout"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        >
+
+        <android.support.design.widget.CoordinatorLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            >
+
+            <android.support.design.widget.AppBarLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                >
+
+                <android.support.v7.widget.Toolbar
+                    android:id="@+id/toolbar"
+                    android:layout_width="match_parent"
+                    android:layout_height="@dimen/dp_50"
+                    android:background="?attr/colorPrimary"
+                    />
+
+            </android.support.design.widget.AppBarLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/dp_5"
+                android:orientation="vertical"
+                app:layout_behavior="@string/appbar_scrolling_view_behavior"
+                >
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="@dimen/dp_30"
+                    android:orientation="horizontal"
+                    android:weightSum="3"
+                    >
+
+                    <Button
+                        style="?android:attr/buttonBarStyle"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_marginEnd="@dimen/dp_2"
+                        android:layout_marginLeft="@dimen/dp_2"
+                        android:layout_marginRight="@dimen/dp_1"
+                        android:layout_marginStart="@dimen/dp_2"
+                        android:layout_weight="1"
+                        android:background="@{viewModel.tabPosition == TabButton.TAB_SALES ? @drawable/bg_report_selected : @drawable/bg_report}"
+                        android:onClick="@{()-> viewModel.onTabFilterClick(TabButton.TAB_SALES)}"
+                        android:text="@string/title_sales"/>
+
+                    <Button
+                        style="?android:attr/buttonBarStyle"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_marginLeft="@dimen/dp_1"
+                        android:layout_marginRight="@dimen/dp_1"
+                        android:layout_weight="1"
+                        android:background="@{viewModel.tabPosition == TabButton.TAB_CUSTOMERS? @drawable/bg_report_selected : @drawable/bg_report}"
+                        android:onClick="@{()-> viewModel.onTabFilterClick(TabButton.TAB_CUSTOMERS)}"
+                        android:text="@string/title_customers"
+                        />
+
+                    <Button
+                        style="?android:attr/buttonBarStyle"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_marginEnd="@dimen/dp_1"
+                        android:layout_marginLeft="@dimen/dp_1"
+                        android:layout_marginRight="@dimen/dp_2"
+                        android:layout_marginStart="@dimen/dp_2"
+                        android:layout_weight="1"
+                        android:background="@{viewModel.tabPosition == TabButton.TAB_BILLS? @drawable/bg_report_selected : @drawable/bg_report}"
+                        android:onClick="@{()-> viewModel.onTabFilterClick(TabButton.TAB_BILLS)}"
+                        android:text="@string/title_bills"
+                        />
+                </LinearLayout>
+
+                <com.framgia.fsalon.wiget.NonSwipeViewPager
+                    android:id="@+id/view_pager"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    bind:tabSelect="@{viewModel.tabPosition}"
+                    bind:viewPagerAdapter="@{viewModel.adapter}"
+                    />
+            </LinearLayout>
+
+        </android.support.design.widget.CoordinatorLayout>
+
+        <android.support.design.widget.NavigationView
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:layout_gravity="start"
+            android:fitsSystemWindows="true"
+            app:headerLayout="@layout/nav_header_main"
+            app:menu="@menu/menu_navigation"
+            />
+    </android.support.v4.widget.DrawerLayout>
+</layout>

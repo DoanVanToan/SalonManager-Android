@@ -14,6 +14,7 @@ import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
@@ -22,13 +23,14 @@ import com.framgia.fsalon.data.model.Service;
 import com.framgia.fsalon.data.model.Stylist;
 import com.framgia.fsalon.screen.booking.BookingViewModel;
 import com.framgia.fsalon.utils.LayoutManager;
+import com.github.mikephil.charting.charts.LineChart;
+import com.github.mikephil.charting.data.LineData;
 import com.toptoche.searchablespinnerlibrary.SearchableSpinner;
 
 /**
  * Created by MyPC on 20/07/2017.
  */
 public class BindingUtils {
-
     @BindingAdapter("errorText")
     public static void setErrorText(TextInputLayout layout, String text) {
         layout.setError(text);
@@ -41,7 +43,7 @@ public class BindingUtils {
                                                  RecyclerView.LayoutManager layoutManager,
                                                  RecyclerView.OnScrollListener listener) {
         recyclerView.setAdapter(adapter);
-        if (recyclerView.getLayoutManager() == null) {
+        if (layoutManager != null) {
             recyclerView.setLayoutManager(layoutManager);
             recyclerView.addItemDecoration(new DeviderItemDecoration(1));
         }
@@ -56,7 +58,7 @@ public class BindingUtils {
     }
 
     @BindingAdapter({"resourceId"})
-    public static void setResourceId(View layout, int resId) {
+    public static void setResourceId(LinearLayout layout, int resId) {
         layout.setBackgroundResource(resId);
     }
 
@@ -127,9 +129,13 @@ public class BindingUtils {
                 .placeholder(R.drawable.ic_no_image)
                 .into(view);
         } else {
-            Glide.with(view.getContext()).load(imageUrl).centerCrop().placeholder(error).into
-                (view);
+            Glide.with(view.getContext()).load(imageUrl).centerCrop().placeholder(error).into(view);
         }
+    }
+
+    @BindingAdapter("lineChartData")
+    public static void setNewDataChart(LineChart lineChart, LineData lineData) {
+        lineChart.setData(lineData);
     }
 
     @InverseBindingAdapter(attribute = "bind:stylist", event = "stylistAttrChanged")
