@@ -72,6 +72,7 @@ public class SchedulerPresenter implements SchedulerContract.Presenter {
 
                 @Override
                 public void onComplete() {
+                    mViewModel.hideLoadMore();
                 }
             });
         mCompositeDisposable.add(disposable);

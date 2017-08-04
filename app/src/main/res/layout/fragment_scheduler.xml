@@ -10,6 +10,8 @@
 
         <import type="com.framgia.fsalon.screen.scheduler.SchedulerViewModel.TabFilter"/>
 
+        <import type="android.view.View"/>
+
         <variable
             name="viewModel"
             type="com.framgia.fsalon.screen.scheduler.SchedulerViewModel"
@@ -31,6 +33,13 @@
             bind:recyclerAdapter="@{viewModel.adapter}"
             bind:scrollListenner="@{viewModel.scrollListenner}"/>
 
+        <ProgressBar
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="bottom|center"
+            android:layout_marginBottom="@dimen/dp_16"
+            android:visibility="@{viewModel.loadingMore?View.VISIBLE:View.GONE}"/>
+
         <LinearLayout
             android:id="@+id/layout_top_sheet"
             android:layout_width="match_parent"
@@ -47,31 +56,6 @@
                 >
 
                 <include
-                    android:id="@+id/text_tomorrow"
-                    layout="@layout/item_top_sheet"
-                    bind:description="@{@string/title_tomorrow}"
-                    bind:tabFilter="@{TabFilter.TAB_TOMORROW}"
-                    bind:topSheetLayout="@{layoutTopSheet}"
-                    bind:viewModel="@{viewModel}"/>
-
-                <include
-                    android:id="@+id/text_calendar"
-                    layout="@layout/item_top_sheet"
-                    bind:description="@{@string/title_calendar}"
-                    bind:tabFilter="@{TabFilter.TAB_CALENDAR}"
-                    bind:topSheetLayout="@{layoutTopSheet}"
-                    bind:viewModel="@{viewModel}"
-                    />
-
-            </LinearLayout>
-
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="@dimen/dp_50"
-                android:layout_marginBottom="@dimen/dp_5"
-                android:orientation="horizontal">
-
-                <include
                     android:id="@+id/text_today"
                     layout="@layout/item_top_sheet"
                     bind:description="@{@string/title_today}"
@@ -85,6 +69,41 @@
                     layout="@layout/item_top_sheet"
                     bind:description="@{@string/title_yesterday}"
                     bind:tabFilter="@{TabFilter.TAB_YESTERDAY}"
+                    bind:topSheetLayout="@{layoutTopSheet}"
+                    bind:viewModel="@{viewModel}"
+                    />
+
+                <include
+                    android:id="@+id/text_tomorrow"
+                    layout="@layout/item_top_sheet"
+                    bind:description="@{@string/title_tomorrow}"
+                    bind:tabFilter="@{TabFilter.TAB_TOMORROW}"
+                    bind:topSheetLayout="@{layoutTopSheet}"
+                    bind:viewModel="@{viewModel}"/>
+
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/dp_50"
+                android:layout_marginBottom="@dimen/dp_5"
+                android:orientation="horizontal">
+
+                <include
+                    android:id="@+id/text_calendar"
+                    layout="@layout/item_top_sheet"
+                    bind:description="@{@string/title_space_time}"
+                    bind:tabFilter="@{TabFilter.TAB_SPACE_TIME}"
+                    bind:topSheetLayout="@{layoutTopSheet}"
+                    bind:viewModel="@{viewModel}"
+                    />
+
+                <include
+                    android:id="@+id/text_calendar"
+                    layout="@layout/item_top_sheet"
+                    bind:description="@{@string/title_select_date}"
+                    bind:tabFilter="@{TabFilter.TAB_SELECT_DATE}"
                     bind:topSheetLayout="@{layoutTopSheet}"
                     bind:viewModel="@{viewModel}"
                     />
@@ -105,7 +124,7 @@
                     android:layout_marginLeft="@dimen/dp_20"
                     android:layout_marginStart="@dimen/dp_20"
                     android:layout_weight="1"
-                    android:text="@string/action_pick_date"
+                    android:text="@{viewModel.titleTopSheet}"
                     android:textColor="@color/color_white"
                     android:textSize="@dimen/sp_20"
                     android:textStyle="bold"/>
