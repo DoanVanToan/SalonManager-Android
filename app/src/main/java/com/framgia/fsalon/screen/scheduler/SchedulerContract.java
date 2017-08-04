@@ -21,7 +21,6 @@ public interface SchedulerContract {
         void onSchedulerFail();
         void showLoadMore();
         void hideLoadMore();
-        void filterRandomCalendar();
         void onBookingItemClick(int id);
     }
 

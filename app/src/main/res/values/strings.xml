@@ -50,7 +50,6 @@
     <string name="msg_success_booking">You have successfully booked with these informations</string>
     <string name="action_ok">OK</string>
     <string name="title_yesterday">Yesterday</string>
-    <string name="title_calendar">Calendar</string>
     <string name="title_call">Call</string>
     <string name="title_message">Message</string>
     <string name="title_next_service">Next service:</string>
@@ -82,4 +81,9 @@
     <string name="title_bill_demo">250.000$</string>
     <string name="msg_error_form">Please enter full information in the form at the side</string>
     <string name="msg_error_phone">Please enter the phone number</string>
+    <string name="title_space_time">Space time</string>
+    <string name="title_end_date">End date</string>
+    <string name="title_select_date">Select date</string>
+    <string name="title_select_start_day">Start date</string>
+    <string name="title_select_end_day">End date</string>
 </resources>

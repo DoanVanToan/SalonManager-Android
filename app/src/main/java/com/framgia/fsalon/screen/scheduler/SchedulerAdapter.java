@@ -31,7 +31,6 @@ public class SchedulerAdapter extends SectioningAdapter {
 
     public void updateData(List<ManageBookingResponse> sections) {
         if (sections == null) return;
-        mSections.clear();
         mSections.addAll(sections);
         notifyAllSectionsDataSetChanged();
     }
