@@ -28,14 +28,11 @@ public class Constant {
         public static final String NON_FILTER = "null";
         public static final int OUT_OF_INDEX = -1;
         public static final int FIRST_PAGE = 1;
-        public static final String ID = "id";
         public static final String CUSTOMER_ID = "customer_id";
         public static final String CUSTOMER_NAME = "customer_name";
         public static final String ORDER_BOOKING_ID = "order_booking_id";
         public static final String STATUS = "status";
         public static final String GRAND_TOTAL = "grand_total";
-        public static final String CREATED_AT = "created_at";
-        public static final String UPDATED_AT = "updated_at";
         public static final String BILL_ITEMS = "bill_items";
     }
 

@@ -11,7 +11,7 @@ public class FSalonServiceClient extends ServiceClient {
 
     public static void initialize(@NonNull Application application) {
         sMFDMSApiInstance = ServiceClient.createService(application, Constant.END_POINT_URL,
-            FSalonApi.class);
+            FSalonApi.class, new FSalonInterceptor());
     }
 
     public static FSalonApi getInstance() {
