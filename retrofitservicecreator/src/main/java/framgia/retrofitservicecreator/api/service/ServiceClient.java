@@ -21,7 +21,12 @@ public class ServiceClient {
     private static final int CONNECTION_TIMEOUT = 60;
 
     public static <T> T createService(Application application, String endPoint, Class<T> serviceClass) {
-        return createService(application, endPoint, serviceClass, getGsonConfig(), null);
+        return createService(application, endPoint, serviceClass, getGsonConfig());
+    }
+
+    public static <T> T createService(Application application, String endPoint, Class<T> serviceClass,
+                                      Interceptor interceptor) {
+        return createService(application, endPoint, serviceClass, getGsonConfig(), interceptor);
     }
 
     static <T> T createService(Application application, String endPoint, Class<T> serviceClass,

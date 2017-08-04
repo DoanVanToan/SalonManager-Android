@@ -1,5 +1,7 @@
 package com.framgia.fsalon.data.model;
 
+import com.google.gson.Gson;
+
 /**
  * Created by MyPC on 02/08/2017.
  */
@@ -39,6 +41,11 @@ public class BillItemRequest extends BillModel.BillItem {
     public float getRowToalBill() {
         mRowTotal = mPrice * mQty;
         return mRowTotal;
+    }
+
+    @Override
+    public String toString() {
+        return new Gson().toJson(this);
     }
 
     /**

@@ -1,5 +1,6 @@
 package com.framgia.fsalon.data.source.api;
 
+import com.framgia.fsalon.data.model.BillResponse;
 import com.framgia.fsalon.data.model.BookingOder;
 import com.framgia.fsalon.data.model.BookingResponse;
 import com.framgia.fsalon.data.model.ManageBookingResponse;
@@ -46,5 +47,7 @@ public interface FSalonApi {
     Observable<Respone<BookingOder>> getBookingByPhone(@Query("phone") String phone);
     @GET("api/v0/get_booking_by_id/{id}")
     Observable<Respone<BookingOder>> getBookingById(@Path("id") int id);
+    @POST("api/v0/bill")
+    Observable<Respone<BillResponse>> createBill(@QueryMap Map<String, String> params);
 }
 

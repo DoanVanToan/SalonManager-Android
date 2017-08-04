@@ -29,7 +29,11 @@ public class Utils {
         if (listRespone == null) {
             return Observable.error(new NullPointerException());
         } else if (listRespone.isError()) {
-            return Observable.error(new NullPointerException("ERROR" + listRespone.getStatus()));
+            String msgError = "";
+            for (String msg : listRespone.getMessage()) {
+                msgError += msg + " ";
+            }
+            return Observable.error(new Throwable("ERROR: " + msgError));
         } else {
             return Observable.just(listRespone.getData());
         }
