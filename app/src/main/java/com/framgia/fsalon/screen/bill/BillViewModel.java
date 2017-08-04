@@ -11,18 +11,23 @@ import com.framgia.fsalon.BR;
 import com.framgia.fsalon.R;
 import com.framgia.fsalon.data.model.BillItemRequest;
 import com.framgia.fsalon.data.model.BillRequest;
+import com.framgia.fsalon.data.model.BillResponse;
+import com.framgia.fsalon.data.model.BookingOder;
 import com.framgia.fsalon.data.model.Service;
 import com.framgia.fsalon.data.model.Stylist;
+import com.framgia.fsalon.utils.navigator.Navigator;
 
 import java.util.ArrayList;
 import java.util.List;
+
+import static com.framgia.fsalon.utils.Constant.Status.STATUS_PENDING;
 
 /**
  * Exposes the data to be used in the BillItemRequest screen.
  */
 public class BillViewModel extends BaseObservable implements BillContract.ViewModel {
     private BillContract.Presenter mPresenter;
-    private BillRequest mBillRequest;
+    private BillRequest mBillRequest = new BillRequest();
     private ArrayAdapter<Stylist> mStylistAdapter;
     private ArrayAdapter<Service> mServiceAdapter;
     private BillAdapter mAdapter;
@@ -32,11 +37,19 @@ public class BillViewModel extends BaseObservable implements BillContract.ViewMo
     private String mQty;
     private Activity mActivity;
     private Context mContext;
+    private String mPhone;
+    private float mTotal;
+    private Navigator mNavigator;
+    private String mFormError;
+    private String mCustomerNameError;
+    private String mCustomerPhoneError;
+    private String mPhoneError;
 
     public BillViewModel(Activity activity) {
         mActivity = activity;
         mContext = activity.getApplicationContext();
         mAdapter = new BillAdapter(mContext, new ArrayList<BillItemRequest>(), this);
+        mNavigator = new Navigator(activity);
     }
 
     @Override
@@ -56,8 +69,7 @@ public class BillViewModel extends BaseObservable implements BillContract.ViewMo
 
     @Override
     public void onAddBillClick() {
-        if (mService == null || mStylist == null || TextUtils.isEmpty(mPrice) || TextUtils
-            .isEmpty(mQty)) {
+        if (!mPresenter.validateFormInput(mService, mStylist, mPrice, mQty)) {
             return;
         }
         BillItemRequest bill = new BillItemRequest.Builder()
@@ -69,6 +81,7 @@ public class BillViewModel extends BaseObservable implements BillContract.ViewMo
             .setServiceName(mService.getName())
             .create();
         mAdapter.onAddItem(bill);
+        setTotal(mAdapter.getTotalPrice());
     }
 
     @Override
@@ -78,7 +91,7 @@ public class BillViewModel extends BaseObservable implements BillContract.ViewMo
 
     @Override
     public void onGetStylistSuccess(List<Stylist> stylists) {
-        setStylistAdapter(new ArrayAdapter<>(mContext, R.layout.item_spinner, stylists));
+        setStylistAdapter(new ArrayAdapter<>(mContext, R.layout.item_spinner_small, stylists));
     }
 
     @Override
@@ -88,17 +101,64 @@ public class BillViewModel extends BaseObservable implements BillContract.ViewMo
 
     @Override
     public void onError(String message) {
-        // TODO: 02/08/2017  
+        mNavigator.showToast(message);
     }
 
     @Override
     public void onGetServiceSuccess(List<Service> services) {
-        setServiceAdapter(new ArrayAdapter<>(mContext, R.layout.item_spinner, services));
+        setServiceAdapter(new ArrayAdapter<>(mContext, R.layout.item_spinner_small, services));
     }
 
     @Override
     public void onDeleteItemClick(int position) {
         mAdapter.onDeleteItem(position);
+        setTotal(mAdapter.getTotalPrice());
+    }
+
+    @Override
+    public void onGetBillSuccess(BillResponse billResponse) {
+        mNavigator.finishActivity();
+    }
+
+    @Override
+    public void onCreateBillClick() {
+        mBillRequest.setBillItems(mAdapter.getData());
+        mBillRequest.setGrandTotal(mTotal);
+        mBillRequest.setStatus(STATUS_PENDING);
+        mPresenter.createBill(mBillRequest);
+    }
+
+    @Override
+    public void onGetBookingSuccess(BookingOder bookingOder) {
+        mBillRequest.setCustomerName(bookingOder.getName());
+        mBillRequest.setCustomerId(bookingOder.getUserId());
+        mBillRequest.setOrderBookingId(bookingOder.getId());
+        mBillRequest.setPhone(bookingOder.getPhone());
+    }
+
+    @Override
+    public void onSearchBookingClick() {
+        mPresenter.getBookingByPhone(mPhone);
+    }
+
+    @Override
+    public void onInputFormError() {
+        setFormError(mNavigator.getStringById(R.string.msg_error_form));
+    }
+
+    @Override
+    public void onInputCustomerNameError() {
+        setCustomerNameError(mNavigator.getStringById(R.string.msg_error_empty));
+    }
+
+    @Override
+    public void onInputCustomerPhoneError() {
+        setCustomerPhoneError(mNavigator.getStringById(R.string.msg_error_empty));
+    }
+
+    @Override
+    public void onInputPhoneError() {
+        setPhoneError(mNavigator.getStringById(R.string.msg_error_phone));
     }
 
     public void onGetPrice(String price) {
@@ -186,5 +246,65 @@ public class BillViewModel extends BaseObservable implements BillContract.ViewMo
     public void setQty(String qty) {
         mQty = qty;
         notifyPropertyChanged(BR.qty);
+    }
+
+    @Bindable
+    public String getPhone() {
+        return mPhone;
+    }
+
+    public void setPhone(String phone) {
+        mPhone = phone;
+        notifyPropertyChanged(BR.phone);
+    }
+
+    @Bindable
+    public float getTotal() {
+        return mTotal;
+    }
+
+    public void setTotal(float total) {
+        mTotal = total;
+        notifyPropertyChanged(BR.total);
+    }
+
+    @Bindable
+    public String getFormError() {
+        return mFormError;
+    }
+
+    public void setFormError(String formError) {
+        mFormError = formError;
+        notifyPropertyChanged(BR.formError);
+    }
+
+    @Bindable
+    public String getCustomerNameError() {
+        return mCustomerNameError;
+    }
+
+    public void setCustomerNameError(String customerNameError) {
+        mCustomerNameError = customerNameError;
+        notifyPropertyChanged(BR.customerNameError);
+    }
+
+    @Bindable
+    public String getCustomerPhoneError() {
+        return mCustomerPhoneError;
+    }
+
+    public void setCustomerPhoneError(String customerPhoneError) {
+        mCustomerPhoneError = customerPhoneError;
+        notifyPropertyChanged(BR.customerPhoneError);
+    }
+
+    @Bindable
+    public String getPhoneError() {
+        return mPhoneError;
+    }
+
+    public void setPhoneError(String phoneError) {
+        mPhoneError = phoneError;
+        notifyPropertyChanged(BR.phoneError);
     }
 }

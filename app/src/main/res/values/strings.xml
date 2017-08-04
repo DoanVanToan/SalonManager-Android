@@ -80,4 +80,6 @@
     <string name="title_bill_total_demo">InCome ToDay</string>
     <string name="title_bill_statistical">Sales Statistical</string>
     <string name="title_bill_demo">250.000$</string>
+    <string name="msg_error_form">Please enter full information in the form at the side</string>
+    <string name="msg_error_phone">Please enter the phone number</string>
 </resources>
