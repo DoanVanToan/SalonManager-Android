@@ -15,9 +15,11 @@ import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.Spinner;
 import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
+import com.framgia.fsalon.FSalonApplication;
 import com.framgia.fsalon.R;
 import com.framgia.fsalon.data.model.Service;
 import com.framgia.fsalon.data.model.Stylist;
@@ -192,5 +194,16 @@ public class BindingUtils {
         view.setAdapter(adapter);
         view.setLayoutManager(factory.create(view));
         view.addItemDecoration(new DeviderItemDecoration(1));
+    }
+
+    @BindingAdapter({"bind:array", "listener"})
+    public static void setupSpinner(Spinner spinner, final String[] stringArray, Spinner
+        .OnItemSelectedListener listener) {
+        ArrayAdapter<String> adapter =
+            new ArrayAdapter<>(FSalonApplication.getInstant(), android.R.layout
+                .simple_spinner_item, stringArray);
+        adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        spinner.setAdapter(adapter);
+        if (listener != null) spinner.setOnItemSelectedListener(listener);
     }
 }

@@ -6,6 +6,8 @@ import android.databinding.Bindable;
 import android.support.annotation.IntDef;
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
+import android.widget.AdapterView;
+import android.widget.Spinner;
 
 import com.framgia.fsalon.BR;
 import com.framgia.fsalon.FSalonApplication;
@@ -24,6 +26,9 @@ import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.List;
 
+import static com.framgia.fsalon.data.model.BookingOder.STATUS_CANCELED;
+import static com.framgia.fsalon.data.model.BookingOder.STATUS_FINISHED;
+import static com.framgia.fsalon.data.model.BookingOder.STATUS_PENDING;
 import static com.framgia.fsalon.data.source.remote.ManageBookingRemoteDataSource.FILTER_DAY;
 import static com.framgia.fsalon.data.source.remote.ManageBookingRemoteDataSource.FILTER_SPACE;
 import static com.framgia.fsalon.screen.scheduler.SchedulerViewModel.TabFilter.TAB_END_DATE;
@@ -49,11 +54,14 @@ public class SchedulerViewModel extends BaseObservable
     private boolean mIsLoadingMore = false;
     private Calendar mCalendar;
     private FragmentManager mFragmentManager;
-    private int mStartDate = OUT_OF_INDEX;
+    private int mStartDate = Utils.createTimeStamp(SchedulerViewModel.TabFilter.TAB_TODAY);
     private int mEndDate = OUT_OF_INDEX;
     private DatePickerDialog mDatePickerDialog;
     private int mTypeSelectDate;
     private String mTitleTopSheet;
+    private String mFilterChoice = FILTER_DAY;
+    private String mSpaceTime = "";
+    private int mSatus;
     private RecyclerView.OnScrollListener mScrollListenner = new RecyclerView.OnScrollListener() {
         @Override
         public void onScrolled(RecyclerView recyclerView, int dx, int dy) {
@@ -71,6 +79,36 @@ public class SchedulerViewModel extends BaseObservable
             }
         }
     };
+    private Spinner.OnItemSelectedListener mSpinnerSelectListener =
+        new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
+                mAdapter.clear();
+                switch (i) {
+                    case STATUS_CANCELED:
+                        mSatus = STATUS_CANCELED;
+                        mPresenter.getSchedulers(mFilterChoice, FIRST_PAGE, OUT_OF_INDEX,
+                            STATUS_CANCELED, mStartDate, mEndDate);
+                        break;
+                    case STATUS_PENDING:
+                        mSatus = STATUS_PENDING;
+                        mPresenter.getSchedulers(mFilterChoice, FIRST_PAGE, OUT_OF_INDEX,
+                            STATUS_PENDING, mStartDate, mEndDate);
+                        break;
+                    case STATUS_FINISHED:
+                        mSatus = STATUS_FINISHED;
+                        mPresenter.getSchedulers(mFilterChoice, FIRST_PAGE, OUT_OF_INDEX,
+                            STATUS_FINISHED, mStartDate, mEndDate);
+                        break;
+                    default:
+                        break;
+                }
+            }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> adapterView) {
+            }
+        };
 
     public SchedulerViewModel(SchedulerFragment fragment, FragmentManager fragmentManager) {
         setTabFilter(TAB_TODAY);
@@ -120,31 +158,43 @@ public class SchedulerViewModel extends BaseObservable
         mAdapter.clear();
         switch (tab) {
             case TAB_TODAY:
+                mFilterChoice = FILTER_DAY;
+                mEndDate = OUT_OF_INDEX;
+                mStartDate = Utils.createTimeStamp(tab);
                 setTitleTopSheet(FSalonApplication.getInstant()
                     .getResources().getString(R.string.title_today));
                 mPresenter
-                    .getSchedulers(FILTER_DAY, FIRST_PAGE, OUT_OF_INDEX,
-                        OUT_OF_INDEX, Utils.createTimeStamp(tab), OUT_OF_INDEX);
+                    .getSchedulers(mFilterChoice, FIRST_PAGE, OUT_OF_INDEX,
+                        mSatus, mStartDate, OUT_OF_INDEX);
                 break;
             case TAB_TOMORROW:
+                mEndDate = OUT_OF_INDEX;
+                mFilterChoice = FILTER_DAY;
+                mStartDate = Utils.createTimeStamp(tab);
                 setTitleTopSheet(FSalonApplication.getInstant()
                     .getResources().getString(R.string.title_tomorrow));
                 mPresenter
-                    .getSchedulers(FILTER_DAY, FIRST_PAGE, OUT_OF_INDEX,
-                        OUT_OF_INDEX, Utils.createTimeStamp(tab), OUT_OF_INDEX);
+                    .getSchedulers(mFilterChoice, FIRST_PAGE, OUT_OF_INDEX,
+                        mSatus, mStartDate, OUT_OF_INDEX);
                 break;
             case TAB_YESTERDAY:
+                mEndDate = OUT_OF_INDEX;
+                mFilterChoice = FILTER_DAY;
+                mStartDate = Utils.createTimeStamp(tab);
                 setTitleTopSheet(FSalonApplication.getInstant()
                     .getResources().getString(R.string.title_yesterday));
                 mPresenter
-                    .getSchedulers(FILTER_DAY, FIRST_PAGE, OUT_OF_INDEX,
-                        OUT_OF_INDEX, Utils.createTimeStamp(tab), OUT_OF_INDEX);
+                    .getSchedulers(mFilterChoice, FIRST_PAGE, OUT_OF_INDEX,
+                        mSatus, mStartDate, OUT_OF_INDEX);
                 break;
             case TAB_SELECT_DATE:
+                mEndDate = OUT_OF_INDEX;
+                mFilterChoice = FILTER_DAY;
                 mTypeSelectDate = TAB_SELECT_DATE;
                 showDatePickerDialog();
                 break;
             case TAB_SPACE_TIME:
+                mFilterChoice = FILTER_SPACE;
                 mTypeSelectDate = TAB_START_DATE;
                 showDatePickerDialog();
                 break;
@@ -172,6 +222,11 @@ public class SchedulerViewModel extends BaseObservable
     @Override
     public void hideLoadMore() {
         setLoadingMore(false);
+    }
+
+    @Override
+    public void onClickTopSheet(View topSheet) {
+        TopSheetBehavior.from(topSheet).setState(TopSheetBehavior.STATE_COLLAPSED);
     }
 
     @Override
@@ -224,11 +279,13 @@ public class SchedulerViewModel extends BaseObservable
         notifyPropertyChanged(BR.titleTopSheet);
     }
 
+    public Spinner.OnItemSelectedListener getSpinnerSelectListener() {
+        return mSpinnerSelectListener;
+    }
+
     @Override
     public void onDateSet(DatePickerDialog view, int year, int monthOfYear, int dayOfMonth) {
-        if (mDatePickerDialog != null) {
-            mDatePickerDialog.dismiss();
-        }
+        if (mDatePickerDialog != null) mDatePickerDialog.dismiss();
         mCalendar.set(Calendar.YEAR, year);
         mCalendar.set(Calendar.MONTH, monthOfYear);
         mCalendar.set(Calendar.DAY_OF_MONTH, dayOfMonth);
@@ -236,34 +293,29 @@ public class SchedulerViewModel extends BaseObservable
         mCalendar.set(Calendar.MINUTE, 0);
         mCalendar.set(Calendar.SECOND, 0);
         mCalendar.set(Calendar.MILLISECOND, 0);
-        String startDate = "", endDate = "";
         switch (mTypeSelectDate) {
             case TAB_START_DATE:
                 mStartDate = (int) (mCalendar.getTimeInMillis() / 1000);
                 mTypeSelectDate = TAB_END_DATE;
                 mDatePickerDialog = DatePickerDialog.newInstance(this, year,
                     monthOfYear, dayOfMonth);
-                startDate = mCalendar.getTime().toString();
+                mSpaceTime = mSpaceTime.concat(Utils.convertDate(mCalendar.getTime()));
                 showDatePickerDialog();
                 return;
             case TAB_SELECT_DATE:
-                setTitleTopSheet(mCalendar.getTime().toString());
+                setTitleTopSheet(Utils.convertDate(mCalendar.getTime()));
                 mStartDate = (int) (mCalendar.getTimeInMillis() / 1000);
                 mPresenter
-                    .getSchedulers(FILTER_DAY, FIRST_PAGE, OUT_OF_INDEX, OUT_OF_INDEX, mStartDate,
-                        mEndDate);
-                mStartDate = OUT_OF_INDEX;
+                    .getSchedulers(mFilterChoice, FIRST_PAGE, OUT_OF_INDEX, mSatus,
+                        mStartDate, mEndDate);
                 break;
             case TAB_END_DATE:
                 mEndDate = (int) (mCalendar.getTimeInMillis() / 1000);
                 mPresenter
-                    .getSchedulers(FILTER_SPACE, FIRST_PAGE, OUT_OF_INDEX, OUT_OF_INDEX, mStartDate,
-                        mEndDate);
-                mEndDate = OUT_OF_INDEX;
-                mStartDate = OUT_OF_INDEX;
-                endDate = mCalendar.getTime().toString();
-                setTitleTopSheet("From " + startDate + "to " + endDate);
-                break;
+                    .getSchedulers(mFilterChoice, FIRST_PAGE, OUT_OF_INDEX, mSatus,
+                        mStartDate, mEndDate);
+                mSpaceTime = mSpaceTime.concat(" - " + Utils.convertDate(mCalendar.getTime()));
+                setTitleTopSheet(mSpaceTime);
             default:
                 break;
         }
