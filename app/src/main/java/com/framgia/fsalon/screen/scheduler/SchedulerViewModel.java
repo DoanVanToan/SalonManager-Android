@@ -11,6 +11,7 @@ import android.view.View;
 import com.framgia.fsalon.BR;
 import com.framgia.fsalon.R;
 import com.framgia.fsalon.data.model.ManageBookingResponse;
+import com.framgia.fsalon.screen.scheduler.detail.BookingDetailActivity;
 import com.framgia.fsalon.utils.Utils;
 import com.framgia.fsalon.utils.navigator.Navigator;
 import com.framgia.fsalon.wiget.TopSheetBehavior;
@@ -72,7 +73,7 @@ public class SchedulerViewModel extends BaseObservable
         mNavigator = new Navigator(fragment);
         mFragmentManager = fragmentManager;
         setLayoutManager(new StickyHeaderLayoutManager());
-        setAdapter(new SchedulerAdapter(new ArrayList<ManageBookingResponse>()));
+        setAdapter(new SchedulerAdapter(this, new ArrayList<ManageBookingResponse>()));
     }
 
     @Override
@@ -157,6 +158,11 @@ public class SchedulerViewModel extends BaseObservable
             DatePickerDialog.newInstance(this, mCalendar.get(Calendar.YEAR),
                 mCalendar.get(Calendar.MONTH), mCalendar.get(Calendar.DAY_OF_MONTH));
         datePicker.show(mFragmentManager, "");
+    }
+
+    @Override
+    public void onBookingItemClick(int id) {
+        mNavigator.startActivity(BookingDetailActivity.getInstance(mNavigator.getContext(), id));
     }
 
     @Bindable

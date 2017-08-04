@@ -21,9 +21,12 @@ import java.util.List;
  */
 public class SchedulerAdapter extends SectioningAdapter {
     private List<ManageBookingResponse> mSections = new ArrayList<>();
+    private SchedulerContract.ViewModel mViewModel;
 
-    public SchedulerAdapter(List<ManageBookingResponse> sections) {
+    public SchedulerAdapter(SchedulerContract.ViewModel viewModel, List<ManageBookingResponse>
+        sections) {
         mSections = sections;
+        mViewModel = viewModel;
     }
 
     public void updateData(List<ManageBookingResponse> sections) {
@@ -43,6 +46,7 @@ public class SchedulerAdapter extends SectioningAdapter {
                                                  int itemUserType) {
         ItemContentSchedulerBinding binding = DataBindingUtil.inflate(LayoutInflater.from(parent
             .getContext()), R.layout.item_content_scheduler, parent, false);
+        binding.setViewModel(mViewModel);
         return new ItemViewHolder(binding);
     }
 

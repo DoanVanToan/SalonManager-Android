@@ -18,7 +18,7 @@ import com.framgia.fsalon.utils.Constant;
  */
 public class BookingDetailActivity extends AppCompatActivity {
     private BookingDetailContract.ViewModel mViewModel;
-    private static final int TEST_ID = 1;
+    private static final int DEFAULT_ID = 0;
 
     public static Intent getInstance(Context context, int id) {
         Intent intent = new Intent(context, BookingDetailActivity.class);
@@ -31,7 +31,8 @@ public class BookingDetailActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        mViewModel = new BookingDetailViewModel(this, TEST_ID);
+        mViewModel = new BookingDetailViewModel(this, getIntent().getIntExtra(Constant
+            .BOOKING_ID, DEFAULT_ID));
         BookingDetailContract.Presenter presenter =
             new BookingDetailPresenter(mViewModel, new BookingRepository(
                 new BookingRemoteDataSource(FSalonServiceClient.getInstance())));
