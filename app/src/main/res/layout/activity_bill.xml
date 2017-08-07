@@ -54,9 +54,7 @@
                         <LinearLayout
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            android:layout_marginEnd="@dimen/dp_10"
                             android:layout_marginLeft="@dimen/dp_10"
-                            android:layout_marginRight="@dimen/dp_10"
                             android:layout_marginStart="@dimen/dp_10"
                             android:layout_marginTop="@dimen/dp_5"
                             android:orientation="horizontal">
@@ -89,6 +87,8 @@
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
                                 android:layout_gravity="center_vertical"
+                                android:layout_marginEnd="@dimen/dp_10"
+                                android:layout_marginRight="@dimen/dp_10"
                                 android:contentDescription="@null"
                                 android:onClick="@{()->viewModel.onFilterPhone()}"
                                 app:srcCompat="@drawable/ic_search_24dp"

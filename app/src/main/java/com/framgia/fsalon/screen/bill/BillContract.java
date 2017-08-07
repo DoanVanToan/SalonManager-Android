@@ -8,6 +8,7 @@ import com.framgia.fsalon.data.model.BookingOder;
 import com.framgia.fsalon.data.model.Salon;
 import com.framgia.fsalon.data.model.Service;
 import com.framgia.fsalon.data.model.Stylist;
+import com.framgia.fsalon.data.model.User;
 
 import java.util.List;
 
@@ -34,6 +35,9 @@ interface BillContract {
         void onInputFormError();
         void onInputCustomerNameError();
         void onInputCustomerPhoneError();
+        void getCustomerSuccessfull(User user);
+        void onHideCustomerPhoneError();
+        void onHideCustomer();
     }
 
     /**
@@ -47,5 +51,6 @@ interface BillContract {
         boolean validateFormInput(Service service, Stylist stylist, Salon salon, String pricce,
                                   String qty, String phoneCustomer, String nameCustomer);
         void getAllSalon();
+        void getCustomerByPhone(String phone);
     }
 }

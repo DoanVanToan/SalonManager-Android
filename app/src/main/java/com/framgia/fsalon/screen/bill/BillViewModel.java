@@ -15,6 +15,7 @@ import com.framgia.fsalon.data.model.BookingOder;
 import com.framgia.fsalon.data.model.Salon;
 import com.framgia.fsalon.data.model.Service;
 import com.framgia.fsalon.data.model.Stylist;
+import com.framgia.fsalon.data.model.User;
 import com.framgia.fsalon.utils.navigator.Navigator;
 
 import java.util.ArrayList;
@@ -161,6 +162,24 @@ public class BillViewModel extends BaseObservable implements BillContract.ViewMo
     @Override
     public void onInputCustomerPhoneError() {
         setCustomerPhoneError(mNavigator.getStringById(R.string.msg_error_empty));
+    }
+
+    @Override
+    public void getCustomerSuccessfull(User user) {
+        mBillRequest.setCustomerName(user.getName());
+        mBillRequest.setCustomerId(user.getId());
+        mBillRequest.setPhone(user.getPhone());
+    }
+
+    @Override
+    public void onHideCustomerPhoneError() {
+        setCustomerPhoneError(null);
+    }
+
+    @Override
+    public void onHideCustomer() {
+        mBillRequest.setCustomerName(null);
+        mBillRequest.setOrderBookingId(-1);
     }
 
     public void onGetPrice(String price) {

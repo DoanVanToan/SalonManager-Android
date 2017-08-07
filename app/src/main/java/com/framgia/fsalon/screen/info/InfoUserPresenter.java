@@ -75,7 +75,7 @@ public class InfoUserPresenter implements InfoUserContract.Presenter {
             }).subscribeWith(new DisposableObserver<List<String>>() {
                 @Override
                 public void onNext(@NonNull List<String> strings) {
-                    mRepository.clearUser();
+                    mRepository.clearCurrentUser();
                     mViewModel.onLogoutSuccess();
                 }
 

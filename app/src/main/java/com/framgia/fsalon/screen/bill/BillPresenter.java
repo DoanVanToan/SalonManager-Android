@@ -8,11 +8,13 @@ import com.framgia.fsalon.data.model.BookingOder;
 import com.framgia.fsalon.data.model.Salon;
 import com.framgia.fsalon.data.model.Service;
 import com.framgia.fsalon.data.model.Stylist;
+import com.framgia.fsalon.data.model.User;
 import com.framgia.fsalon.data.source.BillRepository;
 import com.framgia.fsalon.data.source.BookingRepository;
 import com.framgia.fsalon.data.source.SalonRepository;
 import com.framgia.fsalon.data.source.ServiceRepository;
 import com.framgia.fsalon.data.source.StylistRepository;
+import com.framgia.fsalon.data.source.UserRepository;
 
 import java.util.List;
 
@@ -38,16 +40,19 @@ public class BillPresenter implements BillContract.Presenter {
     private BillRepository mBillRepository;
     private BookingRepository mBookingRepository;
     private SalonRepository mSalonRepository;
+    private UserRepository mUserRepository;
 
     public BillPresenter(BillContract.ViewModel viewModel, StylistRepository stylistRepository,
                          ServiceRepository serviceRepository, BillRepository billRepository,
-                         BookingRepository bookingRepository, SalonRepository salonRepository) {
+                         BookingRepository bookingRepository, SalonRepository salonRepository,
+                         UserRepository userRepository) {
         mViewModel = viewModel;
         mStylistRepository = stylistRepository;
         mServiceRepository = serviceRepository;
         mBillRepository = billRepository;
         mBookingRepository = bookingRepository;
         mSalonRepository = salonRepository;
+        mUserRepository = userRepository;
         getAllServices();
         getAllStylists(DEFAULT_SALON_ID);
         getAllSalon();
@@ -156,7 +161,7 @@ public class BillPresenter implements BillContract.Presenter {
     }
 
     @Override
-    public void getBookingByPhone(String phone) {
+    public void getBookingByPhone(final String phone) {
         if (!validatePhoneInput(phone)) {
             return;
         }
@@ -172,12 +177,13 @@ public class BillPresenter implements BillContract.Presenter {
                 @Override
                 public void onNext(@NonNull BookingOder bookingOder) {
                     mViewModel.onGetBookingSuccess(bookingOder);
+                    mViewModel.onHideCustomerPhoneError();
                 }
 
                 @Override
                 public void onError(@NonNull Throwable e) {
                     mViewModel.hideProgressbar();
-                    mViewModel.onError(e.getMessage());
+                    getCustomerByPhone(phone);
                 }
 
                 @Override
@@ -228,8 +234,33 @@ public class BillPresenter implements BillContract.Presenter {
 
                 @Override
                 public void onError(@NonNull Throwable e) {
-                    mViewModel.hideProgressbar();
                     mViewModel.onError(e.getMessage());
+                }
+
+                @Override
+                public void onComplete() {
+                    mViewModel.hideProgressbar();
+                }
+            });
+        mCompositeDisposable.add(disposable);
+    }
+
+    @Override
+    public void getCustomerByPhone(String phone) {
+        Disposable disposable = mUserRepository.getCustomerByPhone(phone)
+            .subscribeOn(Schedulers.io())
+            .observeOn(AndroidSchedulers.mainThread())
+            .subscribeWith(new DisposableObserver<User>() {
+                @Override
+                public void onNext(@NonNull User user) {
+                    mViewModel.getCustomerSuccessfull(user);
+                }
+
+                @Override
+                public void onError(@NonNull Throwable e) {
+                    mViewModel.onError(e.getMessage());
+                    mViewModel.hideProgressbar();
+                    mViewModel.onHideCustomer();
                 }
 
                 @Override
