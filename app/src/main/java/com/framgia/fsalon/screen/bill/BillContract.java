@@ -30,11 +30,10 @@ interface BillContract {
         void onGetBillSuccess(BillResponse billResponse);
         void onCreateBillClick();
         void onGetBookingSuccess(BookingOder bookingOder);
-        void onSearchBookingClick();
+        void onFilterPhone();
         void onInputFormError();
         void onInputCustomerNameError();
         void onInputCustomerPhoneError();
-        void onInputPhoneError();
     }
 
     /**
@@ -45,7 +44,8 @@ interface BillContract {
         void getAllStylists(int id);
         void createBill(BillRequest billRequest);
         void getBookingByPhone(String phone);
-        boolean validateFormInput(Service service, Stylist stylist, String pricce, String qty);
+        boolean validateFormInput(Service service, Stylist stylist, Salon salon, String pricce,
+                                  String qty, String phoneCustomer, String nameCustomer);
         void getAllSalon();
     }
 }
