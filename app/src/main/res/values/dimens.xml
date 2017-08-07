@@ -39,6 +39,7 @@
     <dimen name="dp_16">16dp</dimen>
     <dimen name="dp_4">4dp</dimen>
     <dimen name="dp_200">200dp</dimen>
+    <dimen name="sp_8">8sp</dimen>
     <integer name="span_3">3</integer>
     <integer name="span_4">4</integer>
 </resources>
