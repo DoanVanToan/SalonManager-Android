@@ -9,9 +9,7 @@ import com.google.gson.annotations.SerializedName;
 /**
  * Created by framgia on 7/20/17.
  */
-
-public class Salon implements Parcelable{
-
+public class Salon implements Parcelable {
     @SerializedName("id")
     @Expose
     private int mId;
@@ -79,5 +77,10 @@ public class Salon implements Parcelable{
         dest.writeInt(mId);
         dest.writeString(mName);
         dest.writeString(mAddress);
+    }
+
+    @Override
+    public String toString() {
+        return mName;
     }
 }

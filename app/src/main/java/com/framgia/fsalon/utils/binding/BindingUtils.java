@@ -21,6 +21,7 @@ import android.widget.TextView;
 import com.bumptech.glide.Glide;
 import com.framgia.fsalon.FSalonApplication;
 import com.framgia.fsalon.R;
+import com.framgia.fsalon.data.model.Salon;
 import com.framgia.fsalon.data.model.Service;
 import com.framgia.fsalon.data.model.Stylist;
 import com.framgia.fsalon.screen.booking.BookingViewModel;
@@ -171,6 +172,28 @@ public class BindingUtils {
     @BindingAdapter(value = {"bind:service", "serviceAttrChanged"}, requireAll = false)
     public static void setService(SearchableSpinner view, final Service value,
                                   final InverseBindingListener bindingListener) {
+        AdapterView.OnItemSelectedListener listener = new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+                bindingListener.onChange();
+            }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> parent) {
+            }
+        };
+        view.setOnItemSelectedListener(listener);
+    }
+
+    @InverseBindingAdapter(attribute = "bind:salon", event = "salonAttrChanged")
+    public static Salon captureSalon(SearchableSpinner view) {
+        Object selectedItem = view.getSelectedItem();
+        return (Salon) selectedItem;
+    }
+
+    @BindingAdapter(value = {"bind:salon", "salonAttrChanged"}, requireAll = false)
+    public static void setSalon(SearchableSpinner view, Salon salon,
+                                final InverseBindingListener bindingListener) {
         AdapterView.OnItemSelectedListener listener = new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
