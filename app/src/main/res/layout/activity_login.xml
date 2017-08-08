@@ -162,6 +162,19 @@
             </LinearLayout>
         </LinearLayout>
 
+        <Button
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/title_skip_login"
+            android:background="@drawable/bg_gray_oval"
+            android:textColor="@color/colorPrimary"
+            android:layout_alignParentBottom="true"
+            android:layout_centerHorizontal="true"
+            android:layout_marginBottom="@dimen/dp_16"
+            android:onClick="@{() -> viewModel.onCustomerLoginSuccess()}"
+            android:textAllCaps="false"
+            />
+
         <ProgressBar
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
