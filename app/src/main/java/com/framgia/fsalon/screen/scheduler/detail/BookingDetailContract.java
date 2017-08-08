@@ -15,6 +15,11 @@ interface BookingDetailContract {
         void onGetBookingError(String msg);
         void onGetBookingSuccess(BookingOder bookingOder);
         void finishRefresh();
+        void showProgressBar();
+        void hideProgressBar();
+        void callCustomer();
+        void editBooking();
+        void messageCustomer();
     }
 
     /**

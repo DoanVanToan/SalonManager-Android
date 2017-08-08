@@ -87,6 +87,7 @@
     <string name="title_select_start_day">Start date</string>
     <string name="title_select_end_day">End date</string>
     <string name="title_skip_login">Skip Login</string>
+    <string name="title_edit_detail">Edit</string>
     <string-array name="title_status">
         <item>Canceled</item>
         <item>Pending</item>

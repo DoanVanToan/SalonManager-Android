@@ -5,6 +5,7 @@ import android.support.design.internal.BottomNavigationMenuView;
 import android.support.design.widget.BottomNavigationView;
 import android.util.Log;
 
+import com.framgia.fsalon.data.model.BookingOder;
 import com.framgia.fsalon.screen.scheduler.SchedulerViewModel;
 
 import java.lang.reflect.Field;
@@ -92,5 +93,18 @@ public class Utils {
         }
         SimpleDateFormat sfd = new SimpleDateFormat("dd:MM:yyyy", Locale.US);
         return sfd.format(date);
+    }
+
+    public static String getStatus(int status) {
+        switch (status) {
+            case BookingOder.STATUS_CANCELED:
+                return Constant.BookingStatus.CANCEL;
+            case BookingOder.STATUS_FINISHED:
+                return Constant.BookingStatus.FINISHED;
+            case BookingOder.STATUS_PENDING:
+                return Constant.BookingStatus.PENDING;
+            default:
+                return Constant.BookingStatus.NA;
+        }
     }
 }

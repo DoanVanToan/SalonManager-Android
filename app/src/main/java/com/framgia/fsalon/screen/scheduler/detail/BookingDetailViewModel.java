@@ -4,6 +4,7 @@ import android.databinding.BaseObservable;
 import android.databinding.Bindable;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.app.AppCompatActivity;
+import android.view.View;
 
 import com.framgia.fsalon.BR;
 import com.framgia.fsalon.data.model.BookingOder;
@@ -17,6 +18,7 @@ public class BookingDetailViewModel extends BaseObservable
     private BookingDetailContract.Presenter mPresenter;
     private BookingOder mBookingOder;
     private int mId;
+    private int mProgressBarVisibility;
     private boolean mIsFinish = true;
     private Navigator mNavigator;
     private SwipeRefreshLayout.OnRefreshListener mListener =
@@ -51,6 +53,16 @@ public class BookingDetailViewModel extends BaseObservable
     }
 
     @Bindable
+    public int getProgressBarVisibility() {
+        return mProgressBarVisibility;
+    }
+
+    public void setProgressBarVisibility(int progressBarVisibility) {
+        mProgressBarVisibility = progressBarVisibility;
+        notifyPropertyChanged(BR.progressBarVisibility);
+    }
+
+    @Bindable
     public boolean isFinish() {
         return mIsFinish;
     }
@@ -62,6 +74,7 @@ public class BookingDetailViewModel extends BaseObservable
 
     @Override
     public void onStart() {
+        showProgressBar();
         mPresenter.onStart();
         mPresenter.getBookingById(mId);
     }
@@ -89,5 +102,30 @@ public class BookingDetailViewModel extends BaseObservable
     @Override
     public void finishRefresh() {
         setFinish(true);
+    }
+
+    @Override
+    public void showProgressBar() {
+        setProgressBarVisibility(View.VISIBLE);
+    }
+
+    @Override
+    public void hideProgressBar() {
+        setProgressBarVisibility(View.GONE);
+    }
+
+    @Override
+    public void callCustomer() {
+        // TODO: 8/7/2017  
+    }
+
+    @Override
+    public void editBooking() {
+        // TODO: 8/7/2017  
+    }
+
+    @Override
+    public void messageCustomer() {
+        // TODO: 8/8/2017
     }
 }

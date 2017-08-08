@@ -61,7 +61,7 @@ public class SchedulerViewModel extends BaseObservable
     private String mTitleTopSheet;
     private String mFilterChoice = FILTER_DAY;
     private String mSpaceTime = "";
-    private int mSatus;
+    private int mStatus;
     private RecyclerView.OnScrollListener mScrollListenner = new RecyclerView.OnScrollListener() {
         @Override
         public void onScrolled(RecyclerView recyclerView, int dx, int dy) {
@@ -86,17 +86,17 @@ public class SchedulerViewModel extends BaseObservable
                 mAdapter.clear();
                 switch (i) {
                     case STATUS_CANCELED:
-                        mSatus = STATUS_CANCELED;
+                        mStatus = STATUS_CANCELED;
                         mPresenter.getSchedulers(mFilterChoice, FIRST_PAGE, OUT_OF_INDEX,
                             STATUS_CANCELED, mStartDate, mEndDate);
                         break;
                     case STATUS_PENDING:
-                        mSatus = STATUS_PENDING;
+                        mStatus = STATUS_PENDING;
                         mPresenter.getSchedulers(mFilterChoice, FIRST_PAGE, OUT_OF_INDEX,
                             STATUS_PENDING, mStartDate, mEndDate);
                         break;
                     case STATUS_FINISHED:
-                        mSatus = STATUS_FINISHED;
+                        mStatus = STATUS_FINISHED;
                         mPresenter.getSchedulers(mFilterChoice, FIRST_PAGE, OUT_OF_INDEX,
                             STATUS_FINISHED, mStartDate, mEndDate);
                         break;
@@ -165,7 +165,7 @@ public class SchedulerViewModel extends BaseObservable
                     .getResources().getString(R.string.title_today));
                 mPresenter
                     .getSchedulers(mFilterChoice, FIRST_PAGE, OUT_OF_INDEX,
-                        mSatus, mStartDate, OUT_OF_INDEX);
+                        mStatus, mStartDate, OUT_OF_INDEX);
                 break;
             case TAB_TOMORROW:
                 mEndDate = OUT_OF_INDEX;
@@ -175,7 +175,7 @@ public class SchedulerViewModel extends BaseObservable
                     .getResources().getString(R.string.title_tomorrow));
                 mPresenter
                     .getSchedulers(mFilterChoice, FIRST_PAGE, OUT_OF_INDEX,
-                        mSatus, mStartDate, OUT_OF_INDEX);
+                        mStatus, mStartDate, OUT_OF_INDEX);
                 break;
             case TAB_YESTERDAY:
                 mEndDate = OUT_OF_INDEX;
@@ -185,7 +185,7 @@ public class SchedulerViewModel extends BaseObservable
                     .getResources().getString(R.string.title_yesterday));
                 mPresenter
                     .getSchedulers(mFilterChoice, FIRST_PAGE, OUT_OF_INDEX,
-                        mSatus, mStartDate, OUT_OF_INDEX);
+                        mStatus, mStartDate, OUT_OF_INDEX);
                 break;
             case TAB_SELECT_DATE:
                 mEndDate = OUT_OF_INDEX;
@@ -231,7 +231,8 @@ public class SchedulerViewModel extends BaseObservable
 
     @Override
     public void onBookingItemClick(int id) {
-        mNavigator.startActivity(BookingDetailActivity.getInstance(mNavigator.getContext(), id));
+        mNavigator.startActivity(BookingDetailActivity.getInstance(mNavigator.getContext(), id,
+            mStatus));
     }
 
     @Bindable
@@ -306,13 +307,13 @@ public class SchedulerViewModel extends BaseObservable
                 setTitleTopSheet(Utils.convertDate(mCalendar.getTime()));
                 mStartDate = (int) (mCalendar.getTimeInMillis() / 1000);
                 mPresenter
-                    .getSchedulers(mFilterChoice, FIRST_PAGE, OUT_OF_INDEX, mSatus,
+                    .getSchedulers(mFilterChoice, FIRST_PAGE, OUT_OF_INDEX, mStatus,
                         mStartDate, mEndDate);
                 break;
             case TAB_END_DATE:
                 mEndDate = (int) (mCalendar.getTimeInMillis() / 1000);
                 mPresenter
-                    .getSchedulers(mFilterChoice, FIRST_PAGE, OUT_OF_INDEX, mSatus,
+                    .getSchedulers(mFilterChoice, FIRST_PAGE, OUT_OF_INDEX, mStatus,
                         mStartDate, mEndDate);
                 mSpaceTime = mSpaceTime.concat(" - " + Utils.convertDate(mCalendar.getTime()));
                 setTitleTopSheet(mSpaceTime);
