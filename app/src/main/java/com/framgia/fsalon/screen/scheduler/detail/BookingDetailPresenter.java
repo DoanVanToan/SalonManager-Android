@@ -51,11 +51,13 @@ final class BookingDetailPresenter implements BookingDetailContract.Presenter {
                 public void onError(@NonNull Throwable e) {
                     mViewModel.onGetBookingError(e.getMessage());
                     mViewModel.finishRefresh();
+                    mViewModel.hideProgressBar();
                 }
 
                 @Override
                 public void onComplete() {
                     mViewModel.finishRefresh();
+                    mViewModel.hideProgressBar();
                 }
             });
         mCompositeDisposable.add(disposable);

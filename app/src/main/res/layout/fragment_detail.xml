@@ -5,7 +5,9 @@
     >
 
     <data>
+
         <import type="android.view.View"/>
+
         <variable
             name="viewModel"
             type="com.framgia.fsalon.screen.booking.detail.DetailViewModel"
@@ -14,10 +16,11 @@
     </data>
 
     <android.support.v4.widget.SwipeRefreshLayout
-        bind:listener="@{viewModel.listener}"
-        bind:finish="@{viewModel.finish}"
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
+        android:layout_height="match_parent"
+        bind:finish="@{viewModel.finish}"
+        bind:listener="@{viewModel.listener}">
+
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent"
@@ -35,8 +38,8 @@
                     android:layout_centerInParent="true"
                     android:contentDescription="@null"
                     android:scaleType="center"
-                    bind:srcCompat="@drawable/ic_file"
-                    android:tint="@color/color_grey_500"/>
+                    android:tint="@color/color_grey_500"
+                    bind:srcCompat="@drawable/ic_file"/>
 
                 <TextView
                     android:layout_width="wrap_content"
@@ -71,8 +74,8 @@
                         android:layout_gravity="center"
                         android:contentDescription="@null"
                         android:scaleType="fitCenter"
-                        bind:srcCompat="@drawable/ic_user"
-                        android:tint="@android:color/holo_orange_light"/>
+                        android:tint="@android:color/holo_orange_light"
+                        bind:srcCompat="@drawable/ic_user"/>
 
                     <LinearLayout
                         android:layout_width="match_parent"
@@ -116,8 +119,8 @@
                         android:layout_gravity="center"
                         android:contentDescription="@null"
                         android:scaleType="fitCenter"
-                        bind:srcCompat="@drawable/ic_phone"
-                        android:tint="@color/colorAccent"/>
+                        android:tint="@color/colorAccent"
+                        bind:srcCompat="@drawable/ic_phone"/>
 
                     <LinearLayout
                         android:layout_width="match_parent"
@@ -161,8 +164,8 @@
                         android:layout_gravity="center"
                         android:contentDescription="@null"
                         android:scaleType="fitCenter"
-                        bind:srcCompat="@drawable/ic_calendar"
-                        android:tint="@android:color/holo_red_light"/>
+                        android:tint="@android:color/holo_red_light"
+                        bind:srcCompat="@drawable/ic_calendar"/>
 
                     <LinearLayout
                         android:layout_width="match_parent"
@@ -181,15 +184,33 @@
                             android:textColor="@color/colorAccent"
                             android:textSize="@dimen/sp_15"/>
 
-                        <TextView
+                        <RelativeLayout
                             android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:layout_marginEnd="@dimen/dp_8"
-                            android:layout_marginRight="@dimen/dp_8"
-                            android:gravity="end"
-                            android:text="@{viewModel.bookingOder.render.timeStart}"
-                            android:textColor="@color/color_black"
-                            android:textSize="@dimen/sp_18"/>
+                            android:layout_height="wrap_content">
+
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_marginEnd="@dimen/dp_8"
+                                android:layout_marginRight="@dimen/dp_8"
+                                android:layout_toLeftOf="@+id/text_time_start"
+                                android:layout_toStartOf="@+id/text_time_start"
+                                android:text="@{viewModel.bookingOder.render.day}"
+                                android:textColor="@color/color_black"
+                                android:textSize="@dimen/sp_18"/>
+
+                            <TextView
+                                android:id="@+id/text_time_start"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_alignParentEnd="true"
+                                android:layout_alignParentRight="true"
+                                android:layout_marginEnd="@dimen/dp_8"
+                                android:layout_marginRight="@dimen/dp_8"
+                                android:text="@{viewModel.bookingOder.render.timeStart}"
+                                android:textColor="@color/color_black"
+                                android:textSize="@dimen/sp_18"/>
+                        </RelativeLayout>
                     </LinearLayout>
 
                 </LinearLayout>
@@ -206,8 +227,8 @@
                         android:layout_gravity="center"
                         android:contentDescription="@null"
                         android:scaleType="fitCenter"
-                        bind:srcCompat="@drawable/ic_salon"
-                        android:tint="@android:color/holo_green_light"/>
+                        android:tint="@android:color/holo_green_light"
+                        bind:srcCompat="@drawable/ic_salon"/>
 
                     <LinearLayout
                         android:layout_width="match_parent"
@@ -232,7 +253,7 @@
                             android:layout_marginEnd="@dimen/dp_8"
                             android:layout_marginRight="@dimen/dp_8"
                             android:gravity="end"
-                            android:text="@{viewModel.bookingOder.department.name}"
+                            android:text="@{viewModel.bookingOder.department.address}"
                             android:textColor="@color/color_black"
                             android:textSize="@dimen/sp_18"/>
                     </LinearLayout>
@@ -251,8 +272,8 @@
                         android:layout_gravity="center"
                         android:contentDescription="@null"
                         android:scaleType="fitCenter"
-                        bind:srcCompat="@drawable/ic_hairdresser"
-                        android:tint="@android:color/black"/>
+                        android:tint="@android:color/black"
+                        bind:srcCompat="@drawable/ic_hairdresser"/>
 
                     <LinearLayout
                         android:layout_width="match_parent"

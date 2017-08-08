@@ -4,6 +4,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.databinding.DataBindingUtil;
 import android.os.Bundle;
+import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
 
 import com.framgia.fsalon.R;
@@ -12,6 +13,7 @@ import com.framgia.fsalon.data.source.api.FSalonServiceClient;
 import com.framgia.fsalon.data.source.remote.BookingRemoteDataSource;
 import com.framgia.fsalon.databinding.ActivityBookingDetailBinding;
 import com.framgia.fsalon.utils.Constant;
+import com.framgia.fsalon.utils.Utils;
 
 /**
  * Detail Screen.
@@ -19,11 +21,13 @@ import com.framgia.fsalon.utils.Constant;
 public class BookingDetailActivity extends AppCompatActivity {
     private BookingDetailContract.ViewModel mViewModel;
     private static final int DEFAULT_ID = 0;
+    private static final int DEFAULT_STATUS = -1;
 
-    public static Intent getInstance(Context context, int id) {
+    public static Intent getInstance(Context context, int id, int status) {
         Intent intent = new Intent(context, BookingDetailActivity.class);
         Bundle args = new Bundle();
         args.putInt(Constant.BOOKING_ID, id);
+        args.putInt(Constant.BookingStatus.BOOKING_STATUS, status);
         intent.putExtras(args);
         return intent;
     }
@@ -40,13 +44,15 @@ public class BookingDetailActivity extends AppCompatActivity {
         ActivityBookingDetailBinding binding =
             DataBindingUtil.setContentView(this, R.layout.activity_booking_detail);
         binding.setViewModel((BookingDetailViewModel) mViewModel);
-        setSupportActionBar(binding.toolbarDetailAdmin);
+        setSupportActionBar(binding.toolbarAdminBookingDetail);
         if (getSupportActionBar() != null) {
-            getSupportActionBar().setTitle(R.string.tilte_finished);
+            getSupportActionBar().setTitle(Utils.getStatus(getIntent().getIntExtra(Constant
+                .BookingStatus.BOOKING_STATUS, DEFAULT_STATUS)));
             getSupportActionBar().setDisplayShowHomeEnabled(true);
             getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         }
-        binding.toolbarDetailAdmin.setNavigationIcon(R.drawable.ic_back);
+        binding.toolbarAdminBookingDetail
+            .setTitleTextColor(ContextCompat.getColor(this, R.color.color_white));
     }
 
     @Override
