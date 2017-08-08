@@ -37,12 +37,72 @@
 
             <TextView
                 android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
+                android:layout_height="match_parent"
                 android:background="@color/colorPrimary"
+                android:gravity="center"
+                android:minWidth="@dimen/dp_20"
                 android:padding="@dimen/dp_2"
                 android:text="@{position + 1 + ``}"
                 android:textColor="@color/color_white"
                 android:textSize="@dimen/sp_18"/>
+
+            <LinearLayout
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                android:orientation="vertical"
+                android:paddingLeft="@dimen/dp_3"
+                android:paddingStart="@dimen/dp_3">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="0dp"
+                    android:layout_margin="@dimen/dp_1"
+                    android:layout_marginEnd="@dimen/dp_30"
+                    android:layout_marginRight="@dimen/dp_30"
+                    android:layout_weight="1"
+                    android:text="@{item.serviceName}"
+                    android:textColor="@color/color_black"
+                    android:textSize="@dimen/sp_10"/>
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="0dp"
+                    android:layout_margin="@dimen/dp_1"
+                    android:layout_marginEnd="@dimen/dp_30"
+                    android:layout_marginRight="@dimen/dp_30"
+                    android:layout_weight="1"
+                    android:text="@{item.stylistName}"
+                    android:textColor="@color/color_black"
+                    android:textSize="@dimen/sp_8"
+                    android:textStyle="italic"/>
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight="1">
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_marginEnd="@dimen/dp_30"
+                    android:layout_marginRight="@dimen/dp_30"
+                    android:gravity="center"
+                    android:text="@{String.format(`%,.0f`,item.price)}"
+                    android:textColor="@color/color_black"
+                    android:textSize="@dimen/sp_10"/>
+            </LinearLayout>
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:layout_marginEnd="@dimen/dp_30"
+                android:layout_marginRight="@dimen/dp_30"
+                android:gravity="center"
+                android:text="@{item.qty + ``}"
+                android:textColor="@color/color_black"
+                android:textSize="@dimen/sp_10"/>
 
             <LinearLayout
                 android:layout_width="0dp"
@@ -51,51 +111,17 @@
                 android:layout_marginRight="@dimen/dp_10"
                 android:layout_weight="1"
                 android:background="@color/color_white"
+                android:gravity="center"
                 android:orientation="horizontal"
                 android:paddingLeft="@dimen/dp_5"
                 android:paddingRight="@dimen/dp_5"
                 android:paddingStart="@dimen/dp_5">
 
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginEnd="@dimen/dp_30"
-                    android:layout_marginRight="@dimen/dp_30"
-                    android:text="@{item.serviceName}"
-                    android:textColor="@color/color_black"
-                    android:textSize="@dimen/sp_10"/>
 
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginEnd="@dimen/dp_30"
-                    android:layout_marginRight="@dimen/dp_30"
-                    android:text="@{item.stylistName}"
-                    android:textColor="@color/color_black"
-                    android:textSize="@dimen/sp_10"/>
-
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginEnd="@dimen/dp_30"
-                    android:layout_marginRight="@dimen/dp_30"
-                    android:text="@{item.price + ``}"
-                    android:textColor="@color/color_black"
-                    android:textSize="@dimen/sp_10"/>
-
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginEnd="@dimen/dp_30"
-                    android:layout_marginRight="@dimen/dp_30"
-                    android:text="@{item.qty + ``}"
-                    android:textColor="@color/color_black"
-                    android:textSize="@dimen/sp_10"/>
-
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="@{item.rowToalBill + ``}"
+                    android:text="@{String.format(`%,.0f`,item.rowToalBill)}"
                     android:textColor="@color/color_black"
                     android:textSize="@dimen/sp_10"/>
             </LinearLayout>

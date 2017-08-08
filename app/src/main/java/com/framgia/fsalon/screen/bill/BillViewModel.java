@@ -4,7 +4,6 @@ import android.app.Activity;
 import android.content.Context;
 import android.databinding.BaseObservable;
 import android.databinding.Bindable;
-import android.text.TextUtils;
 import android.widget.ArrayAdapter;
 
 import com.framgia.fsalon.BR;
@@ -18,7 +17,9 @@ import com.framgia.fsalon.data.model.Stylist;
 import com.framgia.fsalon.utils.navigator.Navigator;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import static com.framgia.fsalon.utils.Constant.Status.STATUS_PENDING;
 
@@ -26,6 +27,7 @@ import static com.framgia.fsalon.utils.Constant.Status.STATUS_PENDING;
  * Exposes the data to be used in the BillItemRequest screen.
  */
 public class BillViewModel extends BaseObservable implements BillContract.ViewModel {
+    private static final String FIRST_ITEM = "1";
     private BillContract.Presenter mPresenter;
     private BillRequest mBillRequest = new BillRequest();
     private ArrayAdapter<Stylist> mStylistAdapter;
@@ -44,12 +46,14 @@ public class BillViewModel extends BaseObservable implements BillContract.ViewMo
     private String mCustomerNameError;
     private String mCustomerPhoneError;
     private String mPhoneError;
+    private Map<Service, Integer> mUsedServices = new HashMap<>();
 
     public BillViewModel(Activity activity) {
         mActivity = activity;
         mContext = activity.getApplicationContext();
         mAdapter = new BillAdapter(mContext, new ArrayList<BillItemRequest>(), this);
         mNavigator = new Navigator(activity);
+        setQty(FIRST_ITEM);
     }
 
     @Override
@@ -80,7 +84,7 @@ public class BillViewModel extends BaseObservable implements BillContract.ViewMo
             .setStylistName(mStylist.getName())
             .setServiceName(mService.getName())
             .create();
-        mAdapter.onAddItem(bill);
+        mAdapter.onUpdateAdapter(bill);
         setTotal(mAdapter.getTotalPrice());
     }
 

@@ -21,6 +21,7 @@ public class BillAdapter extends BaseRecyclerViewAdapter<BillItemRequest, BillAd
     .ViewHolder> {
     private List<BillItemRequest> mData;
     private BillViewModel mViewModel;
+
     protected BillAdapter(@NonNull Context context, List<BillItemRequest> data,
                           BillViewModel viewModel) {
         super(context);
@@ -55,7 +56,23 @@ public class BillAdapter extends BaseRecyclerViewAdapter<BillItemRequest, BillAd
         return mData == null ? 0 : mData.size();
     }
 
-    public void onAddItem(BillItemRequest bill) {
+    public void onUpdateAdapter(BillItemRequest bill) {
+        BillItemRequest billItemRequest;
+        if (bill == null) {
+            return;
+        }
+        for (int pos = 0; pos < mData.size(); pos++) {
+            billItemRequest = mData.get(pos);
+            if (billItemRequest.getServiceName().equals(bill.getServiceName())
+                && billItemRequest.getStylistName().equals(bill.getStylistName())) {
+                onUpdateItem(pos, mData.get(pos));
+                return;
+            }
+        }
+        onAddItem(bill);
+    }
+
+    private void onAddItem(BillItemRequest bill) {
         if (bill == null) {
             return;
         }
@@ -81,6 +98,14 @@ public class BillAdapter extends BaseRecyclerViewAdapter<BillItemRequest, BillAd
             total += request.getPrice() * request.getQty();
         }
         return total;
+    }
+
+    private void onUpdateItem(int postion, BillItemRequest bill) {
+        if (postion < 0) {
+            return;
+        }
+        bill.setQty(bill.getQty() + 1);
+        notifyItemChanged(postion, bill);
     }
 
     /**

@@ -19,33 +19,19 @@ interface BillContract {
      */
     interface ViewModel extends BaseViewModel<Presenter> {
         void onAddBillClick();
-
         void showProgressbar();
-
         void onGetStylistSuccess(List<Stylist> stylists);
-
         void hideProgressbar();
-
         void onError(String message);
-
         void onGetServiceSuccess(List<Service> services);
-
         void onDeleteItemClick(int position);
-
         void onGetBillSuccess(BillResponse billResponse);
-
         void onCreateBillClick();
-
         void onGetBookingSuccess(BookingOder bookingOder);
-
         void onSearchBookingClick();
-
         void onInputFormError();
-
         void onInputCustomerNameError();
-
         void onInputCustomerPhoneError();
-
         void onInputPhoneError();
     }
 
@@ -54,13 +40,9 @@ interface BillContract {
      */
     interface Presenter extends BasePresenter {
         void getAllServices();
-
         void getAllStylists(int id);
-
         void createBill(BillRequest billRequest);
-
         void getBookingByPhone(String phone);
-
         boolean validateFormInput(Service service, Stylist stylist, String pricce, String qty);
     }
 }
