@@ -1,13 +1,20 @@
 package com.framgia.fsalon.screen.scheduler.detail;
 
+import android.Manifest;
+import android.content.Intent;
+import android.content.pm.PackageManager;
 import android.databinding.BaseObservable;
 import android.databinding.Bindable;
+import android.net.Uri;
+import android.support.v4.app.ActivityCompat;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 
 import com.framgia.fsalon.BR;
+import com.framgia.fsalon.R;
 import com.framgia.fsalon.data.model.BookingOder;
+import com.framgia.fsalon.utils.Utils;
 import com.framgia.fsalon.utils.navigator.Navigator;
 
 /**
@@ -116,16 +123,33 @@ public class BookingDetailViewModel extends BaseObservable
 
     @Override
     public void callCustomer() {
-        // TODO: 8/7/2017  
+        if (ActivityCompat.checkSelfPermission(mNavigator.getContext(),
+            Manifest.permission.CALL_PHONE) != PackageManager.PERMISSION_GRANTED) {
+            Utils.requestCallPermission(mNavigator.getContext());
+        } else {
+            onPermissionGranted();
+        }
     }
 
     @Override
     public void editBooking() {
-        // TODO: 8/7/2017  
+        // TODO: 8/7/2017
     }
 
     @Override
     public void messageCustomer() {
         // TODO: 8/8/2017
+    }
+
+    @Override
+    public void onPermissionGranted() {
+        Intent intent = new Intent(Intent.ACTION_CALL);
+        intent.setData(Uri.parse("tel:" + mBookingOder.getPhone()));
+        mNavigator.startActivity(intent);
+    }
+
+    @Override
+    public void onPermissionDenied() {
+        mNavigator.showToast(R.string.msg_no_permission);
     }
 }

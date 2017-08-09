@@ -20,6 +20,8 @@ interface BookingDetailContract {
         void callCustomer();
         void editBooking();
         void messageCustomer();
+        void onPermissionGranted();
+        void onPermissionDenied();
     }
 
     /**
