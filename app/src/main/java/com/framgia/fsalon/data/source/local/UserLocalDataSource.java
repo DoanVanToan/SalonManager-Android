@@ -36,4 +36,9 @@ public class UserLocalDataSource implements UserDataSource.LocalDataSource {
     public Observable<Boolean> saveCurrentUser(UserRespone userRespone) {
         return Observable.just(mSharePreference.put(PREF_USER, new Gson().toJson(userRespone)));
     }
+
+    @Override
+    public void clearCurrentUser() {
+        mSharePreference.remove(PREF_USER);
+    }
 }
