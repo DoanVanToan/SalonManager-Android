@@ -8,6 +8,7 @@ import android.support.design.widget.BottomNavigationView;
 import android.support.design.widget.TextInputLayout;
 import android.support.v4.view.PagerAdapter;
 import android.support.v4.view.ViewPager;
+import android.support.v4.widget.DrawerLayout;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
@@ -15,6 +16,7 @@ import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.RadioGroup;
 import android.widget.Spinner;
 import android.widget.TextView;
 
@@ -216,7 +218,6 @@ public class BindingUtils {
         }
         view.setAdapter(adapter);
         view.setLayoutManager(factory.create(view));
-        view.addItemDecoration(new DeviderItemDecoration(1));
     }
 
     @BindingAdapter({"bind:array", "listener"})
@@ -228,5 +229,33 @@ public class BindingUtils {
         adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         spinner.setAdapter(adapter);
         if (listener != null) spinner.setOnItemSelectedListener(listener);
+    }
+
+    @BindingAdapter(value = {"lockMode", "drawerListener"}, requireAll = false)
+    public static void setLockMode(DrawerLayout layout, int lockMode,
+                                   DrawerLayout.DrawerListener drawerListener) {
+        layout.setDrawerLockMode(lockMode);
+        if (drawerListener != null) {
+            layout.addDrawerListener(drawerListener);
+        }
+    }
+
+    @BindingAdapter("changeListener")
+    public static void setChangeListener(RadioGroup view,
+                                         RadioGroup.OnCheckedChangeListener listener) {
+        if (listener == null) {
+            return;
+        }
+        view.setOnCheckedChangeListener(listener);
+    }
+
+    @BindingAdapter("check")
+    public static void checkRadioButton(RadioGroup view, int radioButtonId) {
+        view.check(radioButtonId);
+    }
+
+    @BindingAdapter("imageResource")
+    public static void setResourceId(ImageView view, int resId) {
+        view.setImageResource(resId);
     }
 }

@@ -3,6 +3,7 @@ package com.framgia.fsalon.data.model;
 import android.os.Parcel;
 import android.os.Parcelable;
 
+import com.framgia.fsalon.R;
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 
@@ -14,7 +15,9 @@ import java.util.Date;
 public class BookingOder implements Parcelable {
     public static final int STATUS_CANCELED = 0;
     public static final int STATUS_PENDING = 1;
+    public static final int STATUS_WATTING = 1;
     public static final int STATUS_FINISHED = 2;
+    public static final int STATUS_IN_LATE = 3;
     @SerializedName("id")
     @Expose
     private int mId;
@@ -225,5 +228,20 @@ public class BookingOder implements Parcelable {
         dest.writeParcelable(mStylist, flags);
         dest.writeParcelable(mRender, flags);
         dest.writeParcelable(mDepartment, flags);
+    }
+
+    public int getStatusBooking() {
+        switch (mStatus) {
+            case STATUS_CANCELED:
+                return R.drawable.ic_broken_heart_24dp;
+            case STATUS_WATTING:
+                return R.drawable.ic_waiting_room_24_dp;
+            case STATUS_FINISHED:
+                return R.drawable.ic_smile_24dp;
+            case STATUS_IN_LATE:
+                return R.drawable.ic_sad_24dp;
+            default:
+                return R.drawable.ic_waiting_room_24_dp;
+        }
     }
 }
