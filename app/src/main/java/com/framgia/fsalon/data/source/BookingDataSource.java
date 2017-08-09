@@ -12,7 +12,6 @@ public interface BookingDataSource {
     Observable<BookingResponse> getBookings(int salonId, long time, int stylelistId);
     Observable<BookingResponse> getBookings(int salonId, long time);
     Observable<BookingOder> book(String phone, String name, int renderBookingId, int stylistId);
-    Observable<BookingOder> book(String phone, String name, int renderBookingId);
     Observable<BookingOder> getBookingByPhone(String phone);
     Observable<BookingOder> getBookingById(int id);
 }

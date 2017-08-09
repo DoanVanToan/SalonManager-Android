@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <layout
-    xmlns:tool="http://schemas.android.com/tools"
     xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:bind="http://schemas.android.com/apk/res-auto">
+    xmlns:bind="http://schemas.android.com/apk/res-auto"
+    xmlns:tool="http://schemas.android.com/tools">
 
     <data>
 
@@ -314,35 +314,35 @@
                     bind:menu_labels_position="left">
 
                     <com.github.clans.fab.FloatingActionButton
-                        android:onClick="@{()->viewModel.editBooking()}"
-                        tool:ignore="VectorDrawableCompat"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
+                        android:onClick="@{()->viewModel.editBooking()}"
+                        android:src="@drawable/ic_edit"
                         bind:fab_colorNormal="@color/color_white"
                         bind:fab_label="@string/title_edit_detail"
                         bind:fab_size="mini"
                         bind:rippleColor="@color/color_white"
-                        android:src="@drawable/ic_edit"/>
+                        tool:ignore="VectorDrawableCompat"/>
 
                     <com.github.clans.fab.FloatingActionButton
-                        android:onClick="@{()->viewModel.messageCustomer()}"
-                        tool:ignore="VectorDrawableCompat"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
+                        android:onClick="@{()->viewModel.messageCustomer()}"
+                        android:src="@drawable/ic_message"
                         bind:fab_colorNormal="@color/color_white"
                         bind:fab_label="@string/title_message"
                         bind:fab_size="mini"
-                        android:src="@drawable/ic_message"/>
+                        tool:ignore="VectorDrawableCompat"/>
 
                     <com.github.clans.fab.FloatingActionButton
-                        android:onClick="@{()->viewModel.callCustomer()}"
-                        tool:ignore="VectorDrawableCompat"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
+                        android:onClick="@{()->viewModel.callCustomer()}"
+                        android:src="@drawable/ic_phone_receiver_24dp"
                         bind:fab_colorNormal="@color/color_white"
                         bind:fab_label="@string/title_call"
                         bind:fab_size="mini"
-                        android:src="@drawable/ic_phone_receiver_24dp"/>
+                        tool:ignore="VectorDrawableCompat"/>
                 </com.github.clans.fab.FloatingActionMenu>
 
             </android.support.design.widget.CoordinatorLayout>

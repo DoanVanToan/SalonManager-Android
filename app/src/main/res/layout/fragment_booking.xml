@@ -100,8 +100,8 @@
             <android.support.v7.widget.RecyclerView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                bind:layoutManager="@{LayoutManager.grid(@integer/span_3)}"
-                bind:adapter="@{viewModel.salonAdapter}"/>
+                bind:adapter="@{viewModel.salonAdapter}"
+                bind:layoutManager="@{LayoutManager.grid(@integer/span_3)}"/>
 
             <android.support.v7.widget.AppCompatTextView
                 android:layout_width="match_parent"
@@ -131,6 +131,7 @@
                     android:padding="@dimen/dp_10">
 
                     <com.toptoche.searchablespinnerlibrary.SearchableSpinner
+                        android:id="@+id/search_stylist"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:scrollbarSize="@dimen/dp_20"
@@ -156,8 +157,8 @@
             <android.support.v7.widget.RecyclerView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                bind:layoutManager="@{LayoutManager.grid(@integer/span_3)}"
-                bind:adapter="@{viewModel.dateAdapter}"/>
+                bind:adapter="@{viewModel.dateAdapter}"
+                bind:layoutManager="@{LayoutManager.grid(@integer/span_3)}"/>
 
             <android.support.design.widget.TextInputLayout
                 android:layout_width="match_parent"
@@ -181,8 +182,8 @@
             <android.support.v7.widget.RecyclerView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                bind:layoutManager="@{LayoutManager.grid(@integer/span_4)}"
-                bind:adapter="@{viewModel.timeAdapter}"/>
+                bind:adapter="@{viewModel.timeAdapter}"
+                bind:layoutManager="@{LayoutManager.grid(@integer/span_4)}"/>
 
             <android.support.v7.widget.AppCompatButton
                 android:layout_width="match_parent"

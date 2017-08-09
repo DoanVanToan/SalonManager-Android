@@ -77,11 +77,6 @@ public class BookingRemoteDataSource extends BaseRemoteDataSource implements Boo
     }
 
     @Override
-    public Observable<BookingOder> book(String phone, String name, int renderBookingId) {
-        return book(phone, name, renderBookingId, -1);
-    }
-
-    @Override
     public Observable<BookingOder> getBookingByPhone(String phone) {
         return mFSalonApi.getBookingByPhone(phone)
             .flatMap(new Function<Respone<BookingOder>, ObservableSource<BookingOder>>() {

@@ -61,7 +61,6 @@
     <string name="title_cancel">Cancel</string>
     <string name="title_waiting">Waiting</string>
     <string name="msg_no_booking">You have no booking yet</string>
-    <string name="msg_not_login">You still not login yet</string>
     <string name="title_booking_id">Booking ID</string>
     <string name="action_search">Search</string>
     <string name="title_customer_name">Customer Name</string>
@@ -88,6 +87,9 @@
     <string name="title_skip_login">Skip Login</string>
     <string name="title_edit_detail">Edit</string>
     <string name="action_logout">Logout</string>
+    <string name="msg_not_booking">You still not booking yet</string>
+    <string name="title_na">N/A</string>
+    <string name="msg_book_to_edit">You can book again to edit your last booking</string>
     <string-array name="title_status">
         <item>Canceled</item>
         <item>Pending</item>

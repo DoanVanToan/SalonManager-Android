@@ -14,8 +14,8 @@ interface DetailContract {
     interface ViewModel extends BaseViewModel<Presenter> {
         void onGetBookingError(String msg);
         void onGetBookingSuccess(BookingOder bookingOder);
-        void onNotLogin();
         void finishRefresh();
+        void onNotBooking();
     }
 
     /**
@@ -23,5 +23,6 @@ interface DetailContract {
      */
     interface Presenter extends BasePresenter {
         void getBookingByPhone();
+        void getCurrentPhone();
     }
 }

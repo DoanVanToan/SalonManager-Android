@@ -8,9 +8,11 @@ import com.framgia.fsalon.data.model.BookingResponse;
 import com.framgia.fsalon.data.model.DateBooking;
 import com.framgia.fsalon.data.model.Salon;
 import com.framgia.fsalon.data.model.Stylist;
+import com.framgia.fsalon.data.model.UserRespone;
 import com.framgia.fsalon.data.source.BookingRepository;
 import com.framgia.fsalon.data.source.SalonRepository;
 import com.framgia.fsalon.data.source.StylistRepository;
+import com.framgia.fsalon.data.source.UserRepository;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -36,25 +38,52 @@ public class BookingPresenter implements BookingContract.Presenter {
     private BookingRepository mBookingRepository;
     private SalonRepository mSalonRepository;
     private StylistRepository mStylistRepository;
+    private UserRepository mUserRepository;
 
     public BookingPresenter(BookingContract.ViewModel viewModel,
                             BookingRepository bookingRepository, SalonRepository salonRepository,
-                            StylistRepository stylistRepository) {
+                            StylistRepository stylistRepository, UserRepository userRepository) {
         mViewModel = viewModel;
         mBookingRepository = bookingRepository;
         mSalonRepository = salonRepository;
         mStylistRepository = stylistRepository;
+        mUserRepository = userRepository;
         getAllSalons();
         getDateBooking();
     }
 
     @Override
     public void onStart() {
+        getCustomer();
     }
 
     @Override
     public void onStop() {
         mCompositeDisposable.clear();
+    }
+
+    @Override
+    public void getCustomer() {
+        Disposable disposable = mUserRepository.getCurrentUser()
+            .subscribeOn(Schedulers.io())
+            .observeOn(AndroidSchedulers.mainThread())
+            .subscribeWith(new DisposableObserver<UserRespone>() {
+                @Override
+                public void onNext(@NonNull UserRespone userRespone) {
+                    mViewModel.onCustomer(userRespone.getUser().getName(), userRespone.getUser()
+                        .getPhone());
+                }
+
+                @Override
+                public void onError(@NonNull Throwable e) {
+                    mViewModel.onGuest();
+                }
+
+                @Override
+                public void onComplete() {
+                }
+            });
+        mCompositeDisposable.add(disposable);
     }
 
     @Override
@@ -199,6 +228,7 @@ public class BookingPresenter implements BookingContract.Presenter {
         if (!validateDataInput(phone, name, renderBookingId)) {
             return;
         }
+        mUserRepository.saveCurrentPhone(phone);
         Disposable disposable = mBookingRepository.book(phone, name, renderBookingId, stylistId)
             .subscribeOn(Schedulers.io())
             .observeOn(AndroidSchedulers.mainThread())
