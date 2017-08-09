@@ -98,6 +98,17 @@ public class BookingViewModel extends BaseObservable implements BookingContract.
     }
 
     @Override
+    public void onCustomer(String name, String phone) {
+        setName(name);
+        setPhone(phone);
+    }
+
+    @Override
+    public void onGuest() {
+        // TODO: 8/9/2017
+    }
+
+    @Override
     public void getData() {
         mPresenter.getBookings(mSalonId, mTime, mStylistId);
     }
@@ -214,6 +225,9 @@ public class BookingViewModel extends BaseObservable implements BookingContract.
     }
 
     public void setStylistAdapter(ArrayAdapter<Stylist> stylistAdapter) {
+        Stylist notRequire = new Stylist(mContext.getString(R.string.title_na));
+        notRequire.setId(-1);
+        stylistAdapter.add(notRequire);
         mStylistAdapter = stylistAdapter;
         notifyPropertyChanged(BR.stylistAdapter);
     }

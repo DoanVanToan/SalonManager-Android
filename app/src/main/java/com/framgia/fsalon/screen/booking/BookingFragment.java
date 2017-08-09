@@ -12,10 +12,14 @@ import com.framgia.fsalon.R;
 import com.framgia.fsalon.data.source.BookingRepository;
 import com.framgia.fsalon.data.source.SalonRepository;
 import com.framgia.fsalon.data.source.StylistRepository;
+import com.framgia.fsalon.data.source.UserRepository;
 import com.framgia.fsalon.data.source.api.FSalonServiceClient;
+import com.framgia.fsalon.data.source.local.UserLocalDataSource;
+import com.framgia.fsalon.data.source.local.sharepref.SharePreferenceImp;
 import com.framgia.fsalon.data.source.remote.BookingRemoteDataSource;
 import com.framgia.fsalon.data.source.remote.SalonRemoteDataSource;
 import com.framgia.fsalon.data.source.remote.StylistRemoteDataSource;
+import com.framgia.fsalon.data.source.remote.UserRemoteDataSource;
 import com.framgia.fsalon.databinding.FragmentBookingBinding;
 
 /**
@@ -33,10 +37,15 @@ public class BookingFragment extends Fragment {
         super.onCreate(savedInstanceState);
         mViewModel = new BookingViewModel(getActivity());
         BookingContract.Presenter presenter =
-            new BookingPresenter(mViewModel, new BookingRepository(new BookingRemoteDataSource(
-                FSalonServiceClient.getInstance())), new SalonRepository(new SalonRemoteDataSource
-                (FSalonServiceClient.getInstance())), new StylistRepository(new
-                StylistRemoteDataSource(FSalonServiceClient.getInstance())));
+            new BookingPresenter(mViewModel,
+                new BookingRepository(
+                    new BookingRemoteDataSource(FSalonServiceClient.getInstance())),
+                new SalonRepository(
+                    new SalonRemoteDataSource(FSalonServiceClient.getInstance())),
+                new StylistRepository(
+                    new StylistRemoteDataSource(FSalonServiceClient.getInstance())),
+                new UserRepository(new UserRemoteDataSource(FSalonServiceClient.getInstance()),
+                    new UserLocalDataSource(new SharePreferenceImp(getContext()))));
         mViewModel.setPresenter(presenter);
     }
 

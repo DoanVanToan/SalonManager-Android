@@ -20,56 +20,37 @@ interface BookingContract {
      */
     interface ViewModel extends BaseViewModel<Presenter> {
         void selectedSalonPosition(int position, Salon salon);
-
         void selectedDatePosition(int position, DateBooking dateBooking);
-
         void selectedTimePosition(int position, BookingRender bookingRender);
-
         void onError(String msg);
-
         void showProgressbar();
-
         void hideProgressbar();
-
         void onGetSalonsSuccess(List<Salon> salons);
-
         void onGetStylistSuccess(List<Stylist> stylists);
-
         void onGetBookingSuccess(BookingResponse bookingResponse);
-
         void getData();
-
         String getStringRes(int resId);
-
         void onGetDateBookingSuccess(List<DateBooking> dateBookings);
-
         void onBookSuccess(BookingOder bookingOder);
-
         void book();
-
         void onInputPhoneError();
-
         void onInputNameError();
-
         void onInputTimeError();
-
         void onInputSalonError();
+        void onCustomer(String name, String phone);
+        void onGuest();
     }
 
     /**
      * Presenter.
      */
     interface Presenter extends BasePresenter {
+        void getCustomer();
         void getAllSalons();
-
         void getAllStylists(int id);
-
         void getBookings(int salonId, long time, int stylelistId);
-
         void getBookings(int salonId, long time);
-
         void getDateBooking();
-
         void book(String phone, String name, int renderBookingId, int stylistId);
     }
 }

@@ -40,12 +40,12 @@ public class DetailPresenter implements DetailContract.Presenter {
                 @Override
                 public void onNext(@NonNull UserRespone userRespone) {
                     mPhone = userRespone.getUser().getPhone();
-                    getBookingByPhone();
+                    getCurrentPhone();
                 }
 
                 @Override
                 public void onError(@NonNull Throwable e) {
-                    mViewModel.onNotLogin();
+                    getCurrentPhone();
                     mViewModel.finishRefresh();
                 }
 
@@ -54,12 +54,13 @@ public class DetailPresenter implements DetailContract.Presenter {
                 }
             });
         mCompositeDisposable.add(disposable);
+        getCurrentPhone();
     }
 
     @Override
     public void getBookingByPhone() {
         if (mPhone.isEmpty()) {
-            mViewModel.onNotLogin();
+            mViewModel.onNotBooking();
         } else {
             Disposable disposable = mBookingRepository.getBookingByPhone(mPhone)
                 .subscribeOn(Schedulers.io())
@@ -83,6 +84,35 @@ public class DetailPresenter implements DetailContract.Presenter {
                 });
             mCompositeDisposable.add(disposable);
         }
+    }
+
+    @Override
+    public void getCurrentPhone() {
+        Disposable disposable = mUserRepository.getCurrentPhone()
+            .subscribeOn(Schedulers.io())
+            .observeOn(AndroidSchedulers.mainThread())
+            .subscribeWith(new DisposableObserver<String>() {
+                @Override
+                public void onNext(@NonNull String s) {
+                    mPhone = s;
+                }
+
+                @Override
+                public void onError(@NonNull Throwable e) {
+                    if (mPhone.isEmpty()) {
+                        mViewModel.onNotBooking();
+                        mViewModel.finishRefresh();
+                    } else {
+                        getBookingByPhone();
+                    }
+                }
+
+                @Override
+                public void onComplete() {
+                    getBookingByPhone();
+                }
+            });
+        mCompositeDisposable.add(disposable);
     }
 
     @Override
