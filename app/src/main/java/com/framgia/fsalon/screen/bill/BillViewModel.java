@@ -12,14 +12,13 @@ import com.framgia.fsalon.data.model.BillItemRequest;
 import com.framgia.fsalon.data.model.BillRequest;
 import com.framgia.fsalon.data.model.BillResponse;
 import com.framgia.fsalon.data.model.BookingOder;
+import com.framgia.fsalon.data.model.Salon;
 import com.framgia.fsalon.data.model.Service;
 import com.framgia.fsalon.data.model.Stylist;
 import com.framgia.fsalon.utils.navigator.Navigator;
 
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 import static com.framgia.fsalon.utils.Constant.Status.STATUS_PENDING;
 
@@ -32,12 +31,12 @@ public class BillViewModel extends BaseObservable implements BillContract.ViewMo
     private BillRequest mBillRequest = new BillRequest();
     private ArrayAdapter<Stylist> mStylistAdapter;
     private ArrayAdapter<Service> mServiceAdapter;
+    private ArrayAdapter<Salon> mSalonAdapter;
     private BillAdapter mAdapter;
     private Stylist mStylist;
     private Service mService;
     private String mPrice;
     private String mQty;
-    private Activity mActivity;
     private Context mContext;
     private String mPhone;
     private float mTotal;
@@ -46,10 +45,9 @@ public class BillViewModel extends BaseObservable implements BillContract.ViewMo
     private String mCustomerNameError;
     private String mCustomerPhoneError;
     private String mPhoneError;
-    private Map<Service, Integer> mUsedServices = new HashMap<>();
+    private Salon mSalon;
 
     public BillViewModel(Activity activity) {
-        mActivity = activity;
         mContext = activity.getApplicationContext();
         mAdapter = new BillAdapter(mContext, new ArrayList<BillItemRequest>(), this);
         mNavigator = new Navigator(activity);
@@ -96,6 +94,11 @@ public class BillViewModel extends BaseObservable implements BillContract.ViewMo
     @Override
     public void onGetStylistSuccess(List<Stylist> stylists) {
         setStylistAdapter(new ArrayAdapter<>(mContext, R.layout.item_spinner_small, stylists));
+    }
+
+    @Override
+    public void onGetSalonsSuccess(List<Salon> salons) {
+        setSalonAdapter(new ArrayAdapter<>(mContext, R.layout.item_spinner_small, salons));
     }
 
     @Override
@@ -310,5 +313,25 @@ public class BillViewModel extends BaseObservable implements BillContract.ViewMo
     public void setPhoneError(String phoneError) {
         mPhoneError = phoneError;
         notifyPropertyChanged(BR.phoneError);
+    }
+
+    @Bindable
+    public ArrayAdapter<Salon> getSalonAdapter() {
+        return mSalonAdapter;
+    }
+
+    public void setSalonAdapter(ArrayAdapter<Salon> salonAdapter) {
+        mSalonAdapter = salonAdapter;
+        notifyPropertyChanged(BR.salonAdapter);
+    }
+
+    @Bindable
+    public Salon getSalon() {
+        return mSalon;
+    }
+
+    public void setSalon(Salon salon) {
+        mSalon = salon;
+        notifyPropertyChanged(BR.salon);
     }
 }

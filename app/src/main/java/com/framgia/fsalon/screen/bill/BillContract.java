@@ -5,6 +5,7 @@ import com.framgia.fsalon.BaseViewModel;
 import com.framgia.fsalon.data.model.BillRequest;
 import com.framgia.fsalon.data.model.BillResponse;
 import com.framgia.fsalon.data.model.BookingOder;
+import com.framgia.fsalon.data.model.Salon;
 import com.framgia.fsalon.data.model.Service;
 import com.framgia.fsalon.data.model.Stylist;
 
@@ -21,6 +22,7 @@ interface BillContract {
         void onAddBillClick();
         void showProgressbar();
         void onGetStylistSuccess(List<Stylist> stylists);
+        void onGetSalonsSuccess(List<Salon> salons);
         void hideProgressbar();
         void onError(String message);
         void onGetServiceSuccess(List<Service> services);
@@ -44,5 +46,6 @@ interface BillContract {
         void createBill(BillRequest billRequest);
         void getBookingByPhone(String phone);
         boolean validateFormInput(Service service, Stylist stylist, String pricce, String qty);
+        void getAllSalon();
     }
 }

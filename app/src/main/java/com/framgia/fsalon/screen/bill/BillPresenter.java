@@ -5,10 +5,12 @@ import android.text.TextUtils;
 import com.framgia.fsalon.data.model.BillRequest;
 import com.framgia.fsalon.data.model.BillResponse;
 import com.framgia.fsalon.data.model.BookingOder;
+import com.framgia.fsalon.data.model.Salon;
 import com.framgia.fsalon.data.model.Service;
 import com.framgia.fsalon.data.model.Stylist;
 import com.framgia.fsalon.data.source.BillRepository;
 import com.framgia.fsalon.data.source.BookingRepository;
+import com.framgia.fsalon.data.source.SalonRepository;
 import com.framgia.fsalon.data.source.ServiceRepository;
 import com.framgia.fsalon.data.source.StylistRepository;
 
@@ -35,17 +37,20 @@ public class BillPresenter implements BillContract.Presenter {
     private ServiceRepository mServiceRepository;
     private BillRepository mBillRepository;
     private BookingRepository mBookingRepository;
+    private SalonRepository mSalonRepository;
 
     public BillPresenter(BillContract.ViewModel viewModel, StylistRepository stylistRepository,
                          ServiceRepository serviceRepository, BillRepository billRepository,
-                         BookingRepository bookingRepository) {
+                         BookingRepository bookingRepository, SalonRepository salonRepository) {
         mViewModel = viewModel;
         mStylistRepository = stylistRepository;
         mServiceRepository = serviceRepository;
         mBillRepository = billRepository;
         mBookingRepository = bookingRepository;
+        mSalonRepository = salonRepository;
         getAllServices();
         getAllStylists(DEFAULT_SALON_ID);
+        getAllSalon();
     }
 
     @Override
@@ -201,6 +206,36 @@ public class BillPresenter implements BillContract.Presenter {
             mViewModel.onInputFormError();
         }
         return isValid;
+    }
+
+    @Override
+    public void getAllSalon() {
+        Disposable disposable = mSalonRepository.getAllSalons()
+            .subscribeOn(Schedulers.io())
+            .observeOn(AndroidSchedulers.mainThread())
+            .doOnSubscribe(new Consumer<Disposable>() {
+                @Override
+                public void accept(@NonNull Disposable disposable) throws Exception {
+                    mViewModel.showProgressbar();
+                }
+            }).subscribeWith(new DisposableObserver<List<Salon>>() {
+                @Override
+                public void onNext(@NonNull List<Salon> salons) {
+                    mViewModel.onGetSalonsSuccess(salons);
+                }
+
+                @Override
+                public void onError(@NonNull Throwable e) {
+                    mViewModel.hideProgressbar();
+                    mViewModel.onError(e.getMessage());
+                }
+
+                @Override
+                public void onComplete() {
+                    mViewModel.hideProgressbar();
+                }
+            });
+        mCompositeDisposable.add(disposable);
     }
 
     public boolean validateDataInput(String phone, String name) {
