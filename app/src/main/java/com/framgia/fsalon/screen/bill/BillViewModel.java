@@ -38,19 +38,18 @@ public class BillViewModel extends BaseObservable implements BillContract.ViewMo
     private String mPrice;
     private String mQty;
     private Context mContext;
-    private String mPhone;
     private float mTotal;
     private Navigator mNavigator;
     private String mFormError;
     private String mCustomerNameError;
     private String mCustomerPhoneError;
-    private String mPhoneError;
     private Salon mSalon;
 
     public BillViewModel(Activity activity) {
         mContext = activity.getApplicationContext();
         mAdapter = new BillAdapter(mContext, new ArrayList<BillItemRequest>(), this);
         mNavigator = new Navigator(activity);
+        mBillRequest.setOrderBookingId(-1);
         setQty(FIRST_ITEM);
     }
 
@@ -71,7 +70,8 @@ public class BillViewModel extends BaseObservable implements BillContract.ViewMo
 
     @Override
     public void onAddBillClick() {
-        if (!mPresenter.validateFormInput(mService, mStylist, mPrice, mQty)) {
+        if (!mPresenter.validateFormInput(mService, mStylist, mSalon, mPrice, mQty, mBillRequest
+            .getPhone(), mBillRequest.getCustomerName())) {
             return;
         }
         BillItemRequest bill = new BillItemRequest.Builder()
@@ -144,8 +144,8 @@ public class BillViewModel extends BaseObservable implements BillContract.ViewMo
     }
 
     @Override
-    public void onSearchBookingClick() {
-        mPresenter.getBookingByPhone(mPhone);
+    public void onFilterPhone() {
+        mPresenter.getBookingByPhone(mBillRequest.getPhone());
     }
 
     @Override
@@ -161,11 +161,6 @@ public class BillViewModel extends BaseObservable implements BillContract.ViewMo
     @Override
     public void onInputCustomerPhoneError() {
         setCustomerPhoneError(mNavigator.getStringById(R.string.msg_error_empty));
-    }
-
-    @Override
-    public void onInputPhoneError() {
-        setPhoneError(mNavigator.getStringById(R.string.msg_error_phone));
     }
 
     public void onGetPrice(String price) {
@@ -256,16 +251,6 @@ public class BillViewModel extends BaseObservable implements BillContract.ViewMo
     }
 
     @Bindable
-    public String getPhone() {
-        return mPhone;
-    }
-
-    public void setPhone(String phone) {
-        mPhone = phone;
-        notifyPropertyChanged(BR.phone);
-    }
-
-    @Bindable
     public float getTotal() {
         return mTotal;
     }
@@ -303,16 +288,6 @@ public class BillViewModel extends BaseObservable implements BillContract.ViewMo
     public void setCustomerPhoneError(String customerPhoneError) {
         mCustomerPhoneError = customerPhoneError;
         notifyPropertyChanged(BR.customerPhoneError);
-    }
-
-    @Bindable
-    public String getPhoneError() {
-        return mPhoneError;
-    }
-
-    public void setPhoneError(String phoneError) {
-        mPhoneError = phoneError;
-        notifyPropertyChanged(BR.phoneError);
     }
 
     @Bindable

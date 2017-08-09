@@ -192,16 +192,18 @@ public class BillPresenter implements BillContract.Presenter {
         boolean isValid = true;
         if (TextUtils.isEmpty(phone)) {
             isValid = false;
-            mViewModel.onInputPhoneError();
+            mViewModel.onInputCustomerPhoneError();
         }
         return isValid;
     }
 
     @Override
-    public boolean validateFormInput(Service service, Stylist stylist, String pricce, String qty) {
+    public boolean validateFormInput(Service service, Stylist stylist, Salon salon, String pricce,
+                                     String qty, String phoneCustomer, String nameCustomer) {
         boolean isValid = true;
         if (service == null || stylist == null || TextUtils.isEmpty(pricce) || TextUtils
-            .isEmpty(qty)) {
+            .isEmpty(qty) || salon == null || TextUtils.isEmpty(phoneCustomer) || TextUtils
+            .isEmpty(nameCustomer)) {
             isValid = false;
             mViewModel.onInputFormError();
         }
