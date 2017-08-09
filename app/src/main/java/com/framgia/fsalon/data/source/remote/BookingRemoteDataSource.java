@@ -62,7 +62,9 @@ public class BookingRemoteDataSource extends BaseRemoteDataSource implements Boo
         parram.put(PHONE, phone);
         parram.put(NAME, name);
         parram.put(RENDER_BOOKING_ID, String.valueOf(renderBookingId));
-        parram.put(STYLIST_CHOSEN, String.valueOf(stylistId));
+        if (stylistId != -1) {
+            parram.put(STYLIST_CHOSEN, String.valueOf(stylistId));
+        }
         return mFSalonApi.book(parram)
             .flatMap(new Function<Respone<BookingOder>, ObservableSource<BookingOder>>() {
                 @Override
@@ -72,6 +74,11 @@ public class BookingRemoteDataSource extends BaseRemoteDataSource implements Boo
                     return Utils.getResponse(bookingOderRespone);
                 }
             });
+    }
+
+    @Override
+    public Observable<BookingOder> book(String phone, String name, int renderBookingId) {
+        return book(phone, name, renderBookingId, -1);
     }
 
     @Override

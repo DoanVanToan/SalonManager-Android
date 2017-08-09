@@ -50,11 +50,6 @@ public class Constant {
         public static final int STATUS_PENDING = 0;
         public static final int STATUS_COMPLETE = 1;
         public static final int STATUS_CANCEL = 2;
-        public static final String BOOKING_STATUS = "BOOKING_STATUS";
-        public static final String COMPLETE = "Complete";
-        public static final String PENDING = "Pending";
-        public static final String CANCEL = "Cancel";
-        public static final String NA = "N/A";
     }
 
     /**

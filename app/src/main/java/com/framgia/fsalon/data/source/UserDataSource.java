@@ -14,6 +14,10 @@ public interface UserDataSource {
         Observable<UserRespone> getCurrentUser();
         Observable<Boolean> saveCurrentUser(UserRespone userRespone);
         void clearCurrentUser();
+
+        Observable<Boolean> saveCurrentPhone(String phone);
+
+        Observable<String> getCurrentPhone();
     }
 
     interface RemoteDataSource {

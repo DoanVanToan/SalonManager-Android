@@ -7,14 +7,13 @@ import com.google.gson.Gson;
 
 import io.reactivex.Observable;
 
+import static com.framgia.fsalon.data.source.local.sharepref.SharePreferenceKey.PREF_PHONE;
 import static com.framgia.fsalon.data.source.local.sharepref.SharePreferenceKey.PREF_USER;
 
 /**
  * Created by framgia on 7/20/17.
  */
-
 public class UserLocalDataSource implements UserDataSource.LocalDataSource {
-
     private SharePreferenceApi mSharePreference;
 
     public UserLocalDataSource(SharePreferenceApi sharePreference) {
@@ -40,5 +39,20 @@ public class UserLocalDataSource implements UserDataSource.LocalDataSource {
     @Override
     public void clearCurrentUser() {
         mSharePreference.remove(PREF_USER);
+        mSharePreference.remove(PREF_PHONE);
+    }
+
+    public Observable<Boolean> saveCurrentPhone(String phone) {
+        return Observable.just(mSharePreference.put(PREF_PHONE, phone));
+    }
+
+    @Override
+    public Observable<String> getCurrentPhone() {
+        String phone = mSharePreference.get(PREF_PHONE, String.class);
+        if (phone == null) {
+            return Observable.error(new NullPointerException());
+        } else {
+            return Observable.just(phone);
+        }
     }
 }
