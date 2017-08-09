@@ -110,7 +110,7 @@
                 android:fontFamily="serif"
                 android:gravity="center"
                 android:padding="@dimen/dp_12"
-                android:text="@string/title_login"
+                android:text="@string/action_login"
                 android:onClick="@{() -> viewModel.onLoginClick()}"
                 android:textAllCaps="true"
                 android:textColor="@color/color_white"

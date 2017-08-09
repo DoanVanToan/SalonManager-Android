@@ -14,6 +14,7 @@ import com.framgia.fsalon.BR;
 import com.framgia.fsalon.R;
 import com.framgia.fsalon.screen.booking.BookingFragment;
 import com.framgia.fsalon.screen.booking.detail.DetailFragment;
+import com.framgia.fsalon.screen.info.InfoUserFragment;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -57,6 +58,8 @@ public class HomeViewModel extends BaseObservable implements HomeContract.ViewMo
         List<Fragment> fragments = new ArrayList<>();
         fragments.add(BookingFragment.newInstance());
         fragments.add(DetailFragment.newInstance());
+        fragments.add(DetailFragment.newInstance());
+        fragments.add(InfoUserFragment.newInstance());
         mPagerAdapter = new HomePagerAdapter(activity.getSupportFragmentManager(), fragments);
     }
 
