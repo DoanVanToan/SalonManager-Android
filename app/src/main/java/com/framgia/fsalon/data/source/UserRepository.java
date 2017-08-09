@@ -43,4 +43,12 @@ public class UserRepository {
                                             String name, String phone) {
         return mUserRemoteDataSource.registry(email, password, rePassword, name, phone);
     }
+
+    public Observable<String> getCurrentPhone() {
+        return mUserLocalDataSource.getCurrentPhone();
+    }
+
+    public Observable<Boolean> saveCurrentPhone(String phone) {
+        return mUserLocalDataSource.saveCurrentPhone(phone);
+    }
 }

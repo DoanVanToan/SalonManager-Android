@@ -7,4 +7,6 @@ package com.framgia.fsalon.data.source.local.sharepref;
 public class SharePreferenceKey {
 
     public static final String PREF_USER = "PREF_USER";
+
+    public static final String PREF_PHONE = "PREF_PHONE";
 }
