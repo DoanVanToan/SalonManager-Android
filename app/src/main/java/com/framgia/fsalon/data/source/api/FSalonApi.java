@@ -7,6 +7,7 @@ import com.framgia.fsalon.data.model.ManageBookingResponse;
 import com.framgia.fsalon.data.model.Salon;
 import com.framgia.fsalon.data.model.Service;
 import com.framgia.fsalon.data.model.Stylist;
+import com.framgia.fsalon.data.model.User;
 import com.framgia.fsalon.data.model.UserRespone;
 
 import java.util.List;
@@ -51,5 +52,7 @@ public interface FSalonApi {
     Observable<Respone<BookingOder>> getBookingById(@Path("id") int id);
     @POST("api/v0/bill")
     Observable<Respone<BillResponse>> createBill(@QueryMap Map<String, String> params);
+    @GET("api/v0/user-by-phone")
+    Observable<Respone<User>> getCustomerByPhone(@Query("phone") String phone);
 }
 

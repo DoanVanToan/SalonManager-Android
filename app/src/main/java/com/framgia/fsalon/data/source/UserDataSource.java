@@ -1,5 +1,6 @@
 package com.framgia.fsalon.data.source;
 
+import com.framgia.fsalon.data.model.User;
 import com.framgia.fsalon.data.model.UserRespone;
 
 import java.util.List;
@@ -25,5 +26,6 @@ public interface UserDataSource {
         Observable<List<String>> logout();
         Observable<UserRespone> registry(String email, String password, String rePassword, String
             name, String phone);
+        Observable<User> getCustomerByPhone(String phone);
     }
 }
