@@ -1,9 +1,11 @@
 package com.framgia.fsalon.data.source.remote;
 
-import com.framgia.fsalon.data.source.UserDataSource;
 import com.framgia.fsalon.data.model.UserRespone;
+import com.framgia.fsalon.data.source.UserDataSource;
 import com.framgia.fsalon.data.source.api.FSalonApi;
 import com.framgia.fsalon.utils.Utils;
+
+import java.util.List;
 
 import framgia.retrofitservicecreator.api.model.Respone;
 import io.reactivex.Observable;
@@ -29,6 +31,19 @@ public class UserRemoteDataSource extends BaseRemoteDataSource
                     @NonNull Respone<UserRespone> userResponeRespone)
                     throws Exception {
                     return Utils.getResponse(userResponeRespone);
+                }
+            });
+    }
+
+    @Override
+    public Observable<List<String>> logout() {
+        return mFSalonApi.logout()
+            .flatMap(new Function<Respone<List<String>>, ObservableSource<List<String>>>() {
+                @Override
+                public ObservableSource<List<String>> apply(@NonNull Respone<List<String>>
+                                                                listRespone)
+                    throws Exception {
+                    return Utils.getResponse(listRespone);
                 }
             });
     }

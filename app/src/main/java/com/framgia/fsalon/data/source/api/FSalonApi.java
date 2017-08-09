@@ -24,6 +24,8 @@ public interface FSalonApi {
     @POST("api/v0/login")
     Observable<Respone<UserRespone>> login(@Query("email_or_phone") String account,
                                            @Query("password") String passWord);
+    @POST("api/v0/logout")
+    Observable<Respone<List<String>>> logout();
     @GET("api/v0/get-salons")
     Observable<Respone<List<Salon>>> getSalon();
     @GET("api/v0/get-stylist-by-salonId/{id}")

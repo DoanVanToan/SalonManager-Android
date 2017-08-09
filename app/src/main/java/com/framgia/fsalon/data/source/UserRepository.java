@@ -2,18 +2,19 @@ package com.framgia.fsalon.data.source;
 
 import com.framgia.fsalon.data.model.UserRespone;
 
+import java.util.List;
+
 import io.reactivex.Observable;
 
 /**
  * Created by MyPC on 20/07/2017.
  */
 public class UserRepository {
-
     private UserDataSource.RemoteDataSource mUserRemoteDataSource;
     private UserDataSource.LocalDataSource mUserLocalDataSource;
 
     public UserRepository(UserDataSource.RemoteDataSource userRemoteDataSource,
-        UserDataSource.LocalDataSource userLocalDataSource) {
+                          UserDataSource.LocalDataSource userLocalDataSource) {
         mUserRemoteDataSource = userRemoteDataSource;
         mUserLocalDataSource = userLocalDataSource;
     }
@@ -22,12 +23,20 @@ public class UserRepository {
         return mUserRemoteDataSource.login(account, passWord);
     }
 
+    public Observable<List<String>> logout() {
+        return mUserRemoteDataSource.logout();
+    }
+
     public Observable<UserRespone> getCurrentUser() {
         return mUserLocalDataSource.getCurrentUser();
     }
 
     public Observable<Boolean> saveCurrentUser(UserRespone userRespone) {
         return mUserLocalDataSource.saveCurrentUser(userRespone);
+    }
+
+    public void clearUser() {
+        mUserLocalDataSource.clearCurrentUser();
     }
 
     public Observable<UserRespone> registry(String email, String password, String rePassword,
