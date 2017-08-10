@@ -17,10 +17,9 @@ public class ManageBookingRepository implements ManageBookingDatasource {
     }
 
     @Override
-    public Observable<List<ManageBookingResponse>> getListBooking(String filterChoice, int page,
-                                                                  int perpage, int status,
-                                                                  int startDate, int endDate) {
-        return mDatasource.getListBooking(filterChoice, page, perpage, status, startDate,
-            endDate);
+    public Observable<List<ManageBookingResponse>> getListBooking(String filterChoice,
+                                                                  String status, int startDate,
+                                                                  int endDate, int departmentId) {
+        return mDatasource.getListBooking(filterChoice, status, startDate, endDate, departmentId);
     }
 }

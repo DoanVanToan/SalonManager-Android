@@ -1,7 +1,9 @@
 package com.framgia.fsalon.screen.scheduler;
 
 import com.framgia.fsalon.data.model.ManageBookingResponse;
+import com.framgia.fsalon.data.model.Salon;
 import com.framgia.fsalon.data.source.ManageBookingRepository;
+import com.framgia.fsalon.data.source.SalonRepository;
 
 import java.util.List;
 
@@ -13,9 +15,7 @@ import io.reactivex.functions.Consumer;
 import io.reactivex.observers.DisposableObserver;
 import io.reactivex.schedulers.Schedulers;
 
-import static com.framgia.fsalon.data.source.remote.ManageBookingRemoteDataSource.FILTER_DAY;
 import static com.framgia.fsalon.utils.Constant.ApiParram.FIRST_PAGE;
-import static com.framgia.fsalon.utils.Constant.OUT_OF_INDEX;
 
 /**
  * Listens to user actions from the UI ({@link SchedulerFragment}), retrieves the data and updates
@@ -27,12 +27,15 @@ public class SchedulerPresenter implements SchedulerContract.Presenter {
     private int mPage = FIRST_PAGE;
     private int mPerPage = 20;
     private CompositeDisposable mCompositeDisposable;
+    private SalonRepository mSalonRepository;
 
     SchedulerPresenter(SchedulerContract.ViewModel viewModel, ManageBookingRepository
-        repository) {
+        repository, SalonRepository salonRepository) {
         mViewModel = viewModel;
         mRepository = repository;
+        mSalonRepository = salonRepository;
         mCompositeDisposable = new CompositeDisposable();
+        getAllSalons();
     }
 
     @Override
@@ -45,10 +48,11 @@ public class SchedulerPresenter implements SchedulerContract.Presenter {
     }
 
     @Override
-    public void getSchedulers(String filterChoice, int page, int perpage, int status, int startDate,
-                              int endDate) {
-        Disposable disposable = mRepository.getListBooking(filterChoice, page, perpage, status,
-            startDate, endDate)
+    public void getSchedulers(String filterChoice,
+                              String status, int startDate,
+                              int endDate, int departmentId) {
+        Disposable disposable = mRepository.getListBooking(filterChoice, status, startDate, endDate,
+            departmentId)
             .subscribeOn(Schedulers.io())
             .observeOn(AndroidSchedulers.mainThread())
             .doOnSubscribe(new Consumer<Disposable>() {
@@ -74,13 +78,44 @@ public class SchedulerPresenter implements SchedulerContract.Presenter {
                 }
             });
         mCompositeDisposable.add(disposable);
-        mPage = page;
+    }
+
+    @Override
+    public void getAllSalons() {
+        Disposable disposable = mSalonRepository.getAllSalons()
+            .subscribeOn(Schedulers.io())
+            .observeOn(AndroidSchedulers.mainThread())
+            .doOnSubscribe(new Consumer<Disposable>() {
+                @Override
+                public void accept(@NonNull Disposable disposable) throws Exception {
+                    mViewModel.showLoadMore();
+                }
+            })
+            .subscribeWith(
+                new DisposableObserver<List<Salon>>() {
+                    @Override
+                    public void onNext(@NonNull List<Salon> salons) {
+                        mViewModel.onGetSalonsSuccess(salons);
+                    }
+
+                    @Override
+                    public void onError(@NonNull Throwable e) {
+                        mViewModel.hideLoadMore();
+                        mViewModel.onError(e.getMessage());
+                    }
+
+                    @Override
+                    public void onComplete() {
+                        mViewModel.hideLoadMore();
+                    }
+                });
+        mCompositeDisposable.add(disposable);
     }
 
     @Override
     public void loadMoreData() {
         mPage++;
-        getSchedulers(FILTER_DAY, mPage, OUT_OF_INDEX, OUT_OF_INDEX, OUT_OF_INDEX, OUT_OF_INDEX);
+        // TODO: 09/08/2017 load more get data
     }
 
     public int getPage() {

@@ -23,11 +23,10 @@ public class BookingDetailActivity extends AppCompatActivity {
     private static final int DEFAULT_ID = 0;
     private static final int DEFAULT_STATUS = -1;
 
-    public static Intent getInstance(Context context, int id, int status) {
+    public static Intent getInstance(Context context, int id) {
         Intent intent = new Intent(context, BookingDetailActivity.class);
         Bundle args = new Bundle();
         args.putInt(Constant.BOOKING_ID, id);
-        args.putInt(Constant.BookingStatus.BOOKING_STATUS, status);
         intent.putExtras(args);
         return intent;
     }
@@ -46,8 +45,7 @@ public class BookingDetailActivity extends AppCompatActivity {
         binding.setViewModel((BookingDetailViewModel) mViewModel);
         setSupportActionBar(binding.toolbarAdminBookingDetail);
         if (getSupportActionBar() != null) {
-            getSupportActionBar().setTitle(Utils.getStatus(getIntent().getIntExtra(Constant
-                .BookingStatus.BOOKING_STATUS, DEFAULT_STATUS)));
+            getSupportActionBar().setTitle(R.string.title_booking_detail);
             getSupportActionBar().setDisplayShowHomeEnabled(true);
             getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         }
