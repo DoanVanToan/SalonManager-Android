@@ -24,7 +24,6 @@ public class DateAdapter implements JsonSerializer<Date>, JsonDeserializer<Date>
 
     public DateAdapter() {
         dateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss", Locale.US);
-        dateFormat.setTimeZone(TimeZone.getTimeZone("UTC"));
     }
 
     @Override
