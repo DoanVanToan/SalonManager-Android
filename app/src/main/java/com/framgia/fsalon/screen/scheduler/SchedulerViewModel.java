@@ -268,6 +268,7 @@ public class SchedulerViewModel extends BaseObservable
     public void onGetSalonsSuccess(List<Salon> salons) {
         setDepartmentAdapter(new DepartmentAdapter(mFragment.getContext(), salons, this));
         mDepartmentAdapter.selectedPosition(FIRST_ITEM_SALON);
+        mSalonId = mDepartmentAdapter.getItem(FIRST_ITEM_SALON).getId();
         onFilterData();
     }
 
