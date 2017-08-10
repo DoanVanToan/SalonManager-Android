@@ -21,6 +21,9 @@ public class BillResponse extends BillModel.Bill<BillItemResponse> {
     @Expose
     @SerializedName("updated_at")
     private Date mUpdatedAt;
+    @Expose
+    @SerializedName("department")
+    private Salon mDepartment;
 
     public int getId() {
         return mId;
@@ -52,5 +55,13 @@ public class BillResponse extends BillModel.Bill<BillItemResponse> {
 
     public void setUpdatedAt(Date updatedAt) {
         mUpdatedAt = updatedAt;
+    }
+
+    public Salon getDepartment() {
+        return mDepartment;
+    }
+
+    public void setDepartment(Salon department) {
+        mDepartment = department;
     }
 }
