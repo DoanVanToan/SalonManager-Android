@@ -2,6 +2,9 @@ package com.framgia.fsalon.data.source;
 
 import com.framgia.fsalon.data.model.BillRequest;
 import com.framgia.fsalon.data.model.BillResponse;
+import com.framgia.fsalon.data.model.ListBillRespond;
+
+import java.util.List;
 
 import io.reactivex.Observable;
 
@@ -10,4 +13,6 @@ import io.reactivex.Observable;
  */
 public interface BillDataSource {
     Observable<BillResponse> createBill(BillRequest billRequest);
+    Observable<List<ListBillRespond>> filterBills(String type, int startDate, int endDate,
+                                                  int status, int departmentId, int customerId);
 }

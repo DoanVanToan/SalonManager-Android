@@ -35,6 +35,9 @@ public class Constant {
         public static final String STATUS = "status";
         public static final String GRAND_TOTAL = "grand_total";
         public static final String BILL_ITEMS = "bill_items";
+        public static final String TYPE_FILTER = "type";
+        public static final String START_DATE = "start_date";
+        public static final String END_DATE = "end_date";
     }
 
     public class Permission {
