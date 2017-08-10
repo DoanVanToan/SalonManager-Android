@@ -90,6 +90,9 @@
     <string name="msg_not_booking">You still not booking yet</string>
     <string name="title_na">N/A</string>
     <string name="msg_book_to_edit">You can book again to edit your last booking</string>
+    <string name="title_canceled">Canceled</string>
+    <string name="title_in_late">In Late</string>
+    <string name="title_booking_detail">Booking Detail</string>
     <string-array name="title_status">
         <item>Canceled</item>
         <item>Pending</item>
