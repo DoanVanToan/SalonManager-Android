@@ -14,7 +14,6 @@ import java.util.Date;
  */
 public class BookingOder implements Parcelable {
     public static final int STATUS_CANCELED = 0;
-    public static final int STATUS_PENDING = 1;
     public static final int STATUS_WATTING = 1;
     public static final int STATUS_FINISHED = 2;
     public static final int STATUS_IN_LATE = 3;
