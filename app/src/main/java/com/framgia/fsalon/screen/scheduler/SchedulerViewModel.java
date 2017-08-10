@@ -1,18 +1,23 @@
 package com.framgia.fsalon.screen.scheduler;
 
 import android.app.FragmentManager;
+import android.content.DialogInterface;
 import android.databinding.BaseObservable;
 import android.databinding.Bindable;
+import android.support.annotation.IdRes;
 import android.support.annotation.IntDef;
+import android.support.v4.app.Fragment;
+import android.support.v4.widget.DrawerLayout;
 import android.support.v7.widget.RecyclerView;
+import android.view.Gravity;
 import android.view.View;
-import android.widget.AdapterView;
-import android.widget.Spinner;
+import android.widget.RadioGroup;
 
 import com.framgia.fsalon.BR;
 import com.framgia.fsalon.FSalonApplication;
 import com.framgia.fsalon.R;
 import com.framgia.fsalon.data.model.ManageBookingResponse;
+import com.framgia.fsalon.data.model.Salon;
 import com.framgia.fsalon.screen.scheduler.detail.BookingDetailActivity;
 import com.framgia.fsalon.utils.Utils;
 import com.framgia.fsalon.utils.navigator.Navigator;
@@ -28,7 +33,8 @@ import java.util.List;
 
 import static com.framgia.fsalon.data.model.BookingOder.STATUS_CANCELED;
 import static com.framgia.fsalon.data.model.BookingOder.STATUS_FINISHED;
-import static com.framgia.fsalon.data.model.BookingOder.STATUS_PENDING;
+import static com.framgia.fsalon.data.model.BookingOder.STATUS_IN_LATE;
+import static com.framgia.fsalon.data.model.BookingOder.STATUS_WATTING;
 import static com.framgia.fsalon.data.source.remote.ManageBookingRemoteDataSource.FILTER_DAY;
 import static com.framgia.fsalon.data.source.remote.ManageBookingRemoteDataSource.FILTER_SPACE;
 import static com.framgia.fsalon.screen.scheduler.SchedulerViewModel.TabFilter.TAB_END_DATE;
@@ -38,14 +44,15 @@ import static com.framgia.fsalon.screen.scheduler.SchedulerViewModel.TabFilter.T
 import static com.framgia.fsalon.screen.scheduler.SchedulerViewModel.TabFilter.TAB_TODAY;
 import static com.framgia.fsalon.screen.scheduler.SchedulerViewModel.TabFilter.TAB_TOMORROW;
 import static com.framgia.fsalon.screen.scheduler.SchedulerViewModel.TabFilter.TAB_YESTERDAY;
-import static com.framgia.fsalon.utils.Constant.ApiParram.FIRST_PAGE;
 import static com.framgia.fsalon.utils.Constant.ApiParram.OUT_OF_INDEX;
 
 /**
  * Exposes the data to be used in the Scheduler screen.
  */
 public class SchedulerViewModel extends BaseObservable
-    implements SchedulerContract.ViewModel, DatePickerDialog.OnDateSetListener {
+    implements SchedulerContract.ViewModel, DatePickerDialog.OnDateSetListener,
+    DialogInterface.OnCancelListener {
+    private static final int FIRST_ITEM_SALON = 0;
     private SchedulerContract.Presenter mPresenter;
     private int mTabFilter;
     private SchedulerAdapter mAdapter;
@@ -61,7 +68,67 @@ public class SchedulerViewModel extends BaseObservable
     private String mTitleTopSheet;
     private String mFilterChoice = FILTER_DAY;
     private String mSpaceTime = "";
-    private int mStatus;
+    private DepartmentAdapter mDepartmentAdapter;
+    private Fragment mFragment;
+    private boolean mIsWatting;
+    private boolean mIsFinished;
+    private boolean mIsCanceled;
+    private boolean mIsInLate;
+    private int mSalonId;
+    private String mStatus = "";
+    private int mRadioButtonId;
+    private DrawerLayout.DrawerListener mDrawerListener = new DrawerLayout.DrawerListener() {
+        @Override
+        public void onDrawerSlide(View drawerView, float slideOffset) {
+        }
+
+        @Override
+        public void onDrawerOpened(View drawerView) {
+        }
+
+        @Override
+        public void onDrawerClosed(View drawerView) {
+            onFilterData();
+        }
+
+        @Override
+        public void onDrawerStateChanged(int newState) {
+        }
+    };
+    private RadioGroup.OnCheckedChangeListener mChangeListener = new RadioGroup
+        .OnCheckedChangeListener() {
+        @Override
+        public void onCheckedChanged(RadioGroup radioGroup, @IdRes int i) {
+            switch (radioGroup.getCheckedRadioButtonId()) {
+                case R.id.filter_today:
+                    mFilterChoice = FILTER_DAY;
+                    mEndDate = OUT_OF_INDEX;
+                    mStartDate = Utils.createTimeStamp(TAB_TODAY);
+                    setTitleTopSheet(FSalonApplication.getInstant()
+                        .getResources().getString(R.string.title_today));
+                    setRadioButtonId(R.id.filter_today);
+                    break;
+                case R.id.filter_yesterday:
+                    mEndDate = OUT_OF_INDEX;
+                    mFilterChoice = FILTER_DAY;
+                    mStartDate = Utils.createTimeStamp(TAB_YESTERDAY);
+                    setTitleTopSheet(FSalonApplication.getInstant()
+                        .getResources().getString(R.string.title_yesterday));
+                    setRadioButtonId(R.id.filter_yesterday);
+                    break;
+                case R.id.filter_tomorrow:
+                    mEndDate = OUT_OF_INDEX;
+                    mFilterChoice = FILTER_DAY;
+                    mStartDate = Utils.createTimeStamp(TAB_TOMORROW);
+                    setTitleTopSheet(FSalonApplication.getInstant()
+                        .getResources().getString(R.string.title_tomorrow));
+                    setRadioButtonId(R.id.filter_tomorrow);
+                    break;
+                default:
+                    break;
+            }
+        }
+    };
     private RecyclerView.OnScrollListener mScrollListenner = new RecyclerView.OnScrollListener() {
         @Override
         public void onScrolled(RecyclerView recyclerView, int dx, int dy) {
@@ -75,42 +142,13 @@ public class SchedulerViewModel extends BaseObservable
             int lastItemsVisible =
                 mLayoutManager.getViewAdapterPosition(lastVisibleItem);
             if (!mIsLoadingMore && (visibleItems + lastItemsVisible) >= totalItems) {
-                mPresenter.loadMoreData();
+                // TODO: 09/08/2017  mPresenter.loadMoreData();
             }
         }
     };
-    private Spinner.OnItemSelectedListener mSpinnerSelectListener =
-        new AdapterView.OnItemSelectedListener() {
-            @Override
-            public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
-                mAdapter.clear();
-                switch (i) {
-                    case STATUS_CANCELED:
-                        mStatus = STATUS_CANCELED;
-                        mPresenter.getSchedulers(mFilterChoice, FIRST_PAGE, OUT_OF_INDEX,
-                            STATUS_CANCELED, mStartDate, mEndDate);
-                        break;
-                    case STATUS_PENDING:
-                        mStatus = STATUS_PENDING;
-                        mPresenter.getSchedulers(mFilterChoice, FIRST_PAGE, OUT_OF_INDEX,
-                            STATUS_PENDING, mStartDate, mEndDate);
-                        break;
-                    case STATUS_FINISHED:
-                        mStatus = STATUS_FINISHED;
-                        mPresenter.getSchedulers(mFilterChoice, FIRST_PAGE, OUT_OF_INDEX,
-                            STATUS_FINISHED, mStartDate, mEndDate);
-                        break;
-                    default:
-                        break;
-                }
-            }
-
-            @Override
-            public void onNothingSelected(AdapterView<?> adapterView) {
-            }
-        };
 
     public SchedulerViewModel(SchedulerFragment fragment, FragmentManager fragmentManager) {
+        mFragment = fragment;
         setTabFilter(TAB_TODAY);
         mNavigator = new Navigator(fragment);
         mFragmentManager = fragmentManager;
@@ -123,8 +161,10 @@ public class SchedulerViewModel extends BaseObservable
             DatePickerDialog.newInstance(this, mCalendar.get(Calendar.YEAR),
                 mCalendar.get(Calendar.MONTH), mCalendar.get(Calendar.DAY_OF_MONTH));
         mDatePickerDialog.setOnDateSetListener(this);
+        mDatePickerDialog.setOnCancelListener(this);
         setTitleTopSheet(FSalonApplication.getInstant().getResources()
             .getString(R.string.action_pick_date));
+        setRadioButtonId(R.id.filter_today);
     }
 
     @Override
@@ -163,9 +203,6 @@ public class SchedulerViewModel extends BaseObservable
                 mStartDate = Utils.createTimeStamp(tab);
                 setTitleTopSheet(FSalonApplication.getInstant()
                     .getResources().getString(R.string.title_today));
-                mPresenter
-                    .getSchedulers(mFilterChoice, FIRST_PAGE, OUT_OF_INDEX,
-                        mStatus, mStartDate, OUT_OF_INDEX);
                 break;
             case TAB_TOMORROW:
                 mEndDate = OUT_OF_INDEX;
@@ -173,9 +210,6 @@ public class SchedulerViewModel extends BaseObservable
                 mStartDate = Utils.createTimeStamp(tab);
                 setTitleTopSheet(FSalonApplication.getInstant()
                     .getResources().getString(R.string.title_tomorrow));
-                mPresenter
-                    .getSchedulers(mFilterChoice, FIRST_PAGE, OUT_OF_INDEX,
-                        mStatus, mStartDate, OUT_OF_INDEX);
                 break;
             case TAB_YESTERDAY:
                 mEndDate = OUT_OF_INDEX;
@@ -183,9 +217,6 @@ public class SchedulerViewModel extends BaseObservable
                 mStartDate = Utils.createTimeStamp(tab);
                 setTitleTopSheet(FSalonApplication.getInstant()
                     .getResources().getString(R.string.title_yesterday));
-                mPresenter
-                    .getSchedulers(mFilterChoice, FIRST_PAGE, OUT_OF_INDEX,
-                        mStatus, mStartDate, OUT_OF_INDEX);
                 break;
             case TAB_SELECT_DATE:
                 mEndDate = OUT_OF_INDEX;
@@ -225,14 +256,71 @@ public class SchedulerViewModel extends BaseObservable
     }
 
     @Override
-    public void onClickTopSheet(View topSheet) {
-        TopSheetBehavior.from(topSheet).setState(TopSheetBehavior.STATE_COLLAPSED);
+    public void onFilterClick(DrawerLayout layout) {
+        if (layout.isDrawerOpen(Gravity.START)) {
+            layout.closeDrawer(Gravity.START);
+            return;
+        }
+        layout.openDrawer(Gravity.START);
+    }
+
+    @Override
+    public void onGetSalonsSuccess(List<Salon> salons) {
+        setDepartmentAdapter(new DepartmentAdapter(mFragment.getContext(), salons, this));
+        mDepartmentAdapter.selectedPosition(FIRST_ITEM_SALON);
+        onFilterData();
+    }
+
+    @Override
+    public void onError(String message) {
+        mNavigator.showToast(message);
+    }
+
+    @Override
+    public void selectedSalonPosition(int position, Salon salon) {
+        if (salon == null) {
+            return;
+        }
+        mDepartmentAdapter.selectedPosition(position);
+        mSalonId = salon.getId();
+    }
+
+    @Override
+    public void onSpaceTimeClick() {
+        mFilterChoice = FILTER_SPACE;
+        mTypeSelectDate = TAB_START_DATE;
+        showDatePickerDialog();
+    }
+
+    @Override
+    public void onSelectDateClick() {
+        mEndDate = OUT_OF_INDEX;
+        mFilterChoice = FILTER_DAY;
+        mTypeSelectDate = TAB_SELECT_DATE;
+        showDatePickerDialog();
+    }
+
+    public void onFilterData() {
+        mStatus = "";
+        if (mIsCanceled) {
+            mStatus += "," + STATUS_CANCELED;
+        }
+        if (mIsWatting) {
+            mStatus += "," + STATUS_WATTING;
+        }
+        if (mIsFinished) {
+            mStatus += "," + STATUS_FINISHED;
+        }
+        if (mIsInLate) {
+            mStatus += "," + STATUS_IN_LATE;
+        }
+        mAdapter.clear();
+        mPresenter.getSchedulers(mFilterChoice, mStatus, mStartDate, mEndDate, mSalonId);
     }
 
     @Override
     public void onBookingItemClick(int id) {
-        mNavigator.startActivity(BookingDetailActivity.getInstance(mNavigator.getContext(), id,
-            mStatus));
+        mNavigator.startActivity(BookingDetailActivity.getInstance(mNavigator.getContext(), id));
     }
 
     @Bindable
@@ -266,6 +354,16 @@ public class SchedulerViewModel extends BaseObservable
     }
 
     @Bindable
+    public DepartmentAdapter getDepartmentAdapter() {
+        return mDepartmentAdapter;
+    }
+
+    public void setDepartmentAdapter(DepartmentAdapter departmentAdapter) {
+        mDepartmentAdapter = departmentAdapter;
+        notifyPropertyChanged(BR.departmentAdapter);
+    }
+
+    @Bindable
     public RecyclerView.OnScrollListener getScrollListenner() {
         return mScrollListenner;
     }
@@ -278,10 +376,6 @@ public class SchedulerViewModel extends BaseObservable
     public void setTitleTopSheet(String titleTopSheet) {
         mTitleTopSheet = titleTopSheet;
         notifyPropertyChanged(BR.titleTopSheet);
-    }
-
-    public Spinner.OnItemSelectedListener getSpinnerSelectListener() {
-        return mSpinnerSelectListener;
     }
 
     @Override
@@ -300,26 +394,98 @@ public class SchedulerViewModel extends BaseObservable
                 mTypeSelectDate = TAB_END_DATE;
                 mDatePickerDialog = DatePickerDialog.newInstance(this, year,
                     monthOfYear, dayOfMonth);
-                mSpaceTime = mSpaceTime.concat(Utils.convertDate(mCalendar.getTime()));
+                mDatePickerDialog.setOnCancelListener(this);
+                mSpaceTime = Utils.convertDate(mCalendar.getTime());
                 showDatePickerDialog();
                 return;
             case TAB_SELECT_DATE:
                 setTitleTopSheet(Utils.convertDate(mCalendar.getTime()));
                 mStartDate = (int) (mCalendar.getTimeInMillis() / 1000);
-                mPresenter
-                    .getSchedulers(mFilterChoice, FIRST_PAGE, OUT_OF_INDEX, mStatus,
-                        mStartDate, mEndDate);
+                setRadioButtonId(R.id.filter_select_date);
                 break;
             case TAB_END_DATE:
                 mEndDate = (int) (mCalendar.getTimeInMillis() / 1000);
-                mPresenter
-                    .getSchedulers(mFilterChoice, FIRST_PAGE, OUT_OF_INDEX, mStatus,
-                        mStartDate, mEndDate);
                 mSpaceTime = mSpaceTime.concat(" - " + Utils.convertDate(mCalendar.getTime()));
                 setTitleTopSheet(mSpaceTime);
+                setRadioButtonId(R.id.filter_space_time);
             default:
                 break;
         }
+    }
+
+    @Bindable
+    public boolean isWatting() {
+        return mIsWatting;
+    }
+
+    public void setWatting(boolean watting) {
+        mIsWatting = watting;
+        notifyPropertyChanged(BR.watting);
+    }
+
+    @Bindable
+    public boolean isFinished() {
+        return mIsFinished;
+    }
+
+    public void setFinished(boolean finished) {
+        mIsFinished = finished;
+        notifyPropertyChanged(BR.finished);
+    }
+
+    @Bindable
+    public boolean isCanceled() {
+        return mIsCanceled;
+    }
+
+    public void setCanceled(boolean canceled) {
+        mIsCanceled = canceled;
+        notifyPropertyChanged(BR.canceled);
+    }
+
+    @Bindable
+    public boolean isInLate() {
+        return mIsInLate;
+    }
+
+    public void setInLate(boolean inLate) {
+        mIsInLate = inLate;
+        notifyPropertyChanged(BR.inLate);
+    }
+
+    @Bindable
+    public RadioGroup.OnCheckedChangeListener getChangeListener() {
+        return mChangeListener;
+    }
+
+    public void setChangeListener(RadioGroup.OnCheckedChangeListener changeListener) {
+        mChangeListener = changeListener;
+        notifyPropertyChanged(BR.changeListener);
+    }
+
+    @Bindable
+    public int getRadioButtonId() {
+        return mRadioButtonId;
+    }
+
+    public void setRadioButtonId(int radioButtonId) {
+        mRadioButtonId = radioButtonId;
+        notifyPropertyChanged(BR.radioButtonId);
+    }
+
+    @Override
+    public void onCancel(DialogInterface dialogInterface) {
+        setRadioButtonId(mRadioButtonId);
+    }
+
+    @Bindable
+    public DrawerLayout.DrawerListener getDrawerListener() {
+        return mDrawerListener;
+    }
+
+    public void setDrawerListener(DrawerLayout.DrawerListener drawerListener) {
+        mDrawerListener = drawerListener;
+        notifyPropertyChanged(BR.drawerListener);
     }
 
     /**

@@ -93,6 +93,7 @@
     <string name="title_canceled">Canceled</string>
     <string name="title_in_late">In Late</string>
     <string name="title_booking_detail">Booking Detail</string>
+    <string name="title_status">Status</string>
     <string-array name="title_status">
         <item>Canceled</item>
         <item>Pending</item>
