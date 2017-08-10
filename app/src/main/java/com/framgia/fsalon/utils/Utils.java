@@ -102,7 +102,7 @@ public class Utils {
             case BookingOder.STATUS_FINISHED:
                 return Constant.BookingStatus.FINISHED;
             case BookingOder.STATUS_WATTING:
-                return Constant.BookingStatus.PENDING;
+                return Constant.BookingStatus.WATTING;
             default:
                 return Constant.BookingStatus.NA;
         }

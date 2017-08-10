@@ -58,7 +58,7 @@ public class Constant {
     public class BookingStatus {
         public static final String BOOKING_STATUS = "BOOKING_STATUS";
         public static final String FINISHED = "Finished";
-        public static final String PENDING = "Pending";
+        public static final String WATTING = "Watting";
         public static final String CANCEL = "Cancel";
         public static final String NA = "N/A";
     }
