@@ -94,9 +94,6 @@
     <string name="title_in_late">In Late</string>
     <string name="title_booking_detail">Booking Detail</string>
     <string name="title_status">Status</string>
-    <string-array name="title_status">
-        <item>Canceled</item>
-        <item>Pending</item>
-        <item>Finished</item>
-    </string-array>
+    <string name="msg_call">We need permission to start call</string>
+    <string name="msg_no_permission">No permission</string>
 </resources>

@@ -1,10 +1,17 @@
 package com.framgia.fsalon.utils;
 
+import android.Manifest;
+import android.app.Activity;
+import android.content.Context;
+import android.content.DialogInterface;
 import android.support.design.internal.BottomNavigationItemView;
 import android.support.design.internal.BottomNavigationMenuView;
 import android.support.design.widget.BottomNavigationView;
+import android.support.v4.app.ActivityCompat;
+import android.support.v7.app.AlertDialog;
 import android.util.Log;
 
+import com.framgia.fsalon.R;
 import com.framgia.fsalon.data.model.BookingOder;
 import com.framgia.fsalon.screen.scheduler.SchedulerViewModel;
 
@@ -105,6 +112,29 @@ public class Utils {
                 return Constant.BookingStatus.WATTING;
             default:
                 return Constant.BookingStatus.NA;
+        }
+    }
+
+    public static void requestCallPermission(final Context context) {
+        if (ActivityCompat
+            .shouldShowRequestPermissionRationale((Activity) context, Manifest.permission
+                .CALL_PHONE)) {
+            AlertDialog.Builder builder = new AlertDialog.Builder(context);
+            builder
+                .setMessage(R.string.msg_call)
+                .setPositiveButton(R.string.action_ok, new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        ActivityCompat.requestPermissions((Activity) context,
+                            new String[]{Manifest.permission.CALL_PHONE},
+                            Constant.REQUEST_CALL_PERMISSION);
+                    }
+                })
+                .setNegativeButton(R.string.action_close, null);
+            builder.create().show();
+        } else {
+            ActivityCompat.requestPermissions((Activity) context,
+                new String[]{Manifest.permission.CALL_PHONE}, Constant.REQUEST_CALL_PERMISSION);
         }
     }
 }
