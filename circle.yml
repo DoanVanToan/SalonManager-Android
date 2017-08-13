@@ -11,7 +11,7 @@ machine:
       TERM: dumb
       REVIEWDOG_VERSION: 0.9.3
       ROOM_ID: 79465686
-      TEAM: "[To:2110258][To:2204808] [To:2357769] [To:2309461]"
+      TEAM: "[To:2110258][To:2204808][To:2357769][To:2309461][To:2563022]"
 dependencies:
   pre:
     - git fetch origin # sometimes circleci fail to fetch branches correctly, so fetch them expressly
