@@ -16,6 +16,8 @@ import com.framgia.fsalon.data.model.BookingOder;
 import com.framgia.fsalon.screen.scheduler.SchedulerViewModel;
 
 import java.lang.reflect.Field;
+import java.text.DateFormat;
+import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
@@ -136,5 +138,13 @@ public class Utils {
             ActivityCompat.requestPermissions((Activity) context,
                 new String[]{Manifest.permission.CALL_PHONE}, Constant.REQUEST_CALL_PERMISSION);
         }
+    }
+
+    public static boolean isSameDate(String date1, String date2) throws ParseException {
+        DateFormat df1 = new SimpleDateFormat("MM/dd/yyyy", Locale.getDefault());
+        DateFormat df2 = new SimpleDateFormat("yyyy-MM-dd", Locale.getDefault());
+        Date result1 = df1.parse(date1);
+        Date result2 = df2.parse(date2);
+        return result1.compareTo(result2) == 0;
     }
 }
