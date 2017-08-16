@@ -96,4 +96,5 @@
     <string name="title_status">Status</string>
     <string name="msg_call">We need permission to start call</string>
     <string name="msg_no_permission">No permission</string>
+    <string name="msg_edit_success">You have successfully edit this booking</string>
 </resources>

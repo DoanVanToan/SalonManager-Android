@@ -16,6 +16,7 @@ public class Constant {
     public static final String BOOKING_ID = "BOOKING_ID";
     public static final int REQUEST_CALL_PERMISSION = 1;
     public static final int NO_SCROLL = -1;
+    public static final int REQUEST_ADMIN_BOOKING_ACTIVITY = 1;
 
     public class ApiParram {
         public static final String DEPARTMENT_ID = "department_id";

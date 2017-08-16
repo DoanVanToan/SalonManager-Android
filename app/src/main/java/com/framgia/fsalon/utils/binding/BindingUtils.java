@@ -272,4 +272,9 @@ public class BindingUtils {
     public static void setResourceId(ImageView view, int resId) {
         view.setImageResource(resId);
     }
+
+    @BindingAdapter("bind:selection")
+    public static void setResourceId(Spinner spinner, int position) {
+        spinner.setSelection(position);
+    }
 }
