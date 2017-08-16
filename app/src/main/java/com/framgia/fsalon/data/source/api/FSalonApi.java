@@ -1,5 +1,7 @@
 package com.framgia.fsalon.data.source.api;
+
 import com.framgia.fsalon.data.model.BillResponse;
+import com.framgia.fsalon.data.model.CustomerResponse;
 import com.framgia.fsalon.data.model.BookingOder;
 import com.framgia.fsalon.data.model.BookingResponse;
 import com.framgia.fsalon.data.model.ListBillRespond;
@@ -56,5 +58,8 @@ public interface FSalonApi {
     Observable<Respone<User>> getCustomerByPhone(@Query("phone") String phone);
     @GET("api/v0/filter-bill")
     Observable<Respone<List<ListBillRespond>>> filterBills(@QueryMap Map<String, String> params);
+    @GET("/api/v0/get-custommer")
+    Observable<Respone<CustomerResponse>> getAllCustomers(@Query("page") int page,
+                                                          @Query("perpage") int perPage);
 }
 
