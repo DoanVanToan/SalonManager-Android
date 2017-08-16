@@ -45,6 +45,7 @@ import static com.framgia.fsalon.screen.scheduler.SchedulerViewModel.TabFilter.T
 import static com.framgia.fsalon.screen.scheduler.SchedulerViewModel.TabFilter.TAB_TOMORROW;
 import static com.framgia.fsalon.screen.scheduler.SchedulerViewModel.TabFilter.TAB_YESTERDAY;
 import static com.framgia.fsalon.utils.Constant.ApiParram.OUT_OF_INDEX;
+import static com.framgia.fsalon.utils.Constant.NO_SCROLL;
 
 /**
  * Exposes the data to be used in the Scheduler screen.
@@ -70,13 +71,15 @@ public class SchedulerViewModel extends BaseObservable
     private String mSpaceTime = "";
     private DepartmentAdapter mDepartmentAdapter;
     private Fragment mFragment;
-    private boolean mIsWatting;
-    private boolean mIsFinished;
-    private boolean mIsCanceled;
-    private boolean mIsInLate;
+    private boolean mIsWatting = true;
+    private boolean mIsFinished = true;
+    private boolean mIsCanceled = true;
+    private boolean mIsInLate = true;
     private int mSalonId;
     private String mStatus = "";
     private int mRadioButtonId;
+    private int mPositionNearestTime = NO_SCROLL;
+    private String mSalonName;
     private DrawerLayout.DrawerListener mDrawerListener = new DrawerLayout.DrawerListener() {
         @Override
         public void onDrawerSlide(View drawerView, float slideOffset) {
@@ -238,6 +241,7 @@ public class SchedulerViewModel extends BaseObservable
     @Override
     public void onSchedulerSuccessful(List<ManageBookingResponse> sections) {
         mAdapter.updateData(sections);
+        setPositionNearestTime(mAdapter.getItemWithNearestTime());
     }
 
     @Override
@@ -269,6 +273,7 @@ public class SchedulerViewModel extends BaseObservable
         setDepartmentAdapter(new DepartmentAdapter(mFragment.getContext(), salons, this));
         mDepartmentAdapter.selectedPosition(FIRST_ITEM_SALON);
         mSalonId = mDepartmentAdapter.getItem(FIRST_ITEM_SALON).getId();
+        setSalonName(mDepartmentAdapter.getItem(FIRST_ITEM_SALON).getName());
         onFilterData();
     }
 
@@ -284,6 +289,7 @@ public class SchedulerViewModel extends BaseObservable
         }
         mDepartmentAdapter.selectedPosition(position);
         mSalonId = salon.getId();
+        setSalonName(salon.getName());
     }
 
     @Override
@@ -474,6 +480,16 @@ public class SchedulerViewModel extends BaseObservable
         notifyPropertyChanged(BR.radioButtonId);
     }
 
+    @Bindable
+    public int getPositionNearestTime() {
+        return mPositionNearestTime;
+    }
+
+    public void setPositionNearestTime(int positionNearestTime) {
+        mPositionNearestTime = positionNearestTime;
+        notifyPropertyChanged(BR.positionNearestTime);
+    }
+
     @Override
     public void onCancel(DialogInterface dialogInterface) {
         setRadioButtonId(mRadioButtonId);
@@ -487,6 +503,16 @@ public class SchedulerViewModel extends BaseObservable
     public void setDrawerListener(DrawerLayout.DrawerListener drawerListener) {
         mDrawerListener = drawerListener;
         notifyPropertyChanged(BR.drawerListener);
+    }
+
+    @Bindable
+    public String getSalonName() {
+        return mSalonName;
+    }
+
+    public void setSalonName(String salonName) {
+        mSalonName = salonName;
+        notifyPropertyChanged(BR.salonName);
     }
 
     /**

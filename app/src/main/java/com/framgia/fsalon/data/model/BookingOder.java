@@ -77,6 +77,10 @@ public class BookingOder implements Parcelable {
         mDepartment = in.readParcelable(Salon.class.getClassLoader());
     }
 
+    public BookingOder(Date timeStart) {
+        mTimeStart = timeStart;
+    }
+
     public static final Creator<BookingOder> CREATOR = new Creator<BookingOder>() {
         @Override
         public BookingOder createFromParcel(Parcel in) {

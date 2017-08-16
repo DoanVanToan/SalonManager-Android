@@ -44,4 +44,5 @@
     <dimen name="dp_180">180dp</dimen>
     <integer name="span_3">3</integer>
     <integer name="span_4">4</integer>
+    <integer name="div_1">1</integer>
 </resources>

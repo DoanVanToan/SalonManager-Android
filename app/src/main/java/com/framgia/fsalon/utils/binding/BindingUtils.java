@@ -32,6 +32,8 @@ import com.github.mikephil.charting.charts.LineChart;
 import com.github.mikephil.charting.data.LineData;
 import com.toptoche.searchablespinnerlibrary.SearchableSpinner;
 
+import static com.framgia.fsalon.utils.Constant.NO_SCROLL;
+
 /**
  * Created by MyPC on 20/07/2017.
  */
@@ -50,11 +52,23 @@ public class BindingUtils {
         recyclerView.setAdapter(adapter);
         if (layoutManager != null) {
             recyclerView.setLayoutManager(layoutManager);
-            recyclerView.addItemDecoration(new DeviderItemDecoration(1));
         }
         if (listener != null) {
             recyclerView.addOnScrollListener(listener);
         }
+    }
+
+    @BindingAdapter("recyclerViewPosition")
+    public static void setRecyclerViewPosition(RecyclerView recyclerView,
+                                               int position) {
+        if (position != NO_SCROLL) {
+            recyclerView.getLayoutManager().scrollToPosition(position);
+        }
+    }
+
+    @BindingAdapter("deviderItem")
+    public static void setDeviderItem(RecyclerView recyclerView, int devider) {
+        recyclerView.addItemDecoration(new DeviderItemDecoration(devider));
     }
 
     @BindingAdapter({"searchableSpinnerAdapter"})

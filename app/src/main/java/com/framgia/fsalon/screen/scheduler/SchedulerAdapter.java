@@ -14,14 +14,20 @@ import com.framgia.fsalon.utils.Utils;
 import org.zakariya.stickyheaders.SectioningAdapter;
 
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
+
+import static com.framgia.fsalon.utils.Constant.NO_SCROLL;
 
 /**
  * Created by beepi on 28/07/2017.
  */
 public class SchedulerAdapter extends SectioningAdapter {
+    private static final int HEADER = -1;
+    private static final int GHOST_HEADER = -1;
     private List<ManageBookingResponse> mSections = new ArrayList<>();
     private SchedulerContract.ViewModel mViewModel;
+    private List<BookingOder> mBookingOders = new ArrayList<>();
 
     public SchedulerAdapter(SchedulerContract.ViewModel viewModel, List<ManageBookingResponse>
         sections) {
@@ -37,7 +43,22 @@ public class SchedulerAdapter extends SectioningAdapter {
 
     public void clear() {
         mSections.clear();
+        mBookingOders.clear();
         notifyAllSectionsDataSetChanged();
+    }
+
+    public int getItemWithNearestTime() {
+        for (ManageBookingResponse manageBookingResponse : mSections) {
+            mBookingOders.add(new BookingOder(new Date(HEADER)));
+            mBookingOders.add(new BookingOder(new Date(GHOST_HEADER)));
+            mBookingOders.addAll(manageBookingResponse.getListBook());
+        }
+        for (int i = 0; i < mBookingOders.size(); i++) {
+            if (mBookingOders.get(i).getTimeStart().getTime() >= System.currentTimeMillis()) {
+                return i;
+            }
+        }
+        return NO_SCROLL;
     }
 
     @Override
@@ -58,7 +79,8 @@ public class SchedulerAdapter extends SectioningAdapter {
     }
 
     @Override
-    public void onBindItemViewHolder(SectioningAdapter.ItemViewHolder viewHolder, int sectionIndex,
+    public void onBindItemViewHolder(SectioningAdapter.ItemViewHolder viewHolder,
+                                     int sectionIndex,
                                      int itemIndex, int itemUserType) {
         ((ItemViewHolder) viewHolder).bind(mSections.get(sectionIndex).getListBook()
             .get(itemIndex));
