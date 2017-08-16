@@ -7,9 +7,8 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.ViewGroup;
 
-import com.framgia.fsalon.BaseRecyclerViewAdapter;
 import com.framgia.fsalon.R;
-import com.framgia.fsalon.data.model.BookingCustomer;
+import com.framgia.fsalon.data.model.Customer;
 import com.framgia.fsalon.databinding.ItemCustomerBinding;
 
 import java.util.List;
@@ -17,25 +16,14 @@ import java.util.List;
 /**
  * Created by MyPC on 27/07/2017.
  */
-public class CustomerAdapter extends BaseRecyclerViewAdapter<BookingCustomer, CustomerAdapter
-    .ViewHolder> {
-    private List<BookingCustomer> mData;
+public class CustomerAdapter extends RecyclerView.Adapter<CustomerAdapter.ViewHolder> {
+    private List<Customer> mData;
     private CustomerViewModel mViewModel;
 
-    protected CustomerAdapter(@NonNull Context context, List<BookingCustomer> data,
+    protected CustomerAdapter(@NonNull Context context, List<Customer> data,
                               CustomerViewModel viewModel) {
-        super(context);
         mData = data;
         mViewModel = viewModel;
-    }
-
-    @Override
-    public void onUpdatePage(List<BookingCustomer> data) {
-        if (data == null) {
-            return;
-        }
-        mData.addAll(data);
-        notifyDataSetChanged();
     }
 
     @Override
@@ -56,6 +44,14 @@ public class CustomerAdapter extends BaseRecyclerViewAdapter<BookingCustomer, Cu
         return mData == null ? 0 : mData.size();
     }
 
+    public void onUpdatePage(List<Customer> data) {
+        if (data == null) {
+            return;
+        }
+        mData.addAll(data);
+        notifyDataSetChanged();
+    }
+
     public class ViewHolder extends RecyclerView.ViewHolder {
         private ItemCustomerBinding mBinding;
         private CustomerViewModel mViewModel;
@@ -66,7 +62,7 @@ public class CustomerAdapter extends BaseRecyclerViewAdapter<BookingCustomer, Cu
             mViewModel = viewModel;
         }
 
-        void bindData(BookingCustomer customer) {
+        void bindData(Customer customer) {
             if (customer == null) {
                 return;
             }

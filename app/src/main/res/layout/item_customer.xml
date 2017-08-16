@@ -16,7 +16,7 @@
 
         <variable
             name="customer"
-            type="com.framgia.fsalon.data.model.BookingCustomer"/>
+            type="com.framgia.fsalon.data.model.Customer"/>
 
     </data>
 

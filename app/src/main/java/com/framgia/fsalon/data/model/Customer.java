@@ -10,7 +10,7 @@ import com.google.gson.annotations.SerializedName;
 /**
  * Created by MyPC on 27/07/2017.
  */
-public class BookingCustomer extends BaseObservable {
+public class Customer extends BaseObservable {
     @SerializedName("id")
     @Expose
     private int mId;
@@ -26,12 +26,6 @@ public class BookingCustomer extends BaseObservable {
     @SerializedName("permission")
     @Expose
     private int mPermission;
-    @SerializedName("experience")
-    @Expose
-    private String mExperience;
-    @SerializedName("specialize")
-    @Expose
-    private String mSpecialize;
     @SerializedName("created_at")
     @Expose
     private String mCreateAt;
@@ -48,8 +42,14 @@ public class BookingCustomer extends BaseObservable {
     @Expose
     private String mAvatar;
     private int mIsVip;
+    @SerializedName("about_me")
+    @Expose
+    private String mAboutMe;
+    @SerializedName("department_id")
+    @Expose
+    private int mDepartmentId;
 
-    public BookingCustomer(String name, String phone) {
+    public Customer(String name, String phone) {
         mName = name;
         mPhone = phone;
     }
@@ -132,22 +132,6 @@ public class BookingCustomer extends BaseObservable {
 
     public void setPermission(int permission) {
         mPermission = permission;
-    }
-
-    public String getExperience() {
-        return mExperience;
-    }
-
-    public void setExperience(String experience) {
-        mExperience = experience;
-    }
-
-    public String getSpecialize() {
-        return mSpecialize;
-    }
-
-    public void setSpecialize(String specialize) {
-        mSpecialize = specialize;
     }
 
     public String getCreateAt() {
