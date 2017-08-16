@@ -54,9 +54,6 @@ public class AdminHomeViewModel extends BaseObservable implements AdminHomeContr
                         setTabPosition(Tab.TAB_REPORT);
                         break;
                     case R.id.item_customer:
-                        /**
-                         * todo later
-                         */
                         setTabPosition(Tab.TAB_CUSTOMER);
                         break;
                     case R.id.item_profile:

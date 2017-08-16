@@ -9,6 +9,9 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import com.framgia.fsalon.R;
+import com.framgia.fsalon.data.source.CustomerRepository;
+import com.framgia.fsalon.data.source.api.FSalonServiceClient;
+import com.framgia.fsalon.data.source.remote.CustomerRemoteDataSource;
 import com.framgia.fsalon.databinding.FragmentCustomerBinding;
 
 /**
@@ -24,9 +27,10 @@ public class CustomerFragment extends Fragment {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        mViewModel = new CustomerViewModel(getActivity());
+        mViewModel = new CustomerViewModel(this, getActivity().getFragmentManager());
         CustomerContract.Presenter presenter =
-            new CustomerPresenter(mViewModel);
+            new CustomerPresenter(mViewModel, new CustomerRepository(
+                new CustomerRemoteDataSource(FSalonServiceClient.getInstance())));
         mViewModel.setPresenter(presenter);
     }
 

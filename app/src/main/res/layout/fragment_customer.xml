@@ -2,10 +2,11 @@
 <layout
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:bind="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
     >
 
     <data>
+
+        <import type="android.view.View"/>
 
         <import type="com.framgia.fsalon.utils.LayoutManager"/>
 
@@ -20,19 +21,26 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:orientation="vertical"
-        tools:context="com.framgia.fsalon.screen.customer.CustomerActivity"
         >
 
         <android.support.v7.widget.SearchView
-            android:background="@color/colorPrimary"
             android:layout_width="match_parent"
             android:layout_height="@dimen/dp_50"
+            android:background="@color/colorPrimary"
             bind:theme="@style/NoActionBarTheme.SearchView"/>
+
+        <ProgressBar
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="bottom|center"
+            android:layout_marginBottom="@dimen/dp_16"
+            android:visibility="@{viewModel.loadingMore?View.VISIBLE:View.GONE}"/>
 
         <android.support.v7.widget.RecyclerView
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            bind:adapter="@{viewModel.customerAdapter}"
-            bind:layoutManager="@{LayoutManager.linear()}"/>
+            bind:layoutManager="LinearLayoutManager"
+            bind:recyclerAdapter="@{viewModel.customerAdapter}"
+            bind:scrollListenner="@{viewModel.listener}"/>
     </LinearLayout>
 </layout>
