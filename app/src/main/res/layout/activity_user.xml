@@ -54,31 +54,48 @@
 
                         <!--user name-->
                         <TextView
+                            android:id="@+id/textView"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
+                            android:text="@{viewModel.user.name}"
                             android:textColor="@color/colorPrimary"
                             android:textSize="@dimen/sp_20"/>
 
                         <!--user phone-->
                         <TextView
+                            android:text="@{viewModel.user.phone}"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:textSize="@dimen/sp_15"/>
 
                         <!--user email-->
                         <TextView
+                            android:textColor="@color/colorPrimary"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:text="@{viewModel.user.email}"
                             android:textSize="@dimen/sp_15"/>
 
-                        <!--display user's point-->
-                        <TextView
+                        <LinearLayout
+                            android:orientation="horizontal"
                             android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:gravity="center"
-                            android:textColor="@color/color_red"
-                            android:textSize="@dimen/sp_15"/>
+                            android:layout_height="wrap_content">
+                            <!--display user's point-->
+                            <TextView
+                                android:text="@{viewModel.user.birthday}"
+                                android:layout_width="wrap_content"
+                                android:layout_height="match_parent"
+                                android:textColor="@color/colorPrimary"
+                                android:textSize="@dimen/sp_15"/>
+                            <TextView
+                                android:text="@string/title_na"
+                                android:layout_width="match_parent"
+                                android:layout_height="match_parent"
+                                android:gravity="end"
+                                android:textColor="@color/color_red"
+                                android:textSize="@dimen/sp_15"/>
+                        </LinearLayout>
+
                     </LinearLayout>
 
                     <ImageView
@@ -116,7 +133,7 @@
                         android:layout_marginEnd="@dimen/dp_20"
                         android:layout_marginRight="@dimen/dp_20"
                         android:contentDescription="@null"
-                        bind:srcCompat="@drawable/ic_user"
+                        bind:srcCompat="@drawable/ic_phone_receiver_24dp"
                         android:tint="@color/colorPrimary"/>
 
                     <TextView
@@ -149,7 +166,7 @@
                         android:layout_marginEnd="@dimen/dp_20"
                         android:layout_marginRight="@dimen/dp_20"
                         android:contentDescription="@null"
-                        bind:srcCompat="@drawable/ic_user"
+                        bind:srcCompat="@drawable/ic_message"
                         android:tint="@color/colorPrimary"/>
 
                     <TextView
@@ -191,6 +208,7 @@
                     android:textSize="@dimen/sp_15"/>
 
                 <TextView
+                    android:text="@{viewModel.bookingOder.render.day}"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:gravity="end"
@@ -222,6 +240,7 @@
 
                 <!--display service time-->
                 <TextView
+                    android:text="@{viewModel.bookingOder.render.timeStart}"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:gravity="end"
@@ -262,6 +281,7 @@
                     android:textSize="@dimen/sp_15"/>
 
                 <TextView
+                    android:text="@string/title_na"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:gravity="end"
@@ -292,6 +312,7 @@
                     android:textSize="@dimen/sp_15"/>
 
                 <TextView
+                    android:text="@{viewModel.bookingOder.stylist.name}"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:gravity="end"
@@ -322,6 +343,7 @@
                     android:textSize="@dimen/sp_15"/>
 
                 <TextView
+                    android:text="@{viewModel.bookingOder.department.name}"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:gravity="end"
@@ -363,6 +385,7 @@
 
                 <!--display how user booked-->
                 <TextView
+                    android:text="@string/title_na"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:gravity="end"
@@ -404,6 +427,7 @@
 
                 <!--absence or came-->
                 <TextView
+                    android:text="@string/title_na"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:gravity="end"
