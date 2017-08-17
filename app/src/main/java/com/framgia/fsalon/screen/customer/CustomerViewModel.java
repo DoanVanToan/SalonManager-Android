@@ -9,6 +9,7 @@ import android.support.v7.widget.RecyclerView;
 import com.framgia.fsalon.BR;
 import com.framgia.fsalon.R;
 import com.framgia.fsalon.data.model.User;
+import com.framgia.fsalon.screen.user.UserActivity;
 import com.framgia.fsalon.utils.navigator.Navigator;
 
 import java.util.ArrayList;
@@ -118,6 +119,6 @@ public class CustomerViewModel extends BaseObservable implements CustomerContrac
     }
 
     public void onCustomerItemClick(User user) {
-//        mNavigator.startActivity(UserActivity.getInstance(mNavigator.getContext(), user));
+        mNavigator.startActivity(UserActivity.getInstance(mNavigator.getContext(), user));
     }
 }
