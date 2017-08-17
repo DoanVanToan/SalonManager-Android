@@ -8,7 +8,7 @@ import android.view.LayoutInflater;
 import android.view.ViewGroup;
 
 import com.framgia.fsalon.R;
-import com.framgia.fsalon.data.model.Customer;
+import com.framgia.fsalon.data.model.User;
 import com.framgia.fsalon.databinding.ItemCustomerBinding;
 
 import java.util.List;
@@ -17,10 +17,10 @@ import java.util.List;
  * Created by MyPC on 27/07/2017.
  */
 public class CustomerAdapter extends RecyclerView.Adapter<CustomerAdapter.ViewHolder> {
-    private List<Customer> mData;
+    private List<User> mData;
     private CustomerViewModel mViewModel;
 
-    protected CustomerAdapter(@NonNull Context context, List<Customer> data,
+    protected CustomerAdapter(@NonNull Context context, List<User> data,
                               CustomerViewModel viewModel) {
         mData = data;
         mViewModel = viewModel;
@@ -44,7 +44,7 @@ public class CustomerAdapter extends RecyclerView.Adapter<CustomerAdapter.ViewHo
         return mData == null ? 0 : mData.size();
     }
 
-    public void onUpdatePage(List<Customer> data) {
+    public void onUpdatePage(List<User> data) {
         if (data == null) {
             return;
         }
@@ -62,7 +62,7 @@ public class CustomerAdapter extends RecyclerView.Adapter<CustomerAdapter.ViewHo
             mViewModel = viewModel;
         }
 
-        void bindData(Customer customer) {
+        void bindData(User customer) {
             if (customer == null) {
                 return;
             }

@@ -11,13 +11,13 @@ import java.util.List;
 public class CustomerResponse {
     @SerializedName("data")
     @Expose
-    private List<Customer> mData;
+    private List<User> mData;
 
-    public List<Customer> getData() {
+    public List<User> getData() {
         return mData;
     }
 
-    public void setData(List<Customer> data) {
+    public void setData(List<User> data) {
         mData = data;
     }
 }

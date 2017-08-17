@@ -1,5 +1,6 @@
 package com.framgia.fsalon.data.source.remote;
 
+import com.framgia.fsalon.data.model.CustomerResponse;
 import com.framgia.fsalon.data.model.User;
 import com.framgia.fsalon.data.model.UserRespone;
 import com.framgia.fsalon.data.source.UserDataSource;
@@ -71,6 +72,20 @@ public class UserRemoteDataSource extends BaseRemoteDataSource
                 public ObservableSource<User> apply(@NonNull Respone<User> listRespone)
                     throws Exception {
                     return Utils.getResponse(listRespone);
+                }
+            });
+    }
+
+    @Override
+    public Observable<CustomerResponse> getAllCustomers(int page, int perpage) {
+        return mFSalonApi.getAllCustomers(page, perpage).flatMap(
+            new Function<Respone<CustomerResponse>,
+                ObservableSource<CustomerResponse>>() {
+                @Override
+                public ObservableSource<CustomerResponse> apply(
+                    @NonNull Respone<CustomerResponse> bookingCustomerResponseRespone)
+                    throws Exception {
+                    return Utils.getResponse(bookingCustomerResponseRespone);
                 }
             });
     }
