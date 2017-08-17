@@ -31,4 +31,9 @@ public class BillRepository implements BillDataSource {
         return mRemoteDataSource
             .filterBills(type, startDate, endDate, status, departmentId, customerId);
     }
+
+    @Override
+    public Observable<BillResponse> getBillById(int id) {
+        return mRemoteDataSource.getBillById(id);
+    }
 }

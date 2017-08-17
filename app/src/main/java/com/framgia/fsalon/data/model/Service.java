@@ -40,6 +40,10 @@ public class Service implements Parcelable {
     @Expose
     private Date mUpdatedAt;
 
+    public Service(String name) {
+        mName = name;
+    }
+
     protected Service(Parcel in) {
         mId = in.readInt();
         mName = in.readString();

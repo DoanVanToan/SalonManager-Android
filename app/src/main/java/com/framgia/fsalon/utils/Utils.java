@@ -104,6 +104,14 @@ public class Utils {
         return sfd.format(date);
     }
 
+    public static String convertDateWithTime(Date date) {
+        if (date == null) {
+            return null;
+        }
+        SimpleDateFormat sfd = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss", Locale.US);
+        return sfd.format(date);
+    }
+
     public static String getStatus(int status) {
         switch (status) {
             case BookingOder.STATUS_CANCELED:
