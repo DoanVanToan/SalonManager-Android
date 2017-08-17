@@ -1,9 +1,9 @@
 package com.framgia.fsalon.data.source.api;
 
 import com.framgia.fsalon.data.model.BillResponse;
-import com.framgia.fsalon.data.model.CustomerResponse;
 import com.framgia.fsalon.data.model.BookingOder;
 import com.framgia.fsalon.data.model.BookingResponse;
+import com.framgia.fsalon.data.model.CustomerResponse;
 import com.framgia.fsalon.data.model.ListBillRespond;
 import com.framgia.fsalon.data.model.ManageBookingResponse;
 import com.framgia.fsalon.data.model.Salon;
@@ -61,5 +61,7 @@ public interface FSalonApi {
     @GET("/api/v0/get-custommer")
     Observable<Respone<CustomerResponse>> getAllCustomers(@Query("page") int page,
                                                           @Query("perpage") int perPage);
+    @GET("api/v0/bill/{id}")
+    Observable<Respone<BillResponse>> getBillById(@Path("id") int id);
 }
 

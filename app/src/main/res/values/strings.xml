@@ -98,4 +98,6 @@
     <string name="msg_no_permission">No permission</string>
     <string name="msg_edit_success">You have successfully edit this booking</string>
     <string name="msg_cant_find_date">Can\'t find booking day</string>
+    <string name="title_information">Information</string>
+    <string name="title_bill_detail">Bill Detail</string>
 </resources>

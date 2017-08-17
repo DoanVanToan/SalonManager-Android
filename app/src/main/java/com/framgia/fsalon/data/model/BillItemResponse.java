@@ -24,6 +24,12 @@ public class BillItemResponse extends BillModel.BillItem {
     @Expose
     @SerializedName("updated_at")
     private Date mUpdatedAt;
+    @Expose
+    @SerializedName("service_product")
+    private Service mService;
+    @Expose
+    @SerializedName("stylist")
+    private Stylist mStylist;
 
     public int getBillId() {
         return mBillId;
@@ -63,5 +69,26 @@ public class BillItemResponse extends BillModel.BillItem {
 
     public void setUpdatedAt(Date updatedAt) {
         mUpdatedAt = updatedAt;
+    }
+
+    public Service getService() {
+        return mService;
+    }
+
+    public void setService(Service service) {
+        mService = service;
+    }
+
+    public Stylist getStylist() {
+        return mStylist;
+    }
+
+    public void setStylist(Stylist stylist) {
+        mStylist = stylist;
+    }
+
+    public float getRowTotalBill() {
+        mRowTotal = mPrice * mQty;
+        return mRowTotal;
     }
 }
