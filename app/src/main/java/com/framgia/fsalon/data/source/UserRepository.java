@@ -1,5 +1,6 @@
 package com.framgia.fsalon.data.source;
 
+import com.framgia.fsalon.data.model.CustomerResponse;
 import com.framgia.fsalon.data.model.User;
 import com.framgia.fsalon.data.model.UserRespone;
 
@@ -63,5 +64,10 @@ public class UserRepository
     @Override
     public Observable<User> getCustomerByPhone(String phone) {
         return mUserRemoteDataSource.getCustomerByPhone(phone);
+    }
+
+    @Override
+    public Observable<CustomerResponse> getAllCustomers(int page, int perPage) {
+        return mUserRemoteDataSource.getAllCustomers(page, perPage);
     }
 }

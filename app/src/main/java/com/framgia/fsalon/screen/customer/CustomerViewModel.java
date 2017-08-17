@@ -8,7 +8,7 @@ import android.support.v7.widget.RecyclerView;
 
 import com.framgia.fsalon.BR;
 import com.framgia.fsalon.R;
-import com.framgia.fsalon.data.model.Customer;
+import com.framgia.fsalon.data.model.User;
 import com.framgia.fsalon.utils.navigator.Navigator;
 
 import java.util.ArrayList;
@@ -49,7 +49,7 @@ public class CustomerViewModel extends BaseObservable implements CustomerContrac
         mNavigator = new Navigator(fragment);
         mFragmentManager = fragmentManager;
         setCustomerAdapter(new CustomerAdapter(mNavigator.getContext(), new
-            ArrayList<Customer>(), CustomerViewModel.this));
+            ArrayList<User>(), CustomerViewModel.this));
     }
 
     @Bindable
@@ -98,7 +98,7 @@ public class CustomerViewModel extends BaseObservable implements CustomerContrac
     }
 
     @Override
-    public void onCustomersSuccessful(List<Customer> sections) {
+    public void onCustomersSuccessful(List<User> sections) {
         mCustomerAdapter.onUpdatePage(sections);
     }
 
@@ -117,4 +117,7 @@ public class CustomerViewModel extends BaseObservable implements CustomerContrac
         setLoadingMore(false);
     }
 
+    public void onCustomerItemClick(User user) {
+//        mNavigator.startActivity(UserActivity.getInstance(mNavigator.getContext(), user));
+    }
 }

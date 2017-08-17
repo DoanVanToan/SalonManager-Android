@@ -1,7 +1,7 @@
 package com.framgia.fsalon.screen.customer;
 
 import com.framgia.fsalon.data.model.CustomerResponse;
-import com.framgia.fsalon.data.source.CustomerRepository;
+import com.framgia.fsalon.data.source.UserRepository;
 
 import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.annotations.NonNull;
@@ -20,14 +20,14 @@ import static com.framgia.fsalon.utils.Constant.ApiParram.FIRST_PAGE;
 public class CustomerPresenter implements CustomerContract.Presenter {
     private final CustomerContract.ViewModel mViewModel;
     private static final int PER_PAGE = 10;
-    private CustomerRepository mCustomerRepository;
+    private UserRepository mUserRepository;
     private int mPage = FIRST_PAGE;
     private CompositeDisposable mCompositeDisposable;
 
     public CustomerPresenter(CustomerContract.ViewModel viewModel,
-                             CustomerRepository customerRepository) {
+                             UserRepository userRepository) {
         mViewModel = viewModel;
-        mCustomerRepository = customerRepository;
+        mUserRepository = userRepository;
         mCompositeDisposable = new CompositeDisposable();
         getCustomers(FIRST_PAGE);
     }
@@ -43,7 +43,7 @@ public class CustomerPresenter implements CustomerContract.Presenter {
 
     @Override
     public void getCustomers(int page) {
-        Disposable disposable = mCustomerRepository.getAllCustomers(page, PER_PAGE)
+        Disposable disposable = mUserRepository.getAllCustomers(page, PER_PAGE)
             .subscribeOn(Schedulers.io())
             .observeOn(AndroidSchedulers.mainThread())
             .doOnSubscribe(new Consumer<Disposable>() {

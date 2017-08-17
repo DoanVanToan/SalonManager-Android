@@ -1,5 +1,8 @@
 package com.framgia.fsalon.data.model;
 
+import android.os.Parcel;
+import android.os.Parcelable;
+
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 
@@ -8,7 +11,7 @@ import java.util.Date;
 /**
  * Created by MyPC on 20/07/2017.
  */
-public class User {
+public class User implements Parcelable {
     @Expose
     @SerializedName("id")
     private int mId;
@@ -23,7 +26,7 @@ public class User {
     private String mPhone;
     @Expose
     @SerializedName("birthday")
-    private Date mBirthday;
+    private String mBirthday;
     @Expose
     @SerializedName("avatar")
     private String mAvatar;
@@ -51,6 +54,34 @@ public class User {
     @Expose
     @SerializedName("updated_at")
     private String mUpdatedAt;
+
+    protected User(Parcel in) {
+        mId = in.readInt();
+        mName = in.readString();
+        mEmail = in.readString();
+        mPhone = in.readString();
+        mAvatar = in.readString();
+        mGender = in.readString();
+        mPermission = in.readInt();
+        mExperience = in.readString();
+        mSpecialize = in.readString();
+        mAboutMe = in.readString();
+        mDepartmentId = in.readInt();
+        mCreatedAt = in.readString();
+        mUpdatedAt = in.readString();
+    }
+
+    public static final Creator<User> CREATOR = new Creator<User>() {
+        @Override
+        public User createFromParcel(Parcel in) {
+            return new User(in);
+        }
+
+        @Override
+        public User[] newArray(int size) {
+            return new User[size];
+        }
+    };
 
     public int getId() {
         return mId;
@@ -84,11 +115,11 @@ public class User {
         mPhone = phone;
     }
 
-    public Date getBirthday() {
+    public String getBirthday() {
         return mBirthday;
     }
 
-    public void setBirthday(Date birthday) {
+    public void setBirthday(String birthday) {
         mBirthday = birthday;
     }
 
@@ -162,5 +193,27 @@ public class User {
 
     public void setUpdatedAt(String updatedAt) {
         mUpdatedAt = updatedAt;
+    }
+
+    @Override
+    public int describeContents() {
+        return 0;
+    }
+
+    @Override
+    public void writeToParcel(Parcel dest, int flags) {
+        dest.writeInt(mId);
+        dest.writeString(mName);
+        dest.writeString(mEmail);
+        dest.writeString(mPhone);
+        dest.writeString(mAvatar);
+        dest.writeString(mGender);
+        dest.writeInt(mPermission);
+        dest.writeString(mExperience);
+        dest.writeString(mSpecialize);
+        dest.writeString(mAboutMe);
+        dest.writeInt(mDepartmentId);
+        dest.writeString(mCreatedAt);
+        dest.writeString(mUpdatedAt);
     }
 }
