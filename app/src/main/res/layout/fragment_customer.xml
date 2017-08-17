@@ -20,6 +20,7 @@
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
+        android:background="@color/color_white"
         android:orientation="vertical"
         >
 
@@ -27,20 +28,23 @@
             android:layout_width="match_parent"
             android:layout_height="@dimen/dp_50"
             android:background="@color/colorPrimary"
+            bind:iconifiedByDefault="false"
+            bind:setOnQueryTextListener="@{viewModel.QueryTextListener}"
             bind:theme="@style/NoActionBarTheme.SearchView"/>
-
-        <ProgressBar
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="bottom|center"
-            android:layout_marginBottom="@dimen/dp_16"
-            android:visibility="@{viewModel.loadingMore?View.VISIBLE:View.GONE}"/>
 
         <android.support.v7.widget.RecyclerView
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="1"
             bind:layoutManager="LinearLayoutManager"
             bind:recyclerAdapter="@{viewModel.customerAdapter}"
             bind:scrollListenner="@{viewModel.listener}"/>
+
+        <ProgressBar
+            android:layout_width="40dp"
+            android:layout_height="40dp"
+            android:layout_gravity="bottom|center"
+            android:layout_marginBottom="@dimen/dp_1"
+            android:visibility="@{viewModel.loadingMore?View.VISIBLE:View.GONE}"/>
     </LinearLayout>
 </layout>

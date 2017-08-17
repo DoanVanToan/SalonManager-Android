@@ -63,5 +63,9 @@ public interface FSalonApi {
                                                           @Query("perpage") int perPage);
     @GET("api/v0/bill/{id}")
     Observable<Respone<BillResponse>> getBillById(@Path("id") int id);
+    @GET("/api/v0/filter-customer")
+    Observable<Respone<CustomerResponse>>  searchCustomer(@Query("keyword") String keyword,
+                                                          @Query("per_page") int perPage,
+                                                          @Query("page") int page);
 }
 

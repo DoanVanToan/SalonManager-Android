@@ -73,8 +73,45 @@ public class CustomerPresenter implements CustomerContract.Presenter {
     }
 
     @Override
+    public void searchUser(String keyword, int page) {
+        Disposable disposable = mUserRepository.searchCustomer(keyword, PER_PAGE, page)
+            .subscribeOn(Schedulers.io())
+            .observeOn(AndroidSchedulers.mainThread())
+            .doOnSubscribe(new Consumer<Disposable>() {
+                @Override
+                public void accept(@NonNull Disposable disposable) throws Exception {
+                    mViewModel.showLoadMore();
+                }
+            }).subscribeWith(new DisposableObserver<CustomerResponse>() {
+                @Override
+                public void onNext(@NonNull CustomerResponse customers) {
+                    mViewModel.onSearchSuccessful(customers.getData());
+                }
+
+                @Override
+                public void onError(@NonNull Throwable e) {
+                    mViewModel.onSearchFail();
+                    mViewModel.hideLoadMore();
+                }
+
+                @Override
+                public void onComplete() {
+                    mViewModel.hideLoadMore();
+                }
+            });
+        mCompositeDisposable.add(disposable);
+        mPage = page;
+    }
+
+    @Override
     public void loadMoreData() {
         mPage++;
         getCustomers(mPage);
+    }
+
+    @Override
+    public void loadMoreSearch(String keyword) {
+        mPage++;
+        searchUser(keyword, mPage);
     }
 }

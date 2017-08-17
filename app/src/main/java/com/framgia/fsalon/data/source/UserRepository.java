@@ -70,4 +70,9 @@ public class UserRepository
     public Observable<CustomerResponse> getAllCustomers(int page, int perPage) {
         return mUserRemoteDataSource.getAllCustomers(page, perPage);
     }
+
+    @Override
+    public Observable<CustomerResponse> searchCustomer(String keyword, int perPage, int page) {
+        return mUserRemoteDataSource.searchCustomer(keyword, perPage, page);
+    }
 }

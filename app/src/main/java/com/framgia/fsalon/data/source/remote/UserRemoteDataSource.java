@@ -89,4 +89,18 @@ public class UserRemoteDataSource extends BaseRemoteDataSource
                 }
             });
     }
+
+    @Override
+    public Observable<CustomerResponse> searchCustomer(String keyword, int perPage, int page) {
+        return mFSalonApi.searchCustomer(keyword, perPage, page).flatMap(
+            new Function<Respone<CustomerResponse>,
+                ObservableSource<CustomerResponse>>() {
+                @Override
+                public ObservableSource<CustomerResponse> apply(
+                    @NonNull Respone<CustomerResponse> customerResponseRespone)
+                    throws Exception {
+                    return Utils.getResponse(customerResponseRespone);
+                }
+            });
+    }
 }

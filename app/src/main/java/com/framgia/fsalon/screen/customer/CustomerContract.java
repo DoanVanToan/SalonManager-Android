@@ -18,6 +18,8 @@ interface CustomerContract {
         void onCustomerFail();
         void showLoadMore();
         void hideLoadMore();
+        void onSearchSuccessful(List<User> sections);
+        void onSearchFail();
     }
 
     /**
@@ -26,5 +28,7 @@ interface CustomerContract {
     interface Presenter extends BasePresenter {
         void getCustomers(int page);
         void loadMoreData();
+        void loadMoreSearch(String keyword);
+        void searchUser(String keyword, int page);
     }
 }

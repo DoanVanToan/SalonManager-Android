@@ -52,6 +52,18 @@ public class CustomerAdapter extends RecyclerView.Adapter<CustomerAdapter.ViewHo
         notifyDataSetChanged();
     }
 
+    public void setNewPage(List<User> data) {
+        if (data != null) {
+            clearData();
+        }
+        mData.addAll(data);
+        notifyDataSetChanged();
+    }
+
+    public void clearData() {
+        mData.clear();
+    }
+
     public class ViewHolder extends RecyclerView.ViewHolder {
         private ItemCustomerBinding mBinding;
         private CustomerViewModel mViewModel;
