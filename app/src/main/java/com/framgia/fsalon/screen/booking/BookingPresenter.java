@@ -4,6 +4,7 @@ import android.text.TextUtils;
 
 import com.framgia.fsalon.R;
 import com.framgia.fsalon.data.model.BookingOder;
+import com.framgia.fsalon.data.model.BookingRender;
 import com.framgia.fsalon.data.model.BookingResponse;
 import com.framgia.fsalon.data.model.DateBooking;
 import com.framgia.fsalon.data.model.Salon;
@@ -13,7 +14,9 @@ import com.framgia.fsalon.data.source.BookingRepository;
 import com.framgia.fsalon.data.source.SalonRepository;
 import com.framgia.fsalon.data.source.StylistRepository;
 import com.framgia.fsalon.data.source.UserRepository;
+import com.framgia.fsalon.utils.Utils;
 
+import java.text.ParseException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -48,13 +51,12 @@ public class BookingPresenter implements BookingContract.Presenter {
         mSalonRepository = salonRepository;
         mStylistRepository = stylistRepository;
         mUserRepository = userRepository;
-        getAllSalons();
-        getDateBooking();
     }
 
     @Override
     public void onStart() {
-        getCustomer();
+        getDateBooking();
+        getAllSalons();
     }
 
     @Override
@@ -76,7 +78,7 @@ public class BookingPresenter implements BookingContract.Presenter {
 
                 @Override
                 public void onError(@NonNull Throwable e) {
-                    mViewModel.onGuest();
+                    mViewModel.onNotCustomer();
                 }
 
                 @Override
@@ -255,6 +257,54 @@ public class BookingPresenter implements BookingContract.Presenter {
                 }
             });
         mCompositeDisposable.add(disposable);
+    }
+
+    @Override
+    public void setDatePosition(BookingOder bookingOder,
+                                List<DateBooking> dateBookings) {
+        if (bookingOder.getStatus() != BookingOder.STATUS_IN_LATE) {
+            for (DateBooking dateBooking : dateBookings) {
+                try {
+                    if (Utils.isSameDate(dateBooking.getDateTime(),
+                        bookingOder.getRender().getDay())) {
+                        mViewModel.setDateAndTime(dateBookings.indexOf(dateBooking),
+                            dateBooking.getTimeMillis());
+                    }
+                } catch (ParseException e) {
+                    mViewModel.onNoDate();
+                }
+            }
+            return;
+        }
+        mViewModel.setDateAndTime(BookingViewModel.FIRST_ITEM, System.currentTimeMillis() / 1000);
+    }
+
+    @Override
+    public void setSalonPosition(BookingOder bookingOder, List<Salon> salons) {
+        for (Salon s : salons) {
+            if (s.getName().equals(bookingOder.getDepartment().getName())) {
+                mViewModel.selectedSalonPosition(salons.indexOf(s), s);
+            }
+        }
+    }
+
+    @Override
+    public void setTimePosition(BookingOder bookingOder, BookingResponse bookingResponse) {
+        for (BookingRender render : bookingResponse.getRenders()) {
+            if (render.getTimeStart().equals(bookingOder.getRender().getTimeStart())) {
+                mViewModel
+                    .selectedTimePosition(bookingResponse.getRenders().indexOf(render), render);
+            }
+        }
+    }
+
+    @Override
+    public void setStylist(BookingOder bookingOder, List<Stylist> stylists) {
+        for (Stylist s : stylists) {
+            if (s.getName().equals(bookingOder.getStylist().getName())) {
+                mViewModel.setStylist(stylists.indexOf(s));
+            }
+        }
     }
 
     public boolean validateDataInput(String phone, String name, int renderBookingId) {

@@ -6,6 +6,8 @@
 
     <data>
 
+        <import type="android.view.View"/>
+
         <import type="com.framgia.fsalon.utils.LayoutManager"/>
 
         <variable
@@ -54,6 +56,8 @@
                         <EditText
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
+                            android:enabled="@{viewModel.edit ? false : true}"
+                            android:focusable="@{viewModel.edit ? false : true}"
                             android:hint="@string/hint_name"
                             android:inputType="textPersonName"
                             android:text="@={viewModel.name}"
@@ -68,8 +72,11 @@
                         bind:errorText="@{viewModel.phoneError}">
 
                         <EditText
+                            android:id="@+id/editText2"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
+                            android:enabled="@{viewModel.edit ? false : true}"
+                            android:focusable="@{viewModel.edit ? false : true}"
                             android:hint="@string/title_phone"
                             android:inputType="number"
                             android:text="@={viewModel.phone}"
@@ -135,8 +142,8 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:scrollbarSize="@dimen/dp_20"
-                        bind:hintText="@string/title_dash"
                         bind:searchableSpinnerAdapter="@{viewModel.stylistAdapter}"
+                        bind:selection="@{viewModel.stylistPosition}"
                         bind:stylistId="@={viewModel.stylistId}"
                         bind:viewModel="@{viewModel}"/>
                 </LinearLayout>

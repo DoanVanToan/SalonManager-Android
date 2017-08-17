@@ -296,6 +296,7 @@
                 </LinearLayout>
 
                 <com.github.clans.fab.FloatingActionMenu
+                    bind:selected="@{viewModel.selected}"
                     android:id="@+id/menu_yellow"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
@@ -316,7 +317,7 @@
                     <com.github.clans.fab.FloatingActionButton
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:onClick="@{()->viewModel.editBooking()}"
+                        android:onClick="@{(view)->viewModel.editBooking(view)}"
                         android:src="@drawable/ic_edit"
                         bind:fab_colorNormal="@color/color_white"
                         bind:fab_label="@string/title_edit_detail"
@@ -327,7 +328,7 @@
                     <com.github.clans.fab.FloatingActionButton
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:onClick="@{()->viewModel.messageCustomer()}"
+                        android:onClick="@{(view)->viewModel.messageCustomer(view)}"
                         android:src="@drawable/ic_message"
                         bind:fab_colorNormal="@color/color_white"
                         bind:fab_label="@string/title_message"
@@ -337,7 +338,7 @@
                     <com.github.clans.fab.FloatingActionButton
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:onClick="@{()->viewModel.callCustomer()}"
+                        android:onClick="@{(view)->viewModel.callCustomer(view)}"
                         android:src="@drawable/ic_phone_receiver_24dp"
                         bind:fab_colorNormal="@color/color_white"
                         bind:fab_label="@string/title_call"

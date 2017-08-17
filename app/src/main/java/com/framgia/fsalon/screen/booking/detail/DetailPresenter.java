@@ -1,7 +1,5 @@
 package com.framgia.fsalon.screen.booking.detail;
 
-import android.text.TextUtils;
-
 import com.framgia.fsalon.data.model.BookingOder;
 import com.framgia.fsalon.data.model.UserRespone;
 import com.framgia.fsalon.data.source.BookingRepository;
@@ -101,7 +99,7 @@ public class DetailPresenter implements DetailContract.Presenter {
 
                 @Override
                 public void onError(@NonNull Throwable e) {
-                    if (TextUtils.isEmpty(mPhone)) {
+                    if (mPhone == null || mPhone.isEmpty()) {
                         mViewModel.onNotBooking();
                         mViewModel.finishRefresh();
                     } else {

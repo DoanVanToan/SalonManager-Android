@@ -1,4 +1,4 @@
-package com.framgia.fsalon.screen.adminbooking;
+package com.framgia.fsalon.screen.editbooking;
 
 import com.framgia.fsalon.BasePresenter;
 import com.framgia.fsalon.BaseViewModel;
@@ -6,7 +6,7 @@ import com.framgia.fsalon.BaseViewModel;
 /**
  * This specifies the contract between the view and the presenter.
  */
-interface AdminBookingContract {
+interface EditBookingContract {
     /**
      * View.
      */
