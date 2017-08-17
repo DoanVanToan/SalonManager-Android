@@ -88,6 +88,11 @@ public class BillDetailViewModel extends BaseObservable implements BillDetailCon
         mAdapter.onUpdatePage(billResponse.getBillItems());
     }
 
+    @Override
+    public void onEditBillClick() {
+        // TODO: 17/08/2017 edit bill
+    }
+
     @Bindable
     public BillResponse getBillResponse() {
         return mBillResponse;

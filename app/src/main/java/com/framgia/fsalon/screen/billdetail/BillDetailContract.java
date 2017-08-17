@@ -16,6 +16,7 @@ interface BillDetailContract {
         void hideProgressbar();
         void onError(String message);
         void onGetBillSuccess(BillResponse billResponse);
+        void onEditBillClick();
     }
 
     /**
