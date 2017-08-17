@@ -18,6 +18,7 @@ public class Constant {
     public static final int NO_SCROLL = -1;
     public static final int REQUEST_ADMIN_BOOKING_ACTIVITY = 1;
     public static final String BUNDLE_USER = "BUNDLE_USER";
+    public static final int FIRST_ITEM = 0;
 
     public class ApiParram {
         public static final String DEPARTMENT_ID = "department_id";
