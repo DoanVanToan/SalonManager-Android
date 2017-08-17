@@ -9,6 +9,7 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import com.framgia.fsalon.R;
+import com.framgia.fsalon.data.model.BookingOder;
 import com.framgia.fsalon.data.source.BookingRepository;
 import com.framgia.fsalon.data.source.SalonRepository;
 import com.framgia.fsalon.data.source.StylistRepository;
@@ -21,6 +22,7 @@ import com.framgia.fsalon.data.source.remote.SalonRemoteDataSource;
 import com.framgia.fsalon.data.source.remote.StylistRemoteDataSource;
 import com.framgia.fsalon.data.source.remote.UserRemoteDataSource;
 import com.framgia.fsalon.databinding.FragmentBookingBinding;
+import com.framgia.fsalon.utils.Constant;
 
 /**
  * Booking Screen.
@@ -32,16 +34,28 @@ public class BookingFragment extends Fragment {
         return new BookingFragment();
     }
 
+    public static BookingFragment newInstance(BookingOder bookingOder) {
+        BookingFragment fragment = new BookingFragment();
+        Bundle args = new Bundle();
+        args.putParcelable(Constant.BUNDLE_ORDER, bookingOder);
+        fragment.setArguments(args);
+        return fragment;
+    }
+
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        mViewModel = new BookingViewModel(getActivity());
+        if (getArguments() == null) {
+            mViewModel = new BookingViewModel(getActivity());
+        } else {
+            mViewModel = new BookingViewModel(getActivity(), (BookingOder) getArguments()
+                .getParcelable(Constant.BUNDLE_ORDER));
+        }
         BookingContract.Presenter presenter =
             new BookingPresenter(mViewModel,
                 new BookingRepository(
                     new BookingRemoteDataSource(FSalonServiceClient.getInstance())),
-                new SalonRepository(
-                    new SalonRemoteDataSource(FSalonServiceClient.getInstance())),
+                new SalonRepository(new SalonRemoteDataSource(FSalonServiceClient.getInstance())),
                 new StylistRepository(
                     new StylistRemoteDataSource(FSalonServiceClient.getInstance())),
                 new UserRepository(new UserRemoteDataSource(FSalonServiceClient.getInstance()),

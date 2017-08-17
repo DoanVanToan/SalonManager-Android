@@ -1,5 +1,7 @@
 package com.framgia.fsalon.screen.scheduler.detail;
 
+import android.view.View;
+
 import com.framgia.fsalon.BasePresenter;
 import com.framgia.fsalon.BaseViewModel;
 import com.framgia.fsalon.data.model.BookingOder;
@@ -17,11 +19,13 @@ interface BookingDetailContract {
         void finishRefresh();
         void showProgressBar();
         void hideProgressBar();
-        void callCustomer();
-        void editBooking();
-        void messageCustomer();
+        void callCustomer(View button);
+        void editBooking(View button);
+        void messageCustomer(View button);
         void onPermissionGranted();
         void onPermissionDenied();
+        void returnData(BookingOder order);
+        void getBooking();
     }
 
     /**

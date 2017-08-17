@@ -14,8 +14,11 @@ import android.view.View;
 import com.framgia.fsalon.BR;
 import com.framgia.fsalon.R;
 import com.framgia.fsalon.data.model.BookingOder;
+import com.framgia.fsalon.screen.editbooking.EditBookingActivity;
+import com.framgia.fsalon.utils.Constant;
 import com.framgia.fsalon.utils.Utils;
 import com.framgia.fsalon.utils.navigator.Navigator;
+import com.github.clans.fab.FloatingActionMenu;
 
 /**
  * Exposes the data to be used in the Detail screen.
@@ -28,6 +31,7 @@ public class BookingDetailViewModel extends BaseObservable
     private int mProgressBarVisibility;
     private boolean mIsFinish = true;
     private Navigator mNavigator;
+    private boolean mIsSelected;
     private SwipeRefreshLayout.OnRefreshListener mListener =
         new SwipeRefreshLayout.OnRefreshListener() {
             @Override
@@ -79,11 +83,19 @@ public class BookingDetailViewModel extends BaseObservable
         notifyPropertyChanged(BR.finish);
     }
 
+    @Bindable
+    public boolean isSelected() {
+        return mIsSelected;
+    }
+
+    public void setSelected(boolean selected) {
+        mIsSelected = selected;
+        notifyPropertyChanged(BR.selected);
+    }
+
     @Override
     public void onStart() {
-        showProgressBar();
         mPresenter.onStart();
-        mPresenter.getBookingById(mId);
     }
 
     @Override
@@ -122,7 +134,9 @@ public class BookingDetailViewModel extends BaseObservable
     }
 
     @Override
-    public void callCustomer() {
+    public void callCustomer(View button) {
+        FloatingActionMenu fapMenu = (FloatingActionMenu) button.getParent();
+        fapMenu.close(true);
         if (ActivityCompat.checkSelfPermission(mNavigator.getContext(),
             Manifest.permission.CALL_PHONE) != PackageManager.PERMISSION_GRANTED) {
             Utils.requestCallPermission(mNavigator.getContext());
@@ -132,12 +146,18 @@ public class BookingDetailViewModel extends BaseObservable
     }
 
     @Override
-    public void editBooking() {
-        // TODO: 8/7/2017
+    public void editBooking(View button) {
+        FloatingActionMenu fapMenu = (FloatingActionMenu) button.getParent();
+        fapMenu.close(true);
+        mNavigator.startActivityForResult(
+            EditBookingActivity.getInstance(mNavigator.getContext(), mBookingOder),
+            Constant.REQUEST_ADMIN_BOOKING_ACTIVITY);
     }
 
     @Override
-    public void messageCustomer() {
+    public void messageCustomer(View button) {
+        FloatingActionMenu fapMenu = (FloatingActionMenu) button.getParent();
+        fapMenu.close(true);
         // TODO: 8/8/2017
     }
 
@@ -151,5 +171,28 @@ public class BookingDetailViewModel extends BaseObservable
     @Override
     public void onPermissionDenied() {
         mNavigator.showToast(R.string.msg_no_permission);
+    }
+
+    public void returnData(BookingOder order) {
+        mNavigator.showToast(R.string.msg_edit_success);
+        setBookingOder(order);
+        setId(order.getId());
+        setSelected(false);
+    }
+
+    @Override
+    public void getBooking() {
+        showProgressBar();
+        mPresenter.getBookingById(mId);
+    }
+
+    @Bindable
+    public int getId() {
+        return mId;
+    }
+
+    public void setId(int id) {
+        mId = id;
+        notifyPropertyChanged(BR.id);
     }
 }

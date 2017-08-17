@@ -37,8 +37,12 @@ interface BookingContract {
         void onInputNameError();
         void onInputTimeError();
         void onInputSalonError();
+        void checkCustomer();
         void onCustomer(String name, String phone);
-        void onGuest();
+        void onNotCustomer();
+        void setDateAndTime(int position, long millis);
+        void onNoDate();
+        void setStylist(int position);
     }
 
     /**
@@ -52,5 +56,9 @@ interface BookingContract {
         void getBookings(int salonId, long time);
         void getDateBooking();
         void book(String phone, String name, int renderBookingId, int stylistId);
+        void setDatePosition(BookingOder bookingOder, List<DateBooking> dateBookings);
+        void setSalonPosition(BookingOder bookingOrder, List<Salon> salons);
+        void setTimePosition(BookingOder bookingOder, BookingResponse bookingResponse);
+        void setStylist(BookingOder bookingOder, List<Stylist> stylists);
     }
 }

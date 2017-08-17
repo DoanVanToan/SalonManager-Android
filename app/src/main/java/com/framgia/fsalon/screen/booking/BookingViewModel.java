@@ -1,9 +1,9 @@
 package com.framgia.fsalon.screen.booking;
 
 import android.content.Context;
+import android.content.Intent;
 import android.databinding.BaseObservable;
 import android.databinding.Bindable;
-import android.support.design.widget.Snackbar;
 import android.support.v4.app.FragmentActivity;
 import android.widget.ArrayAdapter;
 
@@ -20,19 +20,20 @@ import com.framgia.fsalon.utils.navigator.Navigator;
 
 import java.util.List;
 
+import static android.app.Activity.RESULT_OK;
+import static com.framgia.fsalon.utils.Constant.BUNDLE_ORDER;
 import static com.framgia.fsalon.utils.Constant.OUT_OF_INDEX;
 
 /**
  * Exposes the data to be used in the Booking screen.
  */
 public class BookingViewModel extends BaseObservable implements BookingContract.ViewModel {
-    private static final int FIRST_ITEM = 0;
+    public static final int FIRST_ITEM = 0;
     private BookingContract.Presenter mPresenter;
     private SalonAdapter mSalonAdapter;
     private DateBookingAdapter mDateAdapter;
     private TimeBookingAdapter mTimeAdapter;
     private ArrayAdapter<Stylist> mStylistAdapter;
-    private FragmentActivity mActivity;
     private Context mContext;
     private long mTime = System.currentTimeMillis() / 1000;
     private int mSalonId;
@@ -45,11 +46,21 @@ public class BookingViewModel extends BaseObservable implements BookingContract.
     private String mTimeError;
     private String mSalonError;
     private Navigator mNavigator;
+    private boolean mIsEdit;
+    private BookingOder mBookingOrder = null;
+    private int mStylistPosition;
 
     public BookingViewModel(FragmentActivity activity) {
-        mActivity = activity;
         mContext = activity.getApplicationContext();
-        mNavigator = new Navigator(mActivity);
+        mNavigator = new Navigator(activity);
+    }
+
+    public BookingViewModel(FragmentActivity activity, BookingOder order) {
+        this(activity);
+        mBookingOrder = order;
+        setName(order.getName());
+        setPhone(order.getPhone());
+        setEdit(true);
     }
 
     @Override
@@ -60,12 +71,41 @@ public class BookingViewModel extends BaseObservable implements BookingContract.
     @Override
     public void onGetDateBookingSuccess(List<DateBooking> dateBookings) {
         setDateAdapter(new DateBookingAdapter(mContext, dateBookings, this));
-        mDateAdapter.selectedPosition(FIRST_ITEM);
+        if (!isEdit()) {
+            setDateAndTime(FIRST_ITEM, -1);
+            return;
+        }
+        mPresenter.setDatePosition(mBookingOrder, dateBookings);
+    }
+
+    @Override
+    public void setDateAndTime(int i, long millis) {
+        mDateAdapter.selectedPosition(i);
+        if (millis != -1) {
+            mTime = millis;
+        }
+    }
+
+    @Override
+    public void onNoDate() {
+        mNavigator.showToast(R.string.msg_cant_find_date);
+    }
+
+    @Override
+    public void setStylist(int position) {
+        setStylistPosition(position);
     }
 
     @Override
     public void onBookSuccess(BookingOder bookingOder) {
-        mNavigator.startActivity(SuccessActivity.getInstance(mNavigator.getContext(), bookingOder));
+        if (!isEdit()) {
+            mNavigator
+                .startActivity(SuccessActivity.getInstance(mNavigator.getContext(), bookingOder));
+        } else {
+            Intent resultIntent = new Intent();
+            resultIntent.putExtra(BUNDLE_ORDER, bookingOder);
+            mNavigator.finishActivityWithResult(resultIntent, RESULT_OK);
+        }
     }
 
     @Override
@@ -98,14 +138,19 @@ public class BookingViewModel extends BaseObservable implements BookingContract.
     }
 
     @Override
+    public void checkCustomer() {
+        mPresenter.getCustomer();
+    }
+
+    @Override
     public void onCustomer(String name, String phone) {
         setName(name);
         setPhone(phone);
     }
 
     @Override
-    public void onGuest() {
-        // TODO: 8/9/2017
+    public void onNotCustomer() {
+        // TODO: 8/16/2017
     }
 
     @Override
@@ -116,6 +161,9 @@ public class BookingViewModel extends BaseObservable implements BookingContract.
     @Override
     public void onStart() {
         mPresenter.onStart();
+        if (!isEdit()) {
+            checkCustomer();
+        }
     }
 
     @Override
@@ -160,8 +208,7 @@ public class BookingViewModel extends BaseObservable implements BookingContract.
 
     @Override
     public void onError(String msg) {
-        Snackbar.make(mActivity.findViewById(android.R.id.content), msg, Snackbar.LENGTH_LONG)
-            .show();
+        mNavigator.showToast(msg);
     }
 
     @Override
@@ -177,16 +224,30 @@ public class BookingViewModel extends BaseObservable implements BookingContract.
     @Override
     public void onGetSalonsSuccess(List<Salon> salons) {
         setSalonAdapter(new SalonAdapter(mContext, salons, this));
+        if (isEdit()) {
+            setStylistId(mBookingOrder.getStylistId());
+            mPresenter.setSalonPosition(mBookingOrder, salons);
+        }
     }
 
     @Override
     public void onGetStylistSuccess(List<Stylist> stylists) {
         setStylistAdapter(new ArrayAdapter<>(mContext, R.layout.item_spinner, stylists));
+        if (isEdit()) {
+            mPresenter.setStylist(mBookingOrder, stylists);
+            return;
+        }
+        if (!stylists.isEmpty()) {
+            setStylistId(stylists.get(FIRST_ITEM).getId());
+        }
     }
 
     @Override
     public void onGetBookingSuccess(BookingResponse bookingResponse) {
         setTimeAdapter(new TimeBookingAdapter(mContext, bookingResponse.getRenders(), this));
+        if (isEdit() && mBookingOrder.getStatus() != BookingOder.STATUS_IN_LATE) {
+            mPresenter.setTimePosition(mBookingOrder, bookingResponse);
+        }
     }
 
     @Bindable
@@ -300,5 +361,35 @@ public class BookingViewModel extends BaseObservable implements BookingContract.
     public void setSalonError(String salonError) {
         mSalonError = salonError;
         notifyPropertyChanged(BR.salonError);
+    }
+
+    @Bindable
+    public boolean isEdit() {
+        return mIsEdit;
+    }
+
+    public void setEdit(boolean edit) {
+        mIsEdit = edit;
+        notifyPropertyChanged(BR.edit);
+    }
+
+    @Bindable
+    public BookingOder getBookingOrder() {
+        return mBookingOrder;
+    }
+
+    public void setBookingOrder(BookingOder bookingOrder) {
+        mBookingOrder = bookingOrder;
+        notifyPropertyChanged(BR.bookingOder);
+    }
+
+    @Bindable
+    public int getStylistPosition() {
+        return mStylistPosition;
+    }
+
+    public void setStylistPosition(int stylistPosition) {
+        mStylistPosition = stylistPosition;
+        notifyPropertyChanged(BR.stylistPosition);
     }
 }
