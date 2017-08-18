@@ -6,8 +6,6 @@ import android.os.Parcelable;
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 
-import java.util.Date;
-
 /**
  * Created by MyPC on 20/07/2017.
  */
@@ -69,6 +67,9 @@ public class User implements Parcelable {
         mDepartmentId = in.readInt();
         mCreatedAt = in.readString();
         mUpdatedAt = in.readString();
+    }
+
+    public User() {
     }
 
     public static final Creator<User> CREATOR = new Creator<User>() {

@@ -68,7 +68,6 @@ public class ListBillViewModel extends BaseObservable
     private int mRadioButtonId;
     private DepartmentAdapter mDepartmentAdapter;
     private User mCustomer;
-    private String mCustomerNameError;
     private String mTitleFragment;
     private boolean mIsWaiting;
     private boolean mIsCompleted;
@@ -81,11 +80,11 @@ public class ListBillViewModel extends BaseObservable
     private String mTypeFilter;
     private String mStatusId = "";
     private int mDepartmentId = OUT_OF_INDEX;
-    private int mCustomerId = OUT_OF_INDEX;
     private FragmentManager mFragmentManager;
     private String mSpaceTime = "";
     private String mStatus;
     private int mStatusColor;
+    private String mSalonName;
     private DrawerLayout.DrawerListener mDrawerListener = new DrawerLayout.DrawerListener() {
         @Override
         public void onDrawerSlide(View drawerView, float slideOffset) {
@@ -100,7 +99,7 @@ public class ListBillViewModel extends BaseObservable
             makeStatusFilter();
             mPresenter
                 .filterBills(mTypeFilter, mStartDate, mEndDate, mStatusId, mDepartmentId,
-                    mCustomerId);
+                    mCustomer.getId());
         }
 
         @Override
@@ -163,6 +162,8 @@ public class ListBillViewModel extends BaseObservable
         mNavigator = new Navigator(mActivity);
         mFragmentManager = mActivity.getFragmentManager();
         setAdapter(new ListBillAdapter(this, new ArrayList<ListBillRespond>()));
+        mCustomer = new User();
+        mCustomer.setId(OUT_OF_INDEX);
         if (mCalendar == null) {
             mCalendar = Calendar.getInstance();
         }
@@ -223,16 +224,6 @@ public class ListBillViewModel extends BaseObservable
     }
 
     @Override
-    public void onInputCustomerNameError() {
-        setCustomerNameError(mNavigator.getStringById(R.string.msg_error_empty));
-    }
-
-    @Override
-    public void onHideCustomerNameError() {
-        setCustomerNameError(null);
-    }
-
-    @Override
     public void onSpaceTimeClick() {
         mTypeFilter = FILTER_SPACE;
         mTypeSelectDate = TAB_START_DATE;
@@ -271,6 +262,17 @@ public class ListBillViewModel extends BaseObservable
     public void onGetSalonsSuccess(List<Salon> salons) {
         setDepartmentAdapter(new DepartmentAdapter(mContext, salons, this));
         mDepartmentAdapter.selectedPosition(FIRST_ITEM);
+        mDepartmentId = mDepartmentAdapter.getItem(FIRST_ITEM).getId();
+        setSalonName(mDepartmentAdapter.getItem(FIRST_ITEM).getName());
+    }
+
+    @Override
+    public void getCustomerSuccessfull(User user) {
+        mCustomer = user;
+    }
+
+    @Override
+    public void onSearchCustomer() {
     }
 
     @Override
@@ -357,16 +359,6 @@ public class ListBillViewModel extends BaseObservable
     public void setCustomer(User customer) {
         mCustomer = customer;
         notifyPropertyChanged(BR.customer);
-    }
-
-    @Bindable
-    public String getCustomerNameError() {
-        return mCustomerNameError;
-    }
-
-    public void setCustomerNameError(String customerNameError) {
-        mCustomerNameError = customerNameError;
-        notifyPropertyChanged(BR.customerNameError);
     }
 
     @Bindable
@@ -484,14 +476,6 @@ public class ListBillViewModel extends BaseObservable
         mDepartmentId = departmentId;
     }
 
-    public int getCustomerId() {
-        return mCustomerId;
-    }
-
-    public void setCustomerId(int customerId) {
-        mCustomerId = customerId;
-    }
-
     @Bindable
     public String getStatus() {
         return mStatus;
@@ -500,6 +484,16 @@ public class ListBillViewModel extends BaseObservable
     public void setStatus(String status) {
         mStatus = status;
         notifyPropertyChanged(BR.status);
+    }
+
+    @Bindable
+    public String getSalonName() {
+        return mSalonName;
+    }
+
+    public void setSalonName(String salonName) {
+        mSalonName = salonName;
+        notifyPropertyChanged(BR.salonName);
     }
 
     @Override
@@ -541,7 +535,7 @@ public class ListBillViewModel extends BaseObservable
                 setTitleFragment(mSpaceTime);
                 setRadioButtonId(R.id.filter_space_time);
                 mPresenter.filterBills(mTypeFilter, mStartDate, mEndDate, mStatusId, mDepartmentId,
-                    mCustomerId);
+                    mCustomer.getId());
                 break;
             default:
                 break;

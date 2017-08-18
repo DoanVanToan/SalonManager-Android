@@ -24,6 +24,45 @@
         android:orientation="vertical"
         >
 
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="?attr/actionBarSize"
+            android:background="@color/colorPrimary"
+            android:gravity="center_vertical"
+            android:orientation="horizontal"
+            >
+
+            <ImageView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="@dimen/dp_10"
+                android:layout_marginStart="@dimen/dp_10"
+                android:onClick="@{() -> viewModel.onFilterClick(drawerLayout)}"
+                android:padding="@dimen/dp_10"
+                app:srcCompat="@drawable/ic_filter_30dp"
+                tools:ignore="ContentDescription"/>
+
+            <TextView
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="@dimen/dp_10"
+                android:layout_marginStart="@dimen/dp_10"
+                android:layout_weight="2"
+                android:text="@{viewModel.titleFragment}"
+                android:textColor="@color/color_white"
+                android:textSize="@dimen/sp_18"/>
+
+            <TextView
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="@dimen/dp_10"
+                android:layout_marginStart="@dimen/dp_10"
+                android:layout_weight="1"
+                android:text="@{viewModel.salonName}"
+                android:textColor="@color/color_white"
+                android:textSize="@dimen/sp_15"/>
+        </LinearLayout>
+
         <android.support.v4.widget.DrawerLayout
             android:id="@+id/drawer_layout"
             android:layout_width="match_parent"
@@ -38,51 +77,16 @@
                 android:layout_height="match_parent"
                 >
 
-                <LinearLayout
-                    android:id="@+id/linear_layout"
-                    android:layout_width="match_parent"
-                    android:layout_height="?attr/actionBarSize"
-                    android:background="@color/colorPrimary"
-                    android:gravity="center_vertical"
-                    android:orientation="horizontal"
-                    >
-
-                    <ImageView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_marginLeft="@dimen/dp_10"
-                        android:layout_marginStart="@dimen/dp_10"
-                        android:onClick="@{()-> viewModel.onFilterClick(drawerLayout)}"
-                        android:padding="@dimen/dp_10"
-                        app:srcCompat="@drawable/ic_filter_30dp"
-                        tools:ignore="ContentDescription"
-                        />
-
-                    <TextView
-                        android:layout_width="0dp"
-                        android:layout_height="wrap_content"
-                        android:layout_marginLeft="@dimen/dp_10"
-                        android:layout_marginStart="@dimen/dp_10"
-                        android:layout_weight="1"
-                        android:text="@{viewModel.titleFragment}"
-                        android:textColor="@color/color_white"
-                        android:textSize="@dimen/sp_20"
-                        android:textStyle="bold"/>
-                </LinearLayout>
-
                 <ProgressBar
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_gravity="top|center"
-                    android:layout_marginTop="?attr/actionBarSize"
                     android:visibility="@{viewModel.visibleProgressBar}">
-
                 </ProgressBar>
 
                 <android.support.v7.widget.RecyclerView
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
-                    android:layout_marginTop="?attr/actionBarSize"
                     android:background="@color/color_grey_100"
                     bind:deviderItem="@{@integer/div_1}"
                     bind:layoutManager="@{viewModel.layoutManager}"
@@ -97,7 +101,6 @@
                     android:src="@drawable/fab_add"
                     app:fabSize="normal"
                     />
-
             </android.support.design.widget.CoordinatorLayout>
 
 
@@ -106,12 +109,12 @@
                 android:layout_height="match_parent"
                 android:layout_gravity="start"
                 android:background="@color/color_white"
-                app:headerLayout="@layout/navigation_header_bill">
+                >
 
                 <android.support.v4.widget.NestedScrollView
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
-                    android:layout_marginTop="@dimen/dp_100">
+                    >
 
                     <LinearLayout
                         android:layout_width="match_parent"
@@ -123,50 +126,28 @@
                         android:paddingStart="@dimen/dp_10"
                         android:paddingTop="@dimen/dp_5">
 
-                        <TextView
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:text="@string/title_customer"
-                            android:textColor="@color/colorPrimary"
-                            android:textSize="@dimen/sp_15"/>
-
                         <LinearLayout
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:layout_marginTop="@dimen/dp_5"
                             android:orientation="horizontal">
 
-                            <ImageView
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:layout_gravity="center_vertical"
-                                app:srcCompat="@drawable/ic_short_hair_24dp"
-                                tools:ignore="ContentDescription"/>
-
-                            <android.support.design.widget.TextInputLayout
+                            <TextView
                                 android:layout_width="0dp"
-                                android:layout_height="wrap_content"
+                                android:layout_height="match_parent"
                                 android:layout_weight="1"
-                                android:paddingEnd="@dimen/dp_8"
-                                android:paddingStart="@dimen/dp_8"
-                                bind:errorText="@{viewModel.customerNameError}">
-
-                                <EditText
-                                    android:layout_width="302dp"
-                                    android:layout_height="37dp"
-                                    android:hint="@string/title_customer_name"
-                                    android:inputType="number"
-                                    android:text="@={viewModel.customer.name}"
-                                    android:textSize="@dimen/sp_12"/>
-                            </android.support.design.widget.TextInputLayout>
+                                android:gravity="center_vertical"
+                                android:text="@string/title_customer"
+                                android:textColor="@color/colorPrimary"
+                                android:textSize="@dimen/sp_15"/>
 
                             <ImageView
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
-                                android:layout_gravity="center_vertical"
-                                android:layout_marginEnd="@dimen/dp_10"
-                                android:layout_marginRight="@dimen/dp_10"
+                                android:layout_gravity="end"
                                 android:contentDescription="@null"
+                                android:onClick="@{()->viewModel.onSearchCustomer()}"
+                                android:padding="@dimen/dp_3"
                                 app:srcCompat="@drawable/ic_search_24dp"
                                 tools:ignore="ContentDescription"/>
                         </LinearLayout>
