@@ -5,6 +5,7 @@ import android.databinding.BaseObservable;
 import android.databinding.Bindable;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.support.v7.widget.SearchView;
 
 import com.framgia.fsalon.BR;
 import com.framgia.fsalon.R;
@@ -15,6 +16,8 @@ import com.framgia.fsalon.utils.navigator.Navigator;
 import java.util.ArrayList;
 import java.util.List;
 
+import static com.framgia.fsalon.utils.Constant.ApiParram.FIRST_PAGE;
+
 /**
  * Exposes the data to be used in the Customer screen.
  */
@@ -24,6 +27,8 @@ public class CustomerViewModel extends BaseObservable implements CustomerContrac
     private Navigator mNavigator;
     private FragmentManager mFragmentManager;
     private boolean mIsLoadingMore;
+    private boolean mIsLoadingSearch;
+    private String keyword;
     private RecyclerView.OnScrollListener mListener = new RecyclerView.OnScrollListener() {
         @Override
         public void onScrolled(RecyclerView recyclerView, int dx, int dy) {
@@ -41,10 +46,36 @@ public class CustomerViewModel extends BaseObservable implements CustomerContrac
             int pastVisiblesItems = layoutManager.findFirstVisibleItemPosition();
             if (!mIsLoadingMore && (visibleItemCount + pastVisiblesItems) >= totalItemCount) {
                 mIsLoadingMore = true;
-                mPresenter.loadMoreData();
+                if (isLoadingSearch()) {
+                    mPresenter.loadMoreSearch(keyword);
+                } else {
+                    mPresenter.loadMoreData();
+                }
             }
         }
     };
+
+    public SearchView.OnQueryTextListener getQueryTextListener() {
+        return new SearchView.OnQueryTextListener() {
+            @Override
+            public boolean onQueryTextSubmit(String query) {
+                keyword = query;
+                mPresenter.searchUser(keyword, FIRST_PAGE);
+                setLoadingSearch(true);
+                return true;
+            }
+
+            @Override
+            public boolean onQueryTextChange(String query) {
+                if (query.isEmpty()) {
+                    setLoadingSearch(false);
+                    mCustomerAdapter.clearData();
+                    mPresenter.getCustomers(FIRST_PAGE);
+                }
+                return false;
+            }
+        };
+    }
 
     public CustomerViewModel(CustomerFragment fragment, FragmentManager fragmentManager) {
         mNavigator = new Navigator(fragment);
@@ -61,6 +92,15 @@ public class CustomerViewModel extends BaseObservable implements CustomerContrac
     public void setLoadingMore(boolean loadingMore) {
         mIsLoadingMore = loadingMore;
         notifyPropertyChanged(BR.loadingMore);
+    }
+
+    @Bindable
+    public boolean isLoadingSearch() {
+        return mIsLoadingSearch;
+    }
+
+    public void setLoadingSearch(boolean loadingSearch) {
+        mIsLoadingSearch = loadingSearch;
     }
 
     @Override
@@ -120,5 +160,15 @@ public class CustomerViewModel extends BaseObservable implements CustomerContrac
 
     public void onCustomerItemClick(User user) {
         mNavigator.startActivity(UserActivity.getInstance(mNavigator.getContext(), user));
+    }
+
+    @Override
+    public void onSearchSuccessful(List<User> sections) {
+        mCustomerAdapter.setNewPage(sections);
+    }
+
+    @Override
+    public void onSearchFail() {
+        mNavigator.showToast(R.string.title_scheduler_failure);
     }
 }

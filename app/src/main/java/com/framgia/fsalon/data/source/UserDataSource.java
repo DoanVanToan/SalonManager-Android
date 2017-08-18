@@ -16,9 +16,7 @@ public interface UserDataSource {
         Observable<UserRespone> getCurrentUser();
         Observable<Boolean> saveCurrentUser(UserRespone userRespone);
         void clearCurrentUser();
-
         Observable<Boolean> saveCurrentPhone(String phone);
-
         Observable<String> getCurrentPhone();
     }
 
@@ -29,5 +27,6 @@ public interface UserDataSource {
             name, String phone);
         Observable<User> getCustomerByPhone(String phone);
         Observable<CustomerResponse> getAllCustomers(int page, int perPage);
+        Observable<CustomerResponse> searchCustomer(String keyword, int perPage, int page);
     }
 }
