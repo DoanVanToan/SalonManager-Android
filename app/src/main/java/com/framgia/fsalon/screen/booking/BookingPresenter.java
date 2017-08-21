@@ -29,6 +29,7 @@ import io.reactivex.observers.DisposableObserver;
 import io.reactivex.schedulers.Schedulers;
 
 import static com.framgia.fsalon.utils.Constant.A_DAY;
+import static com.framgia.fsalon.utils.Constant.Permission.PERMISSION_NOMAL;
 
 /**
  * Listens to user actions from the UI ({@link BookingFragment}), retrieves the data and updates
@@ -72,8 +73,10 @@ public class BookingPresenter implements BookingContract.Presenter {
             .subscribeWith(new DisposableObserver<UserRespone>() {
                 @Override
                 public void onNext(@NonNull UserRespone userRespone) {
-                    mViewModel.onCustomer(userRespone.getUser().getName(), userRespone.getUser()
-                        .getPhone());
+                    if (userRespone.getUser().getPermission() == PERMISSION_NOMAL) {
+                        mViewModel.onCustomer(userRespone.getUser().getName(),
+                            userRespone.getUser().getPhone());
+                    }
                 }
 
                 @Override
