@@ -225,6 +225,28 @@ public class BindingUtils {
         view.setOnItemSelectedListener(listener);
     }
 
+    @InverseBindingAdapter(attribute = "bind:status", event = "statusAttrChanged")
+    public static String captureStatus(SearchableSpinner view) {
+        Object selectedItem = view.getSelectedItem();
+        return (String) selectedItem;
+    }
+
+    @BindingAdapter(value = {"bind:status", "statusAttrChanged"}, requireAll = false)
+    public static void setStatus(SearchableSpinner view, String status,
+                                 final InverseBindingListener bindingListener) {
+        AdapterView.OnItemSelectedListener listener = new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+                bindingListener.onChange();
+            }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> parent) {
+            }
+        };
+        view.setOnItemSelectedListener(listener);
+    }
+
     @BindingAdapter(value = {"layoutManager", "adapter"}, requireAll = false)
     public static void setRecyclerView(RecyclerView view,
                                        LayoutManager.LayoutManagerFactory factory,

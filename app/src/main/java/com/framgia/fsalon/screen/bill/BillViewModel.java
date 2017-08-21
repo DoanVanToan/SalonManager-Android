@@ -9,6 +9,7 @@ import android.widget.ArrayAdapter;
 import com.framgia.fsalon.BR;
 import com.framgia.fsalon.R;
 import com.framgia.fsalon.data.model.BillItemRequest;
+import com.framgia.fsalon.data.model.BillItemResponse;
 import com.framgia.fsalon.data.model.BillRequest;
 import com.framgia.fsalon.data.model.BillResponse;
 import com.framgia.fsalon.data.model.BookingOder;
@@ -16,12 +17,11 @@ import com.framgia.fsalon.data.model.Salon;
 import com.framgia.fsalon.data.model.Service;
 import com.framgia.fsalon.data.model.Stylist;
 import com.framgia.fsalon.data.model.User;
+import com.framgia.fsalon.utils.Utils;
 import com.framgia.fsalon.utils.navigator.Navigator;
 
 import java.util.ArrayList;
 import java.util.List;
-
-import static com.framgia.fsalon.utils.Constant.Status.STATUS_PENDING;
 
 /**
  * Exposes the data to be used in the BillItemRequest screen.
@@ -33,6 +33,7 @@ public class BillViewModel extends BaseObservable implements BillContract.ViewMo
     private ArrayAdapter<Stylist> mStylistAdapter;
     private ArrayAdapter<Service> mServiceAdapter;
     private ArrayAdapter<Salon> mSalonAdapter;
+    private ArrayAdapter<String> mStatusAdapter;
     private BillAdapter mAdapter;
     private Stylist mStylist;
     private Service mService;
@@ -45,6 +46,11 @@ public class BillViewModel extends BaseObservable implements BillContract.ViewMo
     private String mCustomerNameError;
     private String mCustomerPhoneError;
     private Salon mSalon;
+    private BillResponse mBillResponse;
+    private boolean mIsEdit;
+    private int mSalonPosition;
+    private String mStatus;
+    private int mStatusPosition;
 
     public BillViewModel(Activity activity) {
         mContext = activity.getApplicationContext();
@@ -75,13 +81,14 @@ public class BillViewModel extends BaseObservable implements BillContract.ViewMo
             .getPhone(), mBillRequest.getCustomerName())) {
             return;
         }
+        setFormError("");
         BillItemRequest bill = new BillItemRequest.Builder()
-            .setId(mService.getId())
             .setStylistId(mStylist.getId())
             .setPrice(Float.valueOf(mPrice))
             .setQty(Integer.valueOf(mQty))
             .setStylistName(mStylist.getName())
             .setServiceName(mService.getName())
+            .setServiceProductId(mService.getId())
             .create();
         mAdapter.onUpdateAdapter(bill);
         setTotal(mAdapter.getTotalPrice());
@@ -100,6 +107,9 @@ public class BillViewModel extends BaseObservable implements BillContract.ViewMo
     @Override
     public void onGetSalonsSuccess(List<Salon> salons) {
         setSalonAdapter(new ArrayAdapter<>(mContext, R.layout.item_spinner_small, salons));
+        if (isEdit()) {
+            setSalonPosition(mPresenter.setSalonPosition(mBillResponse, salons));
+        }
     }
 
     @Override
@@ -130,9 +140,14 @@ public class BillViewModel extends BaseObservable implements BillContract.ViewMo
 
     @Override
     public void onCreateBillClick() {
+        mBillRequest.setDepartmentId(mSalon.getId());
         mBillRequest.setBillItems(mAdapter.getData());
         mBillRequest.setGrandTotal(mTotal);
-        mBillRequest.setStatus(STATUS_PENDING);
+        mBillRequest.setStatus(Utils.getIdFromStatus(mStatus));
+        if (isEdit()) {
+            mPresenter.editBill(mBillRequest);
+            return;
+        }
         mPresenter.createBill(mBillRequest);
     }
 
@@ -180,6 +195,38 @@ public class BillViewModel extends BaseObservable implements BillContract.ViewMo
     public void onHideCustomer() {
         mBillRequest.setCustomerName(null);
         mBillRequest.setOrderBookingId(-1);
+    }
+
+    @Override
+    public void onGetStatusSuccess(List<String> statusList) {
+        setStatusAdapter(new ArrayAdapter<>(mContext, R.layout.item_spinner_small, statusList));
+        if (isEdit()) {
+            setStatus(Utils.getStatusFromId(mBillResponse.getStatus()));
+        }
+    }
+
+    @Override
+    public void onGetEditBillSuccess(BillResponse billResponse) {
+        setBillResponse(billResponse);
+        setEdit(true);
+        mBillRequest.setId(mBillResponse.getId());
+        mBillRequest.setCustomerName(mBillResponse.getCustomerName());
+        mBillRequest.setPhone(mBillResponse.getPhone());
+        mBillRequest.setOrderBookingId(mBillResponse.getOrderBookingId());
+        mBillRequest.setStatus(mBillResponse.getStatus());
+        for (BillItemResponse response : mBillResponse.getBillItems()) {
+            BillItemRequest bill = new BillItemRequest.Builder()
+                .setId(response.getId())
+                .setServiceProductId(response.getServiceProductId())
+                .setStylistId(response.getStylistId())
+                .setPrice(response.getPrice())
+                .setQty(response.getQty())
+                .setStylistName(response.getStylist().getName())
+                .setServiceName(response.getService().getName())
+                .create();
+            mAdapter.onUpdateAdapter(bill);
+            setTotal(mAdapter.getTotalPrice());
+        }
     }
 
     public void onGetPrice(String price) {
@@ -327,5 +374,61 @@ public class BillViewModel extends BaseObservable implements BillContract.ViewMo
     public void setSalon(Salon salon) {
         mSalon = salon;
         notifyPropertyChanged(BR.salon);
+    }
+
+    public BillResponse getBillResponse() {
+        return mBillResponse;
+    }
+
+    public void setBillResponse(BillResponse billResponse) {
+        mBillResponse = billResponse;
+    }
+
+    @Bindable
+    public boolean isEdit() {
+        return mIsEdit;
+    }
+
+    public void setEdit(boolean edit) {
+        mIsEdit = edit;
+        notifyPropertyChanged(BR.edit);
+    }
+
+    @Bindable
+    public int getSalonPosition() {
+        return mSalonPosition;
+    }
+
+    public void setSalonPosition(int salonPosition) {
+        mSalonPosition = salonPosition;
+        notifyPropertyChanged(BR.salonPosition);
+    }
+
+    @Bindable
+    public String getStatus() {
+        return mStatus;
+    }
+
+    public void setStatus(String status) {
+        mStatus = status;
+        notifyPropertyChanged(BR.status);
+    }
+
+    @Bindable
+    public ArrayAdapter<String> getStatusAdapter() {
+        return mStatusAdapter;
+    }
+
+    public void setStatusAdapter(ArrayAdapter<String> statusAdapter) {
+        mStatusAdapter = statusAdapter;
+        notifyPropertyChanged(BR.statusAdapter);
+    }
+
+    public int getStatusPosition() {
+        return mStatusPosition;
+    }
+
+    public void setStatusPosition(int statusPosition) {
+        mStatusPosition = statusPosition;
     }
 }

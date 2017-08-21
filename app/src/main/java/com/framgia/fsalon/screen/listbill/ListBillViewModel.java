@@ -15,10 +15,12 @@ import android.widget.RadioGroup;
 import com.android.databinding.library.baseAdapters.BR;
 import com.framgia.fsalon.FSalonApplication;
 import com.framgia.fsalon.R;
+import com.framgia.fsalon.data.model.BillResponse;
 import com.framgia.fsalon.data.model.ListBillRespond;
 import com.framgia.fsalon.data.model.Salon;
 import com.framgia.fsalon.data.model.User;
 import com.framgia.fsalon.screen.bill.BillActivity;
+import com.framgia.fsalon.screen.billdetail.BillDetailActivity;
 import com.framgia.fsalon.screen.scheduler.DepartmentAdapter;
 import com.framgia.fsalon.utils.OnDepartmentItemClick;
 import com.framgia.fsalon.utils.Utils;
@@ -192,7 +194,7 @@ public class ListBillViewModel extends BaseObservable
 
     @Override
     public void onCreateBillClick() {
-        mNavigator.startActivity(BillActivity.getInstance(mContext));
+        mNavigator.startActivity(BillActivity.getInstance(mContext, -1));
     }
 
     @Override
@@ -269,6 +271,14 @@ public class ListBillViewModel extends BaseObservable
     public void onGetSalonsSuccess(List<Salon> salons) {
         setDepartmentAdapter(new DepartmentAdapter(mContext, salons, this));
         mDepartmentAdapter.selectedPosition(FIRST_ITEM);
+    }
+
+    @Override
+    public void onBillDetailClick(BillResponse bill) {
+        if (bill == null) {
+            return;
+        }
+        mNavigator.startActivity(BillDetailActivity.getInstance(mContext, bill.getId()));
     }
 
     public StickyHeaderLayoutManager getLayoutManager() {

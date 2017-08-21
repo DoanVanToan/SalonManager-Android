@@ -30,6 +30,12 @@ import static com.framgia.fsalon.screen.scheduler.SchedulerViewModel.TabFilter.T
 import static com.framgia.fsalon.screen.scheduler.SchedulerViewModel.TabFilter.TAB_TOMORROW;
 import static com.framgia.fsalon.screen.scheduler.SchedulerViewModel.TabFilter.TAB_YESTERDAY;
 import static com.framgia.fsalon.utils.Constant.ApiParram.OUT_OF_INDEX;
+import static com.framgia.fsalon.utils.Constant.Status.CANCEL;
+import static com.framgia.fsalon.utils.Constant.Status.COMPLETE;
+import static com.framgia.fsalon.utils.Constant.Status.STATUS_CANCEL;
+import static com.framgia.fsalon.utils.Constant.Status.STATUS_COMPLETE;
+import static com.framgia.fsalon.utils.Constant.Status.STATUS_WAITING;
+import static com.framgia.fsalon.utils.Constant.Status.WAITING;
 
 /**
  * Created by MyPC on 20/07/2017.
@@ -154,5 +160,31 @@ public class Utils {
         Date result1 = df1.parse(date1);
         Date result2 = df2.parse(date2);
         return result1.compareTo(result2) == 0;
+    }
+
+    public static String getStatusFromId(int id) {
+        switch (id) {
+            case STATUS_WAITING:
+                return WAITING;
+            case STATUS_COMPLETE:
+                return COMPLETE;
+            case STATUS_CANCEL:
+                return CANCEL;
+            default:
+                return null;
+        }
+    }
+
+    public static int getIdFromStatus(String status) {
+        switch (status) {
+            case WAITING:
+                return STATUS_WAITING;
+            case COMPLETE:
+                return STATUS_COMPLETE;
+            case CANCEL:
+                return STATUS_CANCEL;
+            default:
+                return -1;
+        }
     }
 }

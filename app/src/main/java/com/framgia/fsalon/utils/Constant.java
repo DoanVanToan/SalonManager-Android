@@ -19,6 +19,7 @@ public class Constant {
     public static final int REQUEST_ADMIN_BOOKING_ACTIVITY = 1;
     public static final String BUNDLE_USER = "BUNDLE_USER";
     public static final int FIRST_ITEM = 0;
+    public static final String BUNDLE_BILL_ID = "BUNDLE_BILL_ID";
 
     public class ApiParram {
         public static final String DEPARTMENT_ID = "department_id";
@@ -42,6 +43,7 @@ public class Constant {
         public static final String TYPE_FILTER = "type";
         public static final String START_DATE = "start_date";
         public static final String END_DATE = "end_date";
+        public static final String ID = "id";
     }
 
     public class Permission {
@@ -55,9 +57,12 @@ public class Constant {
      * Status for Bill
      */
     public class Status {
-        public static final int STATUS_PENDING = 0;
+        public static final int STATUS_WAITING = 0;
         public static final int STATUS_COMPLETE = 1;
         public static final int STATUS_CANCEL = 2;
+        public static final String WAITING = "Waiting";
+        public static final String COMPLETE = "Complete";
+        public static final String CANCEL = "Cancel";
     }
 
     /**

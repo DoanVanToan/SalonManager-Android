@@ -31,6 +31,7 @@
             android:layout_marginRight="@dimen/dp_10"
             android:layout_marginStart="@dimen/dp_10"
             android:layout_marginTop="@dimen/dp_10"
+            android:onClick="@{() -> viewModel.onBillDetailClick(bill)}"
             android:orientation="horizontal">
 
             <de.hdodenhof.circleimageview.CircleImageView

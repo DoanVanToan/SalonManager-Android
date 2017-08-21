@@ -10,9 +10,6 @@ import java.util.Date;
  */
 public class BillResponse extends BillModel.Bill<BillItemResponse> {
     @Expose
-    @SerializedName("id")
-    private int mId;
-    @Expose
     @SerializedName("service_total")
     private int mServiceTotal;
     @Expose
