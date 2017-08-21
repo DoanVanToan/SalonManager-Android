@@ -20,6 +20,9 @@ public interface BillModel {
      */
     class Bill<T extends BillItem> extends BaseObservable {
         @Expose
+        @SerializedName("id")
+        protected int mId;
+        @Expose
         @SerializedName("customer_id")
         protected int mCustomerId;
         @Expose
@@ -44,6 +47,9 @@ public interface BillModel {
         @SerializedName("image_url")
         protected String mImageUrl = "http://hinhnendep.pro/wp-content/uploads/2016/05/"
             + "nhung-hinh-anh-avatar-trai-dep-cuc-hot-khien-ban-ngay-ngat-6.jpg";
+        @Expose
+        @SerializedName("department_id")
+        protected int mDepartmentId;
 
         public int getCustomerId() {
             return mCustomerId;
@@ -113,6 +119,22 @@ public interface BillModel {
 
         public void setImageUrl(String imageUrl) {
             mImageUrl = imageUrl;
+        }
+
+        public int getDepartmentId() {
+            return mDepartmentId;
+        }
+
+        public void setDepartmentId(int departmentId) {
+            mDepartmentId = departmentId;
+        }
+
+        public int getId() {
+            return mId;
+        }
+
+        public void setId(int id) {
+            mId = id;
         }
     }
 

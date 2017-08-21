@@ -36,4 +36,9 @@ public class BillRepository implements BillDataSource {
     public Observable<BillResponse> getBillById(int id) {
         return mRemoteDataSource.getBillById(id);
     }
+
+    @Override
+    public Observable<BillResponse> editBill(BillRequest billRequest) {
+        return mRemoteDataSource.editBill(billRequest);
+    }
 }

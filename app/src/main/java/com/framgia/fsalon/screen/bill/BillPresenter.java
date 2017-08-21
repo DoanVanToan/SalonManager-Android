@@ -15,7 +15,9 @@ import com.framgia.fsalon.data.source.SalonRepository;
 import com.framgia.fsalon.data.source.ServiceRepository;
 import com.framgia.fsalon.data.source.StylistRepository;
 import com.framgia.fsalon.data.source.UserRepository;
+import com.framgia.fsalon.utils.Constant;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import io.reactivex.android.schedulers.AndroidSchedulers;
@@ -42,10 +44,10 @@ public class BillPresenter implements BillContract.Presenter {
     private SalonRepository mSalonRepository;
     private UserRepository mUserRepository;
 
-    public BillPresenter(BillContract.ViewModel viewModel, StylistRepository stylistRepository,
-                         ServiceRepository serviceRepository, BillRepository billRepository,
-                         BookingRepository bookingRepository, SalonRepository salonRepository,
-                         UserRepository userRepository) {
+    public BillPresenter(BillContract.ViewModel viewModel, int billId,
+                         StylistRepository stylistRepository, ServiceRepository serviceRepository,
+                         BillRepository billRepository, BookingRepository bookingRepository,
+                         SalonRepository salonRepository, UserRepository userRepository) {
         mViewModel = viewModel;
         mStylistRepository = stylistRepository;
         mServiceRepository = serviceRepository;
@@ -56,6 +58,8 @@ public class BillPresenter implements BillContract.Presenter {
         getAllServices();
         getAllStylists(DEFAULT_SALON_ID);
         getAllSalon();
+        getStatus();
+        getBill(billId);
     }
 
     @Override
@@ -261,6 +265,91 @@ public class BillPresenter implements BillContract.Presenter {
                     mViewModel.onError(e.getMessage());
                     mViewModel.hideProgressbar();
                     mViewModel.onHideCustomer();
+                }
+
+                @Override
+                public void onComplete() {
+                    mViewModel.hideProgressbar();
+                }
+            });
+        mCompositeDisposable.add(disposable);
+    }
+
+    @Override
+    public int setSalonPosition(BillResponse billResponse, List<Salon> salons) {
+        for (Salon salon : salons) {
+            if (billResponse.getDepartment().getName().equals(salon.getName())) {
+                return salons.indexOf(salon);
+            }
+        }
+        return -1;
+    }
+
+    @Override
+    public void editBill(BillRequest billRequest) {
+        if (!validateDataInput(billRequest.getPhone(), billRequest.getCustomerName())) {
+            return;
+        }
+        Disposable disposable = mBillRepository.editBill(billRequest)
+            .subscribeOn(Schedulers.io())
+            .observeOn(AndroidSchedulers.mainThread())
+            .doOnSubscribe(new Consumer<Disposable>() {
+                @Override
+                public void accept(@NonNull Disposable disposable) throws Exception {
+                    mViewModel.showProgressbar();
+                }
+            }).subscribeWith(new DisposableObserver<BillResponse>() {
+                @Override
+                public void onNext(@NonNull BillResponse billResponse) {
+                    mViewModel.onGetBillSuccess(billResponse);
+                }
+
+                @Override
+                public void onError(@NonNull Throwable e) {
+                    mViewModel.hideProgressbar();
+                    mViewModel.onError(e.getMessage());
+                }
+
+                @Override
+                public void onComplete() {
+                    mViewModel.hideProgressbar();
+                }
+            });
+        mCompositeDisposable.add(disposable);
+    }
+
+    @Override
+    public void getStatus() {
+        List<String> listStatus = new ArrayList<>();
+        listStatus.add(Constant.Status.STATUS_WAITING, Constant.Status.WAITING);
+        listStatus.add(Constant.Status.STATUS_COMPLETE, Constant.Status.COMPLETE);
+        listStatus.add(Constant.Status.STATUS_CANCEL, Constant.Status.CANCEL);
+        mViewModel.onGetStatusSuccess(listStatus);
+    }
+
+    @Override
+    public void getBill(int id) {
+        if (id == -1) {
+            return;
+        }
+        Disposable disposable = mBillRepository.getBillById(id)
+            .subscribeOn(Schedulers.io())
+            .observeOn(AndroidSchedulers.mainThread())
+            .doOnSubscribe(new Consumer<Disposable>() {
+                @Override
+                public void accept(@NonNull Disposable disposable) throws Exception {
+                    mViewModel.showProgressbar();
+                }
+            }).subscribeWith(new DisposableObserver<BillResponse>() {
+                @Override
+                public void onNext(@NonNull BillResponse billResponse) {
+                    mViewModel.onGetEditBillSuccess(billResponse);
+                }
+
+                @Override
+                public void onError(@NonNull Throwable e) {
+                    mViewModel.hideProgressbar();
+                    mViewModel.onError(e.getMessage());
                 }
 
                 @Override

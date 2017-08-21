@@ -23,6 +23,7 @@ import com.framgia.fsalon.data.source.remote.ServiceRemoteDataSource;
 import com.framgia.fsalon.data.source.remote.StylistRemoteDataSource;
 import com.framgia.fsalon.data.source.remote.UserRemoteDataSource;
 import com.framgia.fsalon.databinding.ActivityBillBinding;
+import com.framgia.fsalon.utils.Constant;
 
 /**
  * BillItemRequest Screen.
@@ -30,8 +31,11 @@ import com.framgia.fsalon.databinding.ActivityBillBinding;
 public class BillActivity extends AppCompatActivity {
     private BillContract.ViewModel mViewModel;
 
-    public static Intent getInstance(Context context) {
+    public static Intent getInstance(Context context, int billId) {
         Intent intent = new Intent(context, BillActivity.class);
+        Bundle args = new Bundle();
+        args.putInt(Constant.BUNDLE_BILL_ID, billId);
+        intent.putExtras(args);
         return intent;
     }
 
@@ -39,8 +43,9 @@ public class BillActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         mViewModel = new BillViewModel(this);
+        int billId = getIntent().getExtras().getInt(Constant.BUNDLE_BILL_ID);
         BillContract.Presenter presenter =
-            new BillPresenter(mViewModel, new StylistRepository(new StylistRemoteDataSource(
+            new BillPresenter(mViewModel, billId, new StylistRepository(new StylistRemoteDataSource(
                 FSalonServiceClient.getInstance())), new ServiceRepository(
                 new ServiceRemoteDataSource(FSalonServiceClient.getInstance())),
                 new BillRepository(new BillRemoteDataSource(FSalonServiceClient.getInstance())),

@@ -4,6 +4,7 @@ import android.support.v4.widget.DrawerLayout;
 
 import com.framgia.fsalon.BasePresenter;
 import com.framgia.fsalon.BaseViewModel;
+import com.framgia.fsalon.data.model.BillResponse;
 import com.framgia.fsalon.data.model.ListBillRespond;
 import com.framgia.fsalon.data.model.Salon;
 
@@ -27,6 +28,7 @@ public interface ListBillContract {
         void onSpaceTimeClick();
         void onSelectDateClick();
         void onGetSalonsSuccess(List<Salon> salons);
+        void onBillDetailClick(BillResponse bill);
     }
 
     /**

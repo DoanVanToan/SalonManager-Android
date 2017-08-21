@@ -55,6 +55,7 @@ public class BillRemoteDataSource extends BaseRemoteDataSource implements BillDa
         parram.put(BILL_ITEMS, billRequest.getBillItems().toString());
         parram.put(PHONE, billRequest.getPhone());
         parram.put(CUSTOMER_NAME, billRequest.getCustomerName());
+        parram.put(DEPARTMENT_ID, String.valueOf(billRequest.getDepartmentId()));
         return mFSalonApi.createBill(parram).flatMap(
             new Function<Respone<BillResponse>, ObservableSource<BillResponse>>() {
                 @Override
@@ -108,6 +109,36 @@ public class BillRemoteDataSource extends BaseRemoteDataSource implements BillDa
                     @NonNull Respone<BillResponse> billResponse)
                     throws Exception {
                     return Utils.getResponse(billResponse);
+                }
+            });
+    }
+
+    @Override
+    public Observable<BillResponse> editBill(BillRequest billRequest) {
+        Map<String, String> parram = new HashMap<>();
+        if (billRequest.getCustomerId() > 0) {
+            parram.put(CUSTOMER_ID, String.valueOf(billRequest.getCustomerId()));
+        }
+        if (billRequest.getStatus() >= 0) {
+            parram.put(STATUS, String.valueOf(billRequest.getStatus()));
+        }
+        if (billRequest.getOrderBookingId() > 0) {
+            parram.put(ORDER_BOOKING_ID, String.valueOf(billRequest.getOrderBookingId()));
+        }
+        if (billRequest.getGrandTotal() > 0) {
+            parram.put(GRAND_TOTAL, String.valueOf(billRequest.getGrandTotal()));
+        }
+        parram.put(BILL_ITEMS, billRequest.getBillItems().toString());
+        parram.put(PHONE, billRequest.getPhone());
+        parram.put(CUSTOMER_NAME, billRequest.getCustomerName());
+        parram.put(DEPARTMENT_ID, String.valueOf(billRequest.getDepartmentId()));
+        return mFSalonApi.editBill(billRequest.getId(), parram).flatMap(
+            new Function<Respone<BillResponse>, ObservableSource<BillResponse>>() {
+                @Override
+                public ObservableSource<BillResponse> apply(
+                    @NonNull Respone<BillResponse> billResponseRespone)
+                    throws Exception {
+                    return Utils.getResponse(billResponseRespone);
                 }
             });
     }

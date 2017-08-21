@@ -9,6 +9,7 @@ import android.view.View;
 import com.framgia.fsalon.BR;
 import com.framgia.fsalon.data.model.BillItemResponse;
 import com.framgia.fsalon.data.model.BillResponse;
+import com.framgia.fsalon.screen.bill.BillActivity;
 import com.framgia.fsalon.utils.navigator.Navigator;
 
 import java.util.ArrayList;
@@ -90,7 +91,8 @@ public class BillDetailViewModel extends BaseObservable implements BillDetailCon
 
     @Override
     public void onEditBillClick() {
-        // TODO: 17/08/2017 edit bill
+        mNavigator.startActivity(BillActivity.getInstance(mNavigator.getContext(),
+            mBillResponse.getId()));
     }
 
     @Bindable

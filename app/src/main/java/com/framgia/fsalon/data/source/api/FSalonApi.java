@@ -19,6 +19,7 @@ import framgia.retrofitservicecreator.api.model.Respone;
 import io.reactivex.Observable;
 import retrofit2.http.GET;
 import retrofit2.http.POST;
+import retrofit2.http.PUT;
 import retrofit2.http.Path;
 import retrofit2.http.Query;
 import retrofit2.http.QueryMap;
@@ -67,5 +68,8 @@ public interface FSalonApi {
     Observable<Respone<CustomerResponse>>  searchCustomer(@Query("keyword") String keyword,
                                                           @Query("per_page") int perPage,
                                                           @Query("page") int page);
+    @PUT("api/v0/bill/{id}")
+    Observable<Respone<BillResponse>> editBill(@Path("id") int id,
+                                               @QueryMap Map<String, String> params);
 }
 

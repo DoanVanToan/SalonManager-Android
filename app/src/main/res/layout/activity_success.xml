@@ -160,20 +160,20 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:gravity="end"
-                        android:text="@{viewModel.bookingOder.render.timeStart}"
+                        android:text="@{viewModel.bookingOder.render.day + ` ` + viewModel.bookingOder.render.timeStart}"
                         android:textColor="@color/color_black"
                         android:textSize="@dimen/sp_16"/>
                 </LinearLayout>
             </LinearLayout>
 
             <TextView
-                android:textStyle="italic"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="end"
                 android:layout_marginEnd="@dimen/dp_8"
                 android:layout_marginRight="@dimen/dp_8"
-                android:text="@string/msg_book_to_edit"/>
+                android:text="@string/msg_book_to_edit"
+                android:textStyle="italic"/>
 
             <Button
                 android:layout_width="wrap_content"

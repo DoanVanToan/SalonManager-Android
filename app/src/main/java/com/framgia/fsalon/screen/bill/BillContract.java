@@ -38,6 +38,8 @@ interface BillContract {
         void getCustomerSuccessfull(User user);
         void onHideCustomerPhoneError();
         void onHideCustomer();
+        void onGetStatusSuccess(List<String> statusList);
+        void onGetEditBillSuccess(BillResponse billResponse);
     }
 
     /**
@@ -52,5 +54,9 @@ interface BillContract {
                                   String qty, String phoneCustomer, String nameCustomer);
         void getAllSalon();
         void getCustomerByPhone(String phone);
+        int setSalonPosition(BillResponse billResponse, List<Salon> salons);
+        void editBill(BillRequest billRequest);
+        void getStatus();
+        void getBill(int id);
     }
 }
