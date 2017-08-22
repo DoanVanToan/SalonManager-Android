@@ -49,14 +49,6 @@
                 android:orientation="vertical"
                 >
 
-                <TextView
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:padding="@dimen/dp_5"
-                    android:text="@string/title_information"
-                    android:textColor="@color/colorPrimaryDark"
-                    android:textSize="@dimen/sp_25"/>
-
                 <android.support.v7.widget.CardView
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
@@ -100,17 +92,10 @@
                     </LinearLayout>
                 </android.support.v7.widget.CardView>
 
-                <TextView
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:padding="@dimen/dp_5"
-                    android:text="@string/title_bills"
-                    android:textColor="@color/colorPrimaryDark"
-                    android:textSize="@dimen/sp_25"/>
-
                 <android.support.v7.widget.RecyclerView
                     android:layout_width="match_parent"
                     android:layout_height="0dp"
+                    android:layout_marginTop="@dimen/dp_10"
                     android:layout_weight="1"
                     bind:adapter="@{viewModel.adapter}"
                     bind:layoutManager="@{LayoutManager.linear()}"/>
@@ -134,7 +119,7 @@
                         <TextView
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            android:gravity="center"
+                            android:gravity="end"
                             android:text="@{String.format(`%,.0f`,viewModel.billResponse.grandTotal)}"
                             android:textColor="@color/color_black"
                             android:textSize="@dimen/sp_25"/>
@@ -157,7 +142,7 @@
             bind:menu_colorNormal="@color/colorPrimaryDark"
             bind:menu_colorPressed="@color/colorPrimary"
             bind:menu_fab_size="mini"
-            bind:menu_icon="@drawable/ic_add"
+            bind:menu_icon="@drawable/fab_add"
             bind:menu_labels_position="left">
 
             <com.github.clans.fab.FloatingActionButton

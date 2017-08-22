@@ -22,7 +22,8 @@ import com.framgia.fsalon.data.source.remote.SalonRemoteDataSource;
 import com.framgia.fsalon.data.source.remote.StylistRemoteDataSource;
 import com.framgia.fsalon.data.source.remote.UserRemoteDataSource;
 import com.framgia.fsalon.databinding.FragmentBookingBinding;
-import com.framgia.fsalon.utils.Constant;
+
+import static com.framgia.fsalon.utils.Constant.BUNDLE_ORDER;
 
 /**
  * Booking Screen.
@@ -37,7 +38,7 @@ public class BookingFragment extends Fragment {
     public static BookingFragment newInstance(BookingOder bookingOder) {
         BookingFragment fragment = new BookingFragment();
         Bundle args = new Bundle();
-        args.putParcelable(Constant.BUNDLE_ORDER, bookingOder);
+        args.putParcelable(BUNDLE_ORDER, bookingOder);
         fragment.setArguments(args);
         return fragment;
     }
@@ -45,11 +46,11 @@ public class BookingFragment extends Fragment {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        if (getArguments() == null) {
+        if (getArguments() == null || getArguments().getParcelable(BUNDLE_ORDER) == null) {
             mViewModel = new BookingViewModel(getActivity());
         } else {
             mViewModel = new BookingViewModel(getActivity(), (BookingOder) getArguments()
-                .getParcelable(Constant.BUNDLE_ORDER));
+                .getParcelable(BUNDLE_ORDER));
         }
         BookingContract.Presenter presenter =
             new BookingPresenter(mViewModel,

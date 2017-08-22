@@ -1,6 +1,7 @@
 package com.framgia.fsalon.screen.scheduler;
 
 import android.app.FragmentManager;
+import android.content.Context;
 import android.content.DialogInterface;
 import android.databinding.BaseObservable;
 import android.databinding.Bindable;
@@ -18,6 +19,7 @@ import com.framgia.fsalon.FSalonApplication;
 import com.framgia.fsalon.R;
 import com.framgia.fsalon.data.model.ManageBookingResponse;
 import com.framgia.fsalon.data.model.Salon;
+import com.framgia.fsalon.screen.editbooking.EditBookingActivity;
 import com.framgia.fsalon.screen.scheduler.detail.BookingDetailActivity;
 import com.framgia.fsalon.utils.OnDepartmentItemClick;
 import com.framgia.fsalon.utils.Utils;
@@ -81,6 +83,7 @@ public class SchedulerViewModel extends BaseObservable
     private int mRadioButtonId;
     private int mPositionNearestTime = NO_SCROLL;
     private String mSalonName;
+    private Context mContext;
     private DrawerLayout.DrawerListener mDrawerListener = new DrawerLayout.DrawerListener() {
         @Override
         public void onDrawerSlide(View drawerView, float slideOffset) {
@@ -152,6 +155,7 @@ public class SchedulerViewModel extends BaseObservable
     };
 
     public SchedulerViewModel(SchedulerFragment fragment, FragmentManager fragmentManager) {
+        mContext = fragment.getContext();
         mFragment = fragment;
         setTabFilter(TAB_TODAY);
         mNavigator = new Navigator(fragment);
@@ -296,6 +300,11 @@ public class SchedulerViewModel extends BaseObservable
         mFilterChoice = FILTER_DAY;
         mTypeSelectDate = TAB_SELECT_DATE;
         showDatePickerDialog();
+    }
+
+    @Override
+    public void onBookClick() {
+        mNavigator.startActivity(EditBookingActivity.getInstance(mContext, null));
     }
 
     public void onFilterData() {
@@ -513,6 +522,7 @@ public class SchedulerViewModel extends BaseObservable
         }
         mDepartmentAdapter.selectedPosition(pos);
         mSalonId = salon.getId();
+        setSalonName(salon.getName());
     }
 
     /**

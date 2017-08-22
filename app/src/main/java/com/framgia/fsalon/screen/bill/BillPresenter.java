@@ -133,7 +133,8 @@ public class BillPresenter implements BillContract.Presenter {
 
     @Override
     public void createBill(BillRequest billRequest) {
-        if (!validateDataInput(billRequest.getPhone(), billRequest.getCustomerName())) {
+        if (!validateDataInput(billRequest.getPhone(), billRequest.getCustomerName(),
+            billRequest.getBillItems().size())) {
             return;
         }
         Disposable disposable = mBillRepository.createBill(billRequest)
@@ -287,7 +288,8 @@ public class BillPresenter implements BillContract.Presenter {
 
     @Override
     public void editBill(BillRequest billRequest) {
-        if (!validateDataInput(billRequest.getPhone(), billRequest.getCustomerName())) {
+        if (!validateDataInput(billRequest.getPhone(), billRequest.getCustomerName(),
+            billRequest.getBillItems().size())) {
             return;
         }
         Disposable disposable = mBillRepository.editBill(billRequest)
@@ -360,7 +362,7 @@ public class BillPresenter implements BillContract.Presenter {
         mCompositeDisposable.add(disposable);
     }
 
-    public boolean validateDataInput(String phone, String name) {
+    public boolean validateDataInput(String phone, String name, int totalItem) {
         boolean isValid = true;
         if (TextUtils.isEmpty(phone)) {
             isValid = false;
@@ -369,6 +371,10 @@ public class BillPresenter implements BillContract.Presenter {
         if (TextUtils.isEmpty(name)) {
             isValid = false;
             mViewModel.onInputCustomerNameError();
+        }
+        if (totalItem <= 0) {
+            isValid = false;
+            mViewModel.onInputFormError();
         }
         return isValid;
     }

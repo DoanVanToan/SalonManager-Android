@@ -29,6 +29,7 @@ public interface SchedulerContract {
         void onError(String message);
         void onSpaceTimeClick();
         void onSelectDateClick();
+        void onBookClick();
     }
 
     /**
