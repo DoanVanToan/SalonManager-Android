@@ -7,6 +7,7 @@ import com.framgia.fsalon.BaseViewModel;
 import com.framgia.fsalon.data.model.BillResponse;
 import com.framgia.fsalon.data.model.ListBillRespond;
 import com.framgia.fsalon.data.model.Salon;
+import com.framgia.fsalon.data.model.User;
 
 import java.util.List;
 
@@ -23,12 +24,12 @@ public interface ListBillContract {
         void onHideProgressBar();
         void onShowProgressBar();
         void onFilterClick(DrawerLayout layout);
-        void onInputCustomerNameError();
-        void onHideCustomerNameError();
         void onSpaceTimeClick();
         void onSelectDateClick();
         void onGetSalonsSuccess(List<Salon> salons);
         void onBillDetailClick(BillResponse bill);
+        void getCustomerSuccessfull(User user);
+        void onSearchCustomer();
     }
 
     /**
