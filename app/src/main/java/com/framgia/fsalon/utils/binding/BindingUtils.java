@@ -6,6 +6,7 @@ import android.databinding.InverseBindingAdapter;
 import android.databinding.InverseBindingListener;
 import android.graphics.drawable.Drawable;
 import android.support.design.widget.BottomNavigationView;
+import android.support.design.widget.TabLayout;
 import android.support.design.widget.TextInputLayout;
 import android.support.v4.view.PagerAdapter;
 import android.support.v4.view.ViewPager;
@@ -316,5 +317,10 @@ public class BindingUtils {
     @BindingAdapter("textColor")
     public static void setTextColor(TextView text, int textColor) {
         text.setTextColor(text.getResources().getColor(textColor));
+    }
+
+    @BindingAdapter("pager")
+    public static void setViewPager(TabLayout view, ViewPager viewPager) {
+        view.setupWithViewPager(viewPager);
     }
 }

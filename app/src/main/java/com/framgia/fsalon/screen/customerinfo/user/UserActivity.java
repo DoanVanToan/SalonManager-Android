@@ -1,4 +1,4 @@
-package com.framgia.fsalon.screen.user;
+package com.framgia.fsalon.screen.customerinfo.user;
 
 import android.content.Context;
 import android.content.Intent;
