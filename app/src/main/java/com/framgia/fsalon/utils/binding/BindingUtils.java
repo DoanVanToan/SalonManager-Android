@@ -180,6 +180,15 @@ public class BindingUtils {
             }
         };
         view.setOnItemSelectedListener(listener);
+        if (value == null) {
+            return;
+        }
+        for (int i = 0; i < view.getAdapter().getCount(); i++) {
+            if (((Stylist) view.getAdapter().getItem(i)).getId() == value.getId()) {
+                view.setSelection(i);
+                break;
+            }
+        }
     }
 
     @InverseBindingAdapter(attribute = "bind:service", event = "serviceAttrChanged")
@@ -202,6 +211,15 @@ public class BindingUtils {
             }
         };
         view.setOnItemSelectedListener(listener);
+        if (value == null) {
+            return;
+        }
+        for (int i = 0; i < view.getAdapter().getCount(); i++) {
+            if (((Service) view.getAdapter().getItem(i)).getId() == value.getId()) {
+                view.setSelection(i);
+                break;
+            }
+        }
     }
 
     @InverseBindingAdapter(attribute = "bind:salon", event = "salonAttrChanged")

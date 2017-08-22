@@ -1,11 +1,14 @@
 package com.framgia.fsalon.data.model;
 
+import android.os.Parcel;
+import android.os.Parcelable;
+
 import com.google.gson.Gson;
 
 /**
  * Created by MyPC on 02/08/2017.
  */
-public class BillItemRequest extends BillModel.BillItem {
+public class BillItemRequest extends BillModel.BillItem implements Parcelable {
     private String mStylistName;
     private String mServiceName;
 
@@ -21,6 +24,23 @@ public class BillItemRequest extends BillModel.BillItem {
         mStylistName = stylistName;
         mServiceName = serviceName;
     }
+
+    protected BillItemRequest(Parcel in) {
+        mStylistName = in.readString();
+        mServiceName = in.readString();
+    }
+
+    public static final Creator<BillItemRequest> CREATOR = new Creator<BillItemRequest>() {
+        @Override
+        public BillItemRequest createFromParcel(Parcel in) {
+            return new BillItemRequest(in);
+        }
+
+        @Override
+        public BillItemRequest[] newArray(int size) {
+            return new BillItemRequest[size];
+        }
+    };
 
     public String getStylistName() {
         return mStylistName;
@@ -46,6 +66,23 @@ public class BillItemRequest extends BillModel.BillItem {
     @Override
     public String toString() {
         return new Gson().toJson(this);
+    }
+
+    @Override
+    public int describeContents() {
+        return 0;
+    }
+
+    @Override
+    public void writeToParcel(Parcel dest, int flags) {
+        dest.writeInt(mId);
+        dest.writeInt(mServiceProductId);
+        dest.writeInt(mStylistId);
+        dest.writeFloat(mPrice);
+        dest.writeInt(mQty);
+        dest.writeFloat(mRowTotal);
+        dest.writeString(mStylistName);
+        dest.writeString(mServiceName);
     }
 
     /**

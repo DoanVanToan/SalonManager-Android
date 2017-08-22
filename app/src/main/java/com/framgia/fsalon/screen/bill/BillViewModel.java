@@ -1,9 +1,10 @@
 package com.framgia.fsalon.screen.bill;
 
-import android.app.Activity;
 import android.content.Context;
 import android.databinding.BaseObservable;
 import android.databinding.Bindable;
+import android.support.v4.app.FragmentTransaction;
+import android.support.v7.app.AppCompatActivity;
 import android.widget.ArrayAdapter;
 
 import com.framgia.fsalon.BR;
@@ -17,6 +18,7 @@ import com.framgia.fsalon.data.model.Salon;
 import com.framgia.fsalon.data.model.Service;
 import com.framgia.fsalon.data.model.Stylist;
 import com.framgia.fsalon.data.model.User;
+import com.framgia.fsalon.screen.billdialog.BillDialogFragment;
 import com.framgia.fsalon.utils.Utils;
 import com.framgia.fsalon.utils.navigator.Navigator;
 
@@ -28,6 +30,7 @@ import java.util.List;
  */
 public class BillViewModel extends BaseObservable implements BillContract.ViewModel {
     private static final String FIRST_ITEM = "1";
+    private static final String TAG_DIALOG = "BILL_DIALOG";
     private BillContract.Presenter mPresenter;
     private BillRequest mBillRequest = new BillRequest();
     private ArrayAdapter<Stylist> mStylistAdapter;
@@ -51,8 +54,12 @@ public class BillViewModel extends BaseObservable implements BillContract.ViewMo
     private int mSalonPosition;
     private String mStatus;
     private int mStatusPosition;
+    private AppCompatActivity mActivity;
+    private List<Stylist> mStylists;
+    private List<Service> mServices;
 
-    public BillViewModel(Activity activity) {
+    public BillViewModel(AppCompatActivity activity) {
+        mActivity = activity;
         mContext = activity.getApplicationContext();
         mAdapter = new BillAdapter(mContext, new ArrayList<BillItemRequest>(), this);
         mNavigator = new Navigator(activity);
@@ -83,6 +90,7 @@ public class BillViewModel extends BaseObservable implements BillContract.ViewMo
         }
         setFormError("");
         BillItemRequest bill = new BillItemRequest.Builder()
+            .setServiceProductId(mService.getId())
             .setStylistId(mStylist.getId())
             .setPrice(Float.valueOf(mPrice))
             .setQty(Integer.valueOf(mQty))
@@ -94,6 +102,18 @@ public class BillViewModel extends BaseObservable implements BillContract.ViewMo
         setTotal(mAdapter.getTotalPrice());
     }
 
+    public void onBillItemClick(BillItemRequest itemRequest) {
+        FragmentTransaction ft = mActivity.getSupportFragmentManager().beginTransaction();
+        BillDialogFragment newFragment = BillDialogFragment.newInstance(mStylists, mServices,
+            itemRequest);
+        newFragment.show(ft, TAG_DIALOG);
+    }
+
+    public void onUpdateItemBill(BillItemRequest newItemRequest, BillItemRequest oldItemRequest) {
+        mAdapter.onUpdateBillItem(newItemRequest, oldItemRequest);
+        setTotal(mAdapter.getTotalPrice());
+    }
+
     @Override
     public void showProgressbar() {
         // TODO: 02/08/2017  
@@ -101,6 +121,7 @@ public class BillViewModel extends BaseObservable implements BillContract.ViewMo
 
     @Override
     public void onGetStylistSuccess(List<Stylist> stylists) {
+        mStylists = stylists;
         setStylistAdapter(new ArrayAdapter<>(mContext, R.layout.item_spinner_small, stylists));
     }
 
@@ -124,6 +145,7 @@ public class BillViewModel extends BaseObservable implements BillContract.ViewMo
 
     @Override
     public void onGetServiceSuccess(List<Service> services) {
+        mServices = services;
         setServiceAdapter(new ArrayAdapter<>(mContext, R.layout.item_spinner_small, services));
     }
 
