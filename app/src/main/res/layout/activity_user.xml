@@ -9,7 +9,7 @@
 
         <variable
             name="viewModel"
-            type="com.framgia.fsalon.screen.user.UserViewModel"
+            type="com.framgia.fsalon.screen.customerinfo.user.UserViewModel"
             />
 
     </data>
@@ -22,7 +22,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="vertical"
-            tools:context="com.framgia.fsalon.screen.user.UserActivity"
+            tools:context="com.framgia.fsalon.screen.customerinfo.user.UserActivity"
             >
 
             <LinearLayout

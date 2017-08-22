@@ -39,7 +39,7 @@
             android:value="731ae80443a5d1005298e4d8934ce1bc9b4de457"/>
 
         <activity
-            android:name=".screen.user.UserActivity"
+            android:name=".screen.customerinfo.user.UserActivity"
             android:screenOrientation="portrait"/>
         <activity
             android:name=".screen.bill.BillActivity"
@@ -54,5 +54,10 @@
         <activity
             android:name=".screen.billdetail.BillDetailActivity"
             android:screenOrientation="portrait"/>
+        <activity
+            android:name=".screen.customerinfo.CustomerInfoActivity"
+            android:screenOrientation="portrait"
+            android:theme="@style/NoActionBarTheme"/>
     </application>
+
 </manifest>

@@ -1,4 +1,4 @@
-package com.framgia.fsalon.screen.user;
+package com.framgia.fsalon.screen.customerinfo.user;
 
 import com.framgia.fsalon.BasePresenter;
 import com.framgia.fsalon.BaseViewModel;

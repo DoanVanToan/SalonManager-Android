@@ -1,4 +1,4 @@
-package com.framgia.fsalon.screen.user;
+package com.framgia.fsalon.screen.customerinfo.user;
 
 import com.framgia.fsalon.data.model.BookingOder;
 import com.framgia.fsalon.data.source.BookingRepository;
