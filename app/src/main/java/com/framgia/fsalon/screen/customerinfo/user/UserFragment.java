@@ -1,58 +1,62 @@
 package com.framgia.fsalon.screen.customerinfo.user;
 
-import android.content.Context;
-import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.databinding.DataBindingUtil;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
-import android.support.v7.app.AppCompatActivity;
+import android.support.annotation.Nullable;
+import android.support.v4.app.Fragment;
+import android.view.LayoutInflater;
+import android.view.View;
+import android.view.ViewGroup;
 
 import com.framgia.fsalon.R;
 import com.framgia.fsalon.data.model.User;
-import com.framgia.fsalon.data.source.BookingRepository;
-import com.framgia.fsalon.data.source.api.FSalonServiceClient;
-import com.framgia.fsalon.data.source.remote.BookingRemoteDataSource;
-import com.framgia.fsalon.databinding.ActivityUserBinding;
+import com.framgia.fsalon.databinding.FragmentUserBinding;
 import com.framgia.fsalon.utils.Constant;
 
 /**
  * User Screen.
  */
-public class UserActivity extends AppCompatActivity {
+public class UserFragment extends Fragment {
     private UserContract.ViewModel mViewModel;
 
-    public static Intent getInstance(Context context, User user) {
-        Intent intent = new Intent(context, UserActivity.class);
+    public static UserFragment newInstance(User user) {
+        UserFragment fragment = new UserFragment();
         Bundle args = new Bundle();
         args.putParcelable(Constant.BUNDLE_USER, user);
-        intent.putExtras(args);
-        return intent;
+        fragment.setArguments(args);
+        return fragment;
     }
 
     @Override
-    protected void onCreate(Bundle savedInstanceState) {
+    public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        User user = getIntent().getExtras().getParcelable(Constant.BUNDLE_USER);
+        User user = getArguments().getParcelable(Constant.BUNDLE_USER);
         mViewModel = new UserViewModel(this, user);
         UserContract.Presenter presenter =
-            new UserPresenter(mViewModel, user.getPhone(),
-                new BookingRepository(
-                    new BookingRemoteDataSource(FSalonServiceClient.getInstance())));
+            new UserPresenter(mViewModel);
         mViewModel.setPresenter(presenter);
-        ActivityUserBinding binding =
-            DataBindingUtil.setContentView(this, R.layout.activity_user);
+    }
+
+    @Nullable
+    @Override
+    public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container,
+                             @Nullable Bundle savedInstanceState) {
+        FragmentUserBinding binding = DataBindingUtil.inflate(inflater, R.layout.fragment_user,
+            container, false);
         binding.setViewModel((UserViewModel) mViewModel);
+        return binding.getRoot();
     }
 
     @Override
-    protected void onStart() {
+    public void onStart() {
         super.onStart();
         mViewModel.onStart();
     }
 
     @Override
-    protected void onStop() {
+    public void onStop() {
         mViewModel.onStop();
         super.onStop();
     }

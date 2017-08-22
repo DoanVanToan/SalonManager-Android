@@ -323,4 +323,13 @@ public class BindingUtils {
     public static void setViewPager(TabLayout view, ViewPager viewPager) {
         view.setupWithViewPager(viewPager);
     }
+
+    @BindingAdapter("icon")
+    public static void setPageIcon(TabLayout view, int[] iconList) {
+        if (view != null) {
+            for (int i = 0; i < view.getTabCount(); i++) {
+                view.getTabAt(i).setIcon(iconList[i]);
+            }
+        }
+    }
 }
