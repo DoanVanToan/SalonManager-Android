@@ -65,11 +65,13 @@ public interface FSalonApi {
     @GET("api/v0/bill/{id}")
     Observable<Respone<BillResponse>> getBillById(@Path("id") int id);
     @GET("/api/v0/filter-customer")
-    Observable<Respone<CustomerResponse>>  searchCustomer(@Query("keyword") String keyword,
-                                                          @Query("per_page") int perPage,
-                                                          @Query("page") int page);
+    Observable<Respone<CustomerResponse>> searchCustomer(@Query("keyword") String keyword,
+                                                         @Query("per_page") int perPage,
+                                                         @Query("page") int page);
     @PUT("api/v0/bill/{id}")
     Observable<Respone<BillResponse>> editBill(@Path("id") int id,
                                                @QueryMap Map<String, String> params);
+    // TODO: 22/08/2017  call @GET API
+    Observable<Respone<List<ListBillRespond>>> getBillsByCustomerId(@Path("id") int id);
 }
 
