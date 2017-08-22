@@ -21,6 +21,8 @@ public class BillResponse extends BillModel.Bill<BillItemResponse> {
     @Expose
     @SerializedName("department")
     private Salon mDepartment;
+    private String mStatusName;
+    private int mStatusColor;
 
     public int getId() {
         return mId;
@@ -60,5 +62,21 @@ public class BillResponse extends BillModel.Bill<BillItemResponse> {
 
     public void setDepartment(Salon department) {
         mDepartment = department;
+    }
+
+    public String getStatusName() {
+        return mStatusName;
+    }
+
+    public void setStatusName(String statusName) {
+        mStatusName = statusName;
+    }
+
+    public int getStatusColor() {
+        return mStatusColor;
+    }
+
+    public void setStatusColor(int statusColor) {
+        mStatusColor = statusColor;
     }
 }
