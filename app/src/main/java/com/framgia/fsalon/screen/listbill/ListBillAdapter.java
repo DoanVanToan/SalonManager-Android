@@ -27,11 +27,11 @@ import static com.framgia.fsalon.screen.listbill.ListBillViewModel.STT_WAITING;
  */
 public class ListBillAdapter extends SectioningAdapter {
     private List<ListBillRespond> mSections = new ArrayList<>();
-    private ListBillViewModel mViewModel;
+    private OnBillItemClick mOnBillItemClick;
 
-    public ListBillAdapter(ListBillViewModel viewModel, List<ListBillRespond> sections) {
+    public ListBillAdapter(List<ListBillRespond> sections, OnBillItemClick onBillItemClick) {
         mSections = sections;
-        mViewModel = viewModel;
+        mOnBillItemClick = onBillItemClick;
     }
 
     public void updateData(List<ListBillRespond> sections) {
@@ -53,7 +53,7 @@ public class ListBillAdapter extends SectioningAdapter {
         ItemContentListBillBinding binding = DataBindingUtil.inflate(LayoutInflater
                 .from(parent.getContext()), R.layout.item_content_list_bill, parent,
             false);
-        binding.setViewModel(mViewModel);
+        binding.setListenner(mOnBillItemClick);
         return new ItemViewHolder(binding);
     }
 
@@ -115,20 +115,20 @@ public class ListBillAdapter extends SectioningAdapter {
             }
             switch (bill.getStatus()) {
                 case STATUS_WAITING:
-                    mViewModel.setStatus(STT_WAITING);
-                    mViewModel.setStatusColor(R.color.colorPrimary);
+                    bill.setStatusName(STT_WAITING);
+                    bill.setStatusColor(R.color.colorPrimary);
                     break;
                 case STATUS_COMPLETED:
-                    mViewModel.setStatus(STT_COMPLETED);
-                    mViewModel.setStatusColor(R.color.color_green_300);
+                    bill.setStatusName(STT_COMPLETED);
+                    bill.setStatusColor(R.color.color_green_300);
                     break;
                 case STATUS_CANCEL:
-                    mViewModel.setStatus(STT_CANCEL);
-                    mViewModel.setStatusColor(R.color.color_red);
+                    bill.setStatusName(STT_CANCEL);
+                    bill.setStatusColor(R.color.color_red);
                     break;
             }
             mContentBinding.setBill(bill);
-            mContentBinding.setViewModel(mViewModel);
+            mContentBinding.setListenner(mOnBillItemClick);
             mContentBinding.executePendingBindings();
         }
     }
@@ -151,5 +151,12 @@ public class ListBillAdapter extends SectioningAdapter {
             mHeaderBinding.setSection(section);
             mHeaderBinding.executePendingBindings();
         }
+    }
+
+    /**
+     * To use with many ViewModel
+     */
+    public interface OnBillItemClick {
+        void onBillDetailClick(BillResponse bill);
     }
 }

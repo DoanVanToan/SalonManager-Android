@@ -51,7 +51,7 @@ import static com.framgia.fsalon.utils.Constant.OUT_OF_INDEX;
 public class ListBillViewModel extends BaseObservable
     implements ListBillContract.ViewModel, OnDepartmentItemClick,
     DatePickerDialog.OnDateSetListener,
-    DialogInterface.OnCancelListener {
+    DialogInterface.OnCancelListener, ListBillAdapter.OnBillItemClick {
     public static final int STATUS_WAITING = 0;
     public static final int STATUS_COMPLETED = 1;
     public static final int STATUS_CANCEL = 2;
@@ -82,8 +82,6 @@ public class ListBillViewModel extends BaseObservable
     private int mDepartmentId = OUT_OF_INDEX;
     private FragmentManager mFragmentManager;
     private String mSpaceTime = "";
-    private String mStatus;
-    private int mStatusColor;
     private String mSalonName;
     private DrawerLayout.DrawerListener mDrawerListener = new DrawerLayout.DrawerListener() {
         @Override
@@ -161,7 +159,7 @@ public class ListBillViewModel extends BaseObservable
         mContext = activity.getApplicationContext();
         mNavigator = new Navigator(mActivity);
         mFragmentManager = mActivity.getFragmentManager();
-        setAdapter(new ListBillAdapter(this, new ArrayList<ListBillRespond>()));
+        setAdapter(new ListBillAdapter(new ArrayList<ListBillRespond>(), this));
         mCustomer = new User();
         mCustomer.setId(OUT_OF_INDEX);
         if (mCalendar == null) {
@@ -433,16 +431,6 @@ public class ListBillViewModel extends BaseObservable
         mTypeSelectDate = typeSelectDate;
     }
 
-    @Bindable
-    public int getStatusColor() {
-        return mStatusColor;
-    }
-
-    public void setStatusColor(int statusColor) {
-        mStatusColor = statusColor;
-        notifyPropertyChanged(BR.statusColor);
-    }
-
     @Override
     public void onSelectedSalonPosition(int pos, Salon salon) {
         if (salon == null) {
@@ -474,16 +462,6 @@ public class ListBillViewModel extends BaseObservable
 
     public void setDepartmentId(int departmentId) {
         mDepartmentId = departmentId;
-    }
-
-    @Bindable
-    public String getStatus() {
-        return mStatus;
-    }
-
-    public void setStatus(String status) {
-        mStatus = status;
-        notifyPropertyChanged(BR.status);
     }
 
     @Bindable
