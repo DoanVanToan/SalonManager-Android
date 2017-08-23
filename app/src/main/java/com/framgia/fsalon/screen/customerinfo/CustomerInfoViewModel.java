@@ -1,9 +1,14 @@
 package com.framgia.fsalon.screen.customerinfo;
 
+import android.databinding.BaseObservable;
+import android.databinding.Bindable;
 import android.support.annotation.StringDef;
 import android.support.v7.app.AppCompatActivity;
 
-import com.framgia.fsalon.screen.info.InfoUserFragment;
+import com.framgia.fsalon.BR;
+import com.framgia.fsalon.R;
+import com.framgia.fsalon.data.model.User;
+import com.framgia.fsalon.screen.customerinfo.user.UserFragment;
 
 import static com.framgia.fsalon.screen.customerinfo.CustomerInfoViewModel.Tab.BILL;
 import static com.framgia.fsalon.screen.customerinfo.CustomerInfoViewModel.Tab.INFO;
@@ -12,15 +17,17 @@ import static com.framgia.fsalon.screen.customerinfo.CustomerInfoViewModel.Tab.P
 /**
  * Exposes the data to be used in the CustomerInfo screen.
  */
-public class CustomerInfoViewModel implements CustomerInfoContract.ViewModel {
+public class CustomerInfoViewModel extends BaseObservable
+    implements CustomerInfoContract.ViewModel {
     private CustomerInfoContract.Presenter mPresenter;
     private CustomerInfoAdapter mPagerAdapter;
+    int[] mImageResource = {R.drawable.ic_user_trans, R.drawable.ic_list, R.drawable.ic_picture};
 
-    public CustomerInfoViewModel(AppCompatActivity activity) {
+    public CustomerInfoViewModel(AppCompatActivity activity, User user) {
         mPagerAdapter = new CustomerInfoAdapter(activity.getSupportFragmentManager());
-        mPagerAdapter.addFragment(InfoUserFragment.newInstance(), INFO);
-        mPagerAdapter.addFragment(InfoUserFragment.newInstance(), BILL);
-        mPagerAdapter.addFragment(InfoUserFragment.newInstance(), PICTURE);
+        mPagerAdapter.addFragment(UserFragment.newInstance(user), INFO);
+        mPagerAdapter.addFragment(UserFragment.newInstance(user), BILL);
+        mPagerAdapter.addFragment(UserFragment.newInstance(user), PICTURE);
     }
 
     @Override
@@ -38,12 +45,14 @@ public class CustomerInfoViewModel implements CustomerInfoContract.ViewModel {
         mPresenter = presenter;
     }
 
+    @Bindable
     public CustomerInfoAdapter getPagerAdapter() {
         return mPagerAdapter;
     }
 
     public void setPagerAdapter(CustomerInfoAdapter pagerAdapter) {
         mPagerAdapter = pagerAdapter;
+        notifyPropertyChanged(BR.pagerAdapter);
     }
 
     /**
@@ -54,5 +63,13 @@ public class CustomerInfoViewModel implements CustomerInfoContract.ViewModel {
         String INFO = "Info";
         String BILL = "Bill";
         String PICTURE = "Picture";
+    }
+
+    public int[] getImageResource() {
+        return mImageResource;
+    }
+
+    public void setImageResource(int[] imageResource) {
+        mImageResource = imageResource;
     }
 }

@@ -36,6 +36,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 bind:tabGravity="fill"
+                bind:icon="@{viewModel.imageResource}"
                 bind:tabIndicatorColor="@color/color_white"/>
         </android.support.design.widget.AppBarLayout>
 

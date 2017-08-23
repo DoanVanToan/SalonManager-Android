@@ -1,11 +1,15 @@
 package com.framgia.fsalon.screen.customerinfo;
 
+import android.content.Context;
+import android.content.Intent;
 import android.databinding.DataBindingUtil;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 
 import com.framgia.fsalon.R;
+import com.framgia.fsalon.data.model.User;
 import com.framgia.fsalon.databinding.ActivityCustomerInfoBinding;
+import com.framgia.fsalon.utils.Constant;
 
 /**
  * Customerinfo Screen.
@@ -13,10 +17,19 @@ import com.framgia.fsalon.databinding.ActivityCustomerInfoBinding;
 public class CustomerInfoActivity extends AppCompatActivity {
     private CustomerInfoContract.ViewModel mViewModel;
 
+    public static Intent getInstance(Context context, User user) {
+        Intent intent = new Intent(context, CustomerInfoActivity.class);
+        Bundle args = new Bundle();
+        args.putParcelable(Constant.BUNDLE_USER, user);
+        intent.putExtras(args);
+        return intent;
+    }
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        mViewModel = new CustomerInfoViewModel(this);
+        User user = getIntent().getExtras().getParcelable(Constant.BUNDLE_USER);
+        mViewModel = new CustomerInfoViewModel(this, user);
         CustomerInfoContract.Presenter presenter =
             new CustomerInfoPresenter(mViewModel);
         mViewModel.setPresenter(presenter);
@@ -25,7 +38,7 @@ public class CustomerInfoActivity extends AppCompatActivity {
         binding.setViewModel((CustomerInfoViewModel) mViewModel);
         setSupportActionBar(binding.toolbarCustomer);
         if (getSupportActionBar() != null) {
-            getSupportActionBar().setTitle(R.string.title_customer);
+            getSupportActionBar().setTitle(user.getName());
             getSupportActionBar().setDisplayShowHomeEnabled(true);
             getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         }
@@ -41,5 +54,11 @@ public class CustomerInfoActivity extends AppCompatActivity {
     protected void onStop() {
         mViewModel.onStop();
         super.onStop();
+    }
+
+    @Override
+    public boolean onSupportNavigateUp() {
+        onBackPressed();
+        return true;
     }
 }
