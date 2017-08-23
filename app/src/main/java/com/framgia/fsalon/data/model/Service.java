@@ -44,6 +44,10 @@ public class Service implements Parcelable {
         mName = name;
     }
 
+    public Service(int id) {
+        mId = id;
+    }
+
     protected Service(Parcel in) {
         mId = in.readInt();
         mName = in.readString();

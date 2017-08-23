@@ -4,9 +4,11 @@ import android.content.Context;
 import android.content.Intent;
 import android.databinding.DataBindingUtil;
 import android.os.Bundle;
+import android.support.v4.app.DialogFragment;
 import android.support.v7.app.AppCompatActivity;
 
 import com.framgia.fsalon.R;
+import com.framgia.fsalon.data.model.BillItemRequest;
 import com.framgia.fsalon.data.source.BillRepository;
 import com.framgia.fsalon.data.source.BookingRepository;
 import com.framgia.fsalon.data.source.SalonRepository;
@@ -23,12 +25,14 @@ import com.framgia.fsalon.data.source.remote.ServiceRemoteDataSource;
 import com.framgia.fsalon.data.source.remote.StylistRemoteDataSource;
 import com.framgia.fsalon.data.source.remote.UserRemoteDataSource;
 import com.framgia.fsalon.databinding.ActivityBillBinding;
+import com.framgia.fsalon.screen.billdialog.BillDialogViewModel;
 import com.framgia.fsalon.utils.Constant;
 
 /**
  * BillItemRequest Screen.
  */
-public class BillActivity extends AppCompatActivity {
+public class BillActivity extends AppCompatActivity
+    implements BillDialogViewModel.OnClickDialogListener {
     private BillContract.ViewModel mViewModel;
 
     public static Intent getInstance(Context context, int billId) {
@@ -70,5 +74,18 @@ public class BillActivity extends AppCompatActivity {
     protected void onStop() {
         mViewModel.onStop();
         super.onStop();
+    }
+
+    @Override
+    public void onDialogCancelClick(DialogFragment dialogFragment) {
+        dialogFragment.dismiss();
+    }
+
+    @Override
+    public void onDialogUpdateClick(BillItemRequest newBill, BillItemRequest oldBill) {
+        if (newBill == null || oldBill == null) {
+            return;
+        }
+        ((BillViewModel) mViewModel).onUpdateItemBill(newBill, oldBill);
     }
 }

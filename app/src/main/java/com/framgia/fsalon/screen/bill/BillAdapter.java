@@ -72,6 +72,15 @@ public class BillAdapter extends BaseRecyclerViewAdapter<BillItemRequest, BillAd
         onAddItem(bill);
     }
 
+    public void onUpdateBillItem(BillItemRequest newBill, BillItemRequest oldBill) {
+        if (newBill == null) {
+            return;
+        }
+        int pos = mData.indexOf(oldBill);
+        mData.set(pos, newBill);
+        notifyDataSetChanged();
+    }
+
     private void onAddItem(BillItemRequest bill) {
         if (bill == null) {
             return;

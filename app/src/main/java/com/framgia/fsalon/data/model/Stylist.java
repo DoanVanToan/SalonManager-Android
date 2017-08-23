@@ -57,6 +57,10 @@ public class Stylist implements Parcelable{
         mName = name;
     }
 
+    public Stylist(int id) {
+        mId = id;
+    }
+
     protected Stylist(Parcel in) {
         mId = in.readInt();
         mName = in.readString();
