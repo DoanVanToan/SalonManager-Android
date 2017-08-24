@@ -1,5 +1,6 @@
 package com.framgia.fsalon.screen.listbill;
 
+import android.content.Intent;
 import android.databinding.DataBindingUtil;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
@@ -9,6 +10,7 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import com.framgia.fsalon.R;
+import com.framgia.fsalon.data.model.User;
 import com.framgia.fsalon.data.source.BillRepository;
 import com.framgia.fsalon.data.source.SalonRepository;
 import com.framgia.fsalon.data.source.api.FSalonServiceClient;
@@ -26,10 +28,14 @@ public class ListBillFragment extends Fragment {
         return new ListBillFragment();
     }
 
+    public void updateCustomer(User user) {
+        mViewModel.getCustomerSuccessfull(user);
+    }
+
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        mViewModel = new ListBillViewModel(getActivity());
+        mViewModel = new ListBillViewModel(getActivity(), this);
         ListBillContract.Presenter presenter =
             new ListBillPresenter(mViewModel, new BillRepository(new BillRemoteDataSource(
                 FSalonServiceClient.getInstance())), new SalonRepository(new
@@ -57,5 +63,11 @@ public class ListBillFragment extends Fragment {
     public void onStop() {
         mViewModel.onStop();
         super.onStop();
+    }
+
+    @Override
+    public void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        mViewModel.onActivityResult(requestCode, resultCode, data);
     }
 }

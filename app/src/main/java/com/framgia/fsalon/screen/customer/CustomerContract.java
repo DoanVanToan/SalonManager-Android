@@ -20,6 +20,7 @@ interface CustomerContract {
         void hideLoadMore();
         void onSearchSuccessful(List<User> sections);
         void onSearchFail();
+        void onBack();
     }
 
     /**

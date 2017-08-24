@@ -1,5 +1,6 @@
 package com.framgia.fsalon.screen.listbill;
 
+import android.content.Intent;
 import android.support.v4.widget.DrawerLayout;
 
 import com.framgia.fsalon.BasePresenter;
@@ -28,6 +29,7 @@ public interface ListBillContract {
         void onGetSalonsSuccess(List<Salon> salons);
         void getCustomerSuccessfull(User user);
         void onSearchCustomer();
+        void onActivityResult(int requestCode, int resultCode, Intent data);
     }
 
     /**
