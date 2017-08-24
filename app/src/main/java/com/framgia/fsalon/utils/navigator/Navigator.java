@@ -10,6 +10,7 @@ import android.support.annotation.NonNull;
 import android.support.annotation.StringRes;
 import android.support.design.widget.Snackbar;
 import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentManager;
 import android.text.TextUtils;
 import android.util.Patterns;
 
@@ -117,5 +118,10 @@ public class Navigator {
 
     public String getStringById(int stringId) {
         return mActivity.getResources().getString(stringId);
+    }
+
+    public void replaceFragmentToActivity(@NonNull FragmentManager fragmentManager,
+                                          @NonNull Fragment fragment, int frameId) {
+        fragmentManager.beginTransaction().replace(frameId, fragment).commit();
     }
 }

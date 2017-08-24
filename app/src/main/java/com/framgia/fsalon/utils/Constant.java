@@ -20,6 +20,8 @@ public class Constant {
     public static final String BUNDLE_USER = "BUNDLE_USER";
     public static final int FIRST_ITEM = 0;
     public static final String BUNDLE_BILL_ID = "BUNDLE_BILL_ID";
+    public static final int REQUEST_START_CUSTOMER_FILTER_ACTIVITY = 2;
+    public static final String EXTRA_CUSTOMER = "EXTRA_CUSTOMER";
 
     public class ApiParram {
         public static final String DEPARTMENT_ID = "department_id";
