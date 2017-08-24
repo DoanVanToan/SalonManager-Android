@@ -21,6 +21,9 @@ public class BillResponse extends BillModel.Bill<BillItemResponse> {
     @Expose
     @SerializedName("department")
     private Salon mDepartment;
+    @Expose
+    @SerializedName("bookings")
+    private BookingOder mBookingOder;
     private String mStatusName;
     private int mStatusColor;
 
@@ -62,6 +65,14 @@ public class BillResponse extends BillModel.Bill<BillItemResponse> {
 
     public void setDepartment(Salon department) {
         mDepartment = department;
+    }
+
+    public BookingOder getBookingOder() {
+        return mBookingOder;
+    }
+
+    public void setBookingOder(BookingOder bookingOder) {
+        mBookingOder = bookingOder;
     }
 
     public String getStatusName() {

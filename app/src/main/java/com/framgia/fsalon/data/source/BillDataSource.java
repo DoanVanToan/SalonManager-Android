@@ -18,4 +18,5 @@ public interface BillDataSource {
     Observable<BillResponse> getBillById(int id);
     Observable<BillResponse> editBill(BillRequest billRequest);
     Observable<List<ListBillRespond>> getBillByCustomerId(int customerId);
+    Observable<List<BillResponse>> getBillsByCustomerIdWithImages(int customerId);
 }

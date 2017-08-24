@@ -8,6 +8,7 @@ import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 
 import java.util.Date;
+import java.util.List;
 
 /**
  * Created by framgia on 7/21/17.
@@ -62,6 +63,9 @@ public class BookingOder implements Parcelable {
     @SerializedName("time_start")
     @Expose
     private Date mTimeStart;
+    @SerializedName("images")
+    @Expose
+    private List<ImageResponse> mImages;
 
     protected BookingOder(Parcel in) {
         mId = in.readInt();
@@ -211,6 +215,14 @@ public class BookingOder implements Parcelable {
 
     public void setTimeStart(Date timeStart) {
         mTimeStart = timeStart;
+    }
+
+    public List<ImageResponse> getImages() {
+        return mImages;
+    }
+
+    public void setImages(List<ImageResponse> images) {
+        mImages = images;
     }
 
     @Override
