@@ -67,7 +67,11 @@ public class Navigator {
     }
 
     public void startActivityForResult(@NonNull Intent intent, int requestCode) {
-        mActivity.startActivityForResult(intent, requestCode);
+        if (mFragment != null) {
+            mFragment.startActivityForResult(intent, requestCode);
+        } else {
+            mActivity.startActivityForResult(intent, requestCode);
+        }
     }
 
     public void startActivityForResult(@NonNull Class<? extends Activity> clazz, Bundle args,
