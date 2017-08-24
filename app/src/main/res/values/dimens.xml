@@ -43,6 +43,7 @@
     <dimen name="dp_25">25dp</dimen>
     <dimen name="dp_180">180dp</dimen>
     <dimen name="sp_25">25sp</dimen>
+    <dimen name="dp_6">6dp</dimen>
     <integer name="span_3">3</integer>
     <integer name="span_4">4</integer>
     <integer name="div_1">1</integer>
