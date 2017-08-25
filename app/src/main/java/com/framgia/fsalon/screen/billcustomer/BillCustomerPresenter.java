@@ -1,6 +1,6 @@
 package com.framgia.fsalon.screen.billcustomer;
 
-import com.framgia.fsalon.data.model.ListBillRespond;
+import com.framgia.fsalon.data.model.BillResponse;
 import com.framgia.fsalon.data.source.BillRepository;
 
 import java.util.List;
@@ -41,7 +41,7 @@ public class BillCustomerPresenter implements BillCustomerContract.Presenter {
 
     @Override
     public void getBillsByCustomerId(int customerId) {
-        Disposable disposable = mBillRepository.getBillByCustomerId(customerId)
+        Disposable disposable = mBillRepository.getBillsByCustomerId(customerId)
             .subscribeOn(Schedulers.io())
             .observeOn(AndroidSchedulers.mainThread())
             .doOnSubscribe(new Consumer<Disposable>() {
@@ -49,11 +49,10 @@ public class BillCustomerPresenter implements BillCustomerContract.Presenter {
                 public void accept(@NonNull Disposable disposable) throws Exception {
                     mViewModel.onShowProgressBar();
                 }
-            })
-            .subscribeWith(new DisposableObserver<List<ListBillRespond>>() {
+            }).subscribeWith(new DisposableObserver<List<BillResponse>>() {
                 @Override
-                public void onNext(@NonNull List<ListBillRespond> listBillResponds) {
-                    mViewModel.onGetBillSuccessfully(listBillResponds);
+                public void onNext(@NonNull List<BillResponse> billResponses) {
+                    mViewModel.onGetBillSuccessfully(billResponses);
                 }
 
                 @Override

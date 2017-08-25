@@ -6,6 +6,8 @@
 
     <data>
 
+        <import type="com.framgia.fsalon.utils.LayoutManager"/>
+
         <variable
             name="viewModel"
             type="com.framgia.fsalon.screen.billcustomer.BillCustomerViewModel"
@@ -27,8 +29,7 @@
         <android.support.v7.widget.RecyclerView
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            bind:deviderItem="@{@integer/div_1}"
-            bind:layoutManager="@{viewModel.layoutManager}"
-            bind:recyclerAdapter="@{viewModel.adapter}"/>
+            bind:adapter="@{viewModel.adapter}"
+            bind:layoutManager="@{LayoutManager.linear()}"/>
     </android.support.design.widget.CoordinatorLayout>
 </layout>
