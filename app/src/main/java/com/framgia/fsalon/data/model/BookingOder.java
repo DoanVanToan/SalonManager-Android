@@ -18,6 +18,7 @@ public class BookingOder implements Parcelable {
     public static final int STATUS_WATTING = 1;
     public static final int STATUS_FINISHED = 2;
     public static final int STATUS_IN_LATE = 3;
+    public static final int STATUS_IN_PROGRESS = 4;
     @SerializedName("id")
     @Expose
     private int mId;
