@@ -6,7 +6,8 @@ import android.view.ViewGroup;
 
 import com.codewaves.stickyheadergrid.StickyHeaderGridAdapter;
 import com.framgia.fsalon.R;
-import com.framgia.fsalon.data.model.ListImageResponse;
+import com.framgia.fsalon.data.model.BillResponse;
+import com.framgia.fsalon.data.model.ImageResponse;
 import com.framgia.fsalon.databinding.ItemContentListImageBinding;
 import com.framgia.fsalon.databinding.ItemHeaderListImageBinding;
 
@@ -17,16 +18,16 @@ import java.util.List;
  * Created by MyPC on 23/08/2017.
  */
 public class ImageCustomerAdapter extends StickyHeaderGridAdapter {
-    private List<ListImageResponse> mSections = new ArrayList<>();
+    private List<BillResponse> mSections = new ArrayList<>();
     private OnImageItemClick mOnImageItemClick;
 
-    public ImageCustomerAdapter(List<ListImageResponse> sections,
+    public ImageCustomerAdapter(List<BillResponse> sections,
                                 OnImageItemClick onImageItemClick) {
         mSections = sections;
         mOnImageItemClick = onImageItemClick;
     }
 
-    public void updateData(List<ListImageResponse> sections) {
+    public void updateData(List<BillResponse> sections) {
         if (sections == null) {
             return;
         }
@@ -41,12 +42,16 @@ public class ImageCustomerAdapter extends StickyHeaderGridAdapter {
 
     @Override
     public int getSectionCount() {
-        return mSections.size();
+        return mSections != null ? mSections.size() : 0;
     }
 
     @Override
     public int getSectionItemCount(int section) {
-        return mSections.get(section).getImages().size();
+        if (mSections.get(section).getBookingOder() == null
+            || mSections.get(section).getBookingOder().getImages() == null) {
+            return 0;
+        }
+        return mSections.get(section).getBookingOder().getImages().size();
     }
 
     @Override
@@ -74,7 +79,8 @@ public class ImageCustomerAdapter extends StickyHeaderGridAdapter {
     @Override
     public void onBindItemViewHolder(StickyHeaderGridAdapter.ItemViewHolder viewHolder, int section,
                                      int offset) {
-        ((ItemViewHolder) viewHolder).bind(mSections.get(section).getImages().get(offset));
+        ((ItemViewHolder) viewHolder)
+            .bind(mSections.get(section).getBookingOder().getImages().get(offset));
     }
 
     /**
@@ -88,8 +94,8 @@ public class ImageCustomerAdapter extends StickyHeaderGridAdapter {
             mBinding = binding;
         }
 
-        private void bind(ListImageResponse listImageResponse) {
-            mBinding.setSection(listImageResponse);
+        private void bind(BillResponse billResponse) {
+            mBinding.setSection(billResponse);
             mBinding.executePendingBindings();
         }
     }
@@ -105,7 +111,7 @@ public class ImageCustomerAdapter extends StickyHeaderGridAdapter {
             mBinding = binding;
         }
 
-        private void bind(String image) {
+        private void bind(ImageResponse image) {
             mBinding.setImage(image);
             mBinding.executePendingBindings();
         }

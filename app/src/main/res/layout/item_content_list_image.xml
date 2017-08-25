@@ -9,7 +9,7 @@
 
         <variable
             name="image"
-            type="String"/>
+            type="com.framgia.fsalon.data.model.ImageResponse"/>
 
         <variable
             name="listenner"
@@ -30,7 +30,7 @@
             <ImageView
                 android:layout_width="@dimen/dp_100"
                 android:layout_height="@dimen/dp_100"
-                bind:imageUrl="@{image}"
+                bind:imageUrl="@{image.pathOrigin}"
                 tools:ignore="@null"/>
         </android.support.v7.widget.CardView>
     </LinearLayout>

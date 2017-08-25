@@ -7,7 +7,10 @@ import android.view.View;
 
 import com.android.databinding.library.baseAdapters.BR;
 import com.codewaves.stickyheadergrid.StickyHeaderGridLayoutManager;
+import com.framgia.fsalon.data.model.BillResponse;
 import com.framgia.fsalon.utils.navigator.Navigator;
+
+import java.util.List;
 
 /**
  * Exposes the data to be used in the Imagecustomer screen.
@@ -54,6 +57,11 @@ public class ImageCustomerViewModel extends BaseObservable
     @Override
     public void onError(String message) {
         mNavigator.showToast(message);
+    }
+
+    @Override
+    public void onGetBillSuccessfully(List<BillResponse> billResponses) {
+        setAdapter(new ImageCustomerAdapter(billResponses, this));
     }
 
     @Bindable

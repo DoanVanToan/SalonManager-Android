@@ -3,9 +3,11 @@
 
     <data>
 
+        <import type="com.framgia.fsalon.utils.Utils"/>
+
         <variable
             name="section"
-            type="com.framgia.fsalon.data.model.ListImageResponse"/>
+            type="com.framgia.fsalon.data.model.BillResponse"/>
     </data>
 
     <TextView
@@ -13,6 +15,6 @@
         android:layout_height="wrap_content"
         android:background="@color/colorPrimaryDark"
         android:padding="@dimen/dp_5"
-        android:text="@{section.date}"
+        android:text="@{Utils.convertDate(section.createdAt)}"
         android:textColor="@color/color_white"/>
 </layout>
