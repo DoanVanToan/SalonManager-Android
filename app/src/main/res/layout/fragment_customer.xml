@@ -2,6 +2,7 @@
 <layout
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:bind="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     >
 
     <data>
@@ -28,9 +29,35 @@
             android:layout_width="match_parent"
             android:layout_height="@dimen/dp_50"
             android:background="@color/colorPrimary"
+            android:theme="@style/NoActionBarTheme.SearchView"
+            android:visibility="@{viewModel.filterBill?View.GONE:View.VISIBLE}"
             bind:iconifiedByDefault="false"
-            bind:setOnQueryTextListener="@{viewModel.QueryTextListener}"
-            bind:theme="@style/NoActionBarTheme.SearchView"/>
+            bind:setOnQueryTextListener="@{viewModel.QueryTextListener}"/>
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@color/colorPrimary"
+            android:visibility="@{viewModel.filterBill?View.VISIBLE:View.GONE}">
+
+            <ImageView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerVertical="true"
+                android:layout_marginLeft="@dimen/dp_10"
+                android:layout_marginStart="@dimen/dp_10"
+                android:onClick="@{()->viewModel.onBack()}"
+                bind:srcCompat="@drawable/ic_left_arrow_24dp"
+                tools:ignore="ContentDescription"/>
+
+            <android.support.v7.widget.SearchView
+                android:layout_width="wrap_content"
+                android:layout_height="@dimen/dp_50"
+                android:layout_alignParentEnd="true"
+                android:layout_alignParentRight="true"
+                android:theme="@style/NoActionBarTheme.SearchView"
+                bind:setOnQueryTextListener="@{viewModel.QueryTextListener}"/>
+        </RelativeLayout>
 
         <android.support.v7.widget.RecyclerView
             android:layout_width="match_parent"

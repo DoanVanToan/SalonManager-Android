@@ -4,6 +4,7 @@ import android.app.Activity;
 import android.app.FragmentManager;
 import android.content.Context;
 import android.content.DialogInterface;
+import android.content.Intent;
 import android.databinding.BaseObservable;
 import android.databinding.Bindable;
 import android.support.annotation.IdRes;
@@ -21,6 +22,7 @@ import com.framgia.fsalon.data.model.Salon;
 import com.framgia.fsalon.data.model.User;
 import com.framgia.fsalon.screen.bill.BillActivity;
 import com.framgia.fsalon.screen.billdetail.BillDetailActivity;
+import com.framgia.fsalon.screen.listbill.customerlist.CustomerListActivity;
 import com.framgia.fsalon.screen.scheduler.DepartmentAdapter;
 import com.framgia.fsalon.utils.OnDepartmentItemClick;
 import com.framgia.fsalon.utils.Utils;
@@ -32,6 +34,7 @@ import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.List;
 
+import static android.app.Activity.RESULT_OK;
 import static android.view.View.GONE;
 import static android.view.View.VISIBLE;
 import static com.framgia.fsalon.data.source.remote.ManageBookingRemoteDataSource.FILTER_DAY;
@@ -42,8 +45,10 @@ import static com.framgia.fsalon.screen.scheduler.SchedulerViewModel.TabFilter.T
 import static com.framgia.fsalon.screen.scheduler.SchedulerViewModel.TabFilter.TAB_TODAY;
 import static com.framgia.fsalon.screen.scheduler.SchedulerViewModel.TabFilter.TAB_TOMORROW;
 import static com.framgia.fsalon.screen.scheduler.SchedulerViewModel.TabFilter.TAB_YESTERDAY;
+import static com.framgia.fsalon.utils.Constant.EXTRA_CUSTOMER;
 import static com.framgia.fsalon.utils.Constant.FIRST_ITEM;
 import static com.framgia.fsalon.utils.Constant.OUT_OF_INDEX;
+import static com.framgia.fsalon.utils.Constant.REQUEST_START_CUSTOMER_FILTER_ACTIVITY;
 
 /**
  * Exposes the data to be used in the Listbill screen.
@@ -83,6 +88,7 @@ public class ListBillViewModel extends BaseObservable
     private FragmentManager mFragmentManager;
     private String mSpaceTime = "";
     private String mSalonName;
+    private ListBillFragment mListBillFragment;
     private DrawerLayout.DrawerListener mDrawerListener = new DrawerLayout.DrawerListener() {
         @Override
         public void onDrawerSlide(View drawerView, float slideOffset) {
@@ -154,10 +160,11 @@ public class ListBillViewModel extends BaseObservable
         }
     };
 
-    public ListBillViewModel(Activity activity) {
+    public ListBillViewModel(Activity activity, ListBillFragment fragment) {
         mActivity = activity;
         mContext = activity.getApplicationContext();
-        mNavigator = new Navigator(mActivity);
+        mListBillFragment = fragment;
+        mNavigator = new Navigator(mListBillFragment);
         mFragmentManager = mActivity.getFragmentManager();
         setAdapter(new ListBillAdapter(new ArrayList<ListBillRespond>(), this));
         mCustomer = new User();
@@ -266,11 +273,30 @@ public class ListBillViewModel extends BaseObservable
 
     @Override
     public void getCustomerSuccessfull(User user) {
-        mCustomer = user;
+        setCustomer(user);
     }
 
     @Override
     public void onSearchCustomer() {
+        mNavigator.startActivityForResult(CustomerListActivity.getInstance(),
+            REQUEST_START_CUSTOMER_FILTER_ACTIVITY);
+    }
+
+    @Override
+    public void onActivityResult(int requestCode, int resultCode, Intent data) {
+        if (resultCode != RESULT_OK) {
+            return;
+        }
+        switch (requestCode) {
+            case REQUEST_START_CUSTOMER_FILTER_ACTIVITY:
+                if (data == null) {
+                    break;
+                }
+                getCustomerSuccessfull((User) data.getParcelableExtra(EXTRA_CUSTOMER));
+                break;
+            default:
+                break;
+        }
     }
 
     @Override

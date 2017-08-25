@@ -20,15 +20,22 @@ import com.framgia.fsalon.databinding.FragmentCustomerBinding;
  * Customer Screen.
  */
 public class CustomerFragment extends Fragment {
+    private static final String BUNDLE_IS_FILTER_BILL = "BUNDLE_IS_FILTER_BILL";
     private CustomerContract.ViewModel mViewModel;
+    private boolean mIsFilterBill;
 
-    public static CustomerFragment newInstance() {
-        return new CustomerFragment();
+    public static CustomerFragment newInstance(boolean isFilterBill) {
+        CustomerFragment customerFragment = new CustomerFragment();
+        Bundle args = new Bundle();
+        args.putBoolean(BUNDLE_IS_FILTER_BILL, isFilterBill);
+        customerFragment.setArguments(args);
+        return customerFragment;
     }
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        getBundle();
         mViewModel = new CustomerViewModel(this, getActivity().getFragmentManager());
         CustomerContract.Presenter presenter =
             new CustomerPresenter(mViewModel,
@@ -57,5 +64,19 @@ public class CustomerFragment extends Fragment {
     public void onStop() {
         mViewModel.onStop();
         super.onStop();
+    }
+
+    public boolean isFilterBill() {
+        return mIsFilterBill;
+    }
+
+    public void setFilterBill(boolean filterBill) {
+        mIsFilterBill = filterBill;
+    }
+
+    private void getBundle() {
+        if (getArguments() != null) {
+            setFilterBill(getArguments().getBoolean(BUNDLE_IS_FILTER_BILL));
+        }
     }
 }

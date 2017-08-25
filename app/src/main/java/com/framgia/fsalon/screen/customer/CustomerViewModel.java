@@ -1,8 +1,11 @@
 package com.framgia.fsalon.screen.customer;
 
 import android.app.FragmentManager;
+import android.content.Intent;
 import android.databinding.BaseObservable;
 import android.databinding.Bindable;
+import android.os.Build;
+import android.support.annotation.RequiresApi;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.SearchView;
@@ -16,7 +19,9 @@ import com.framgia.fsalon.utils.navigator.Navigator;
 import java.util.ArrayList;
 import java.util.List;
 
+import static android.app.Activity.RESULT_OK;
 import static com.framgia.fsalon.utils.Constant.ApiParram.FIRST_PAGE;
+import static com.framgia.fsalon.utils.Constant.EXTRA_CUSTOMER;
 
 /**
  * Exposes the data to be used in the Customer screen.
@@ -25,10 +30,11 @@ public class CustomerViewModel extends BaseObservable implements CustomerContrac
     private CustomerContract.Presenter mPresenter;
     private CustomerAdapter mCustomerAdapter;
     private Navigator mNavigator;
-    private FragmentManager mFragmentManager;
     private boolean mIsLoadingMore;
     private boolean mIsLoadingSearch;
     private String keyword;
+    private boolean mIsFilterBill;
+    private CustomerFragment mCustomerFragment;
     private RecyclerView.OnScrollListener mListener = new RecyclerView.OnScrollListener() {
         @Override
         public void onScrolled(RecyclerView recyclerView, int dx, int dy) {
@@ -65,6 +71,7 @@ public class CustomerViewModel extends BaseObservable implements CustomerContrac
                 return true;
             }
 
+            @RequiresApi(api = Build.VERSION_CODES.GINGERBREAD)
             @Override
             public boolean onQueryTextChange(String query) {
                 if (query.isEmpty()) {
@@ -78,8 +85,9 @@ public class CustomerViewModel extends BaseObservable implements CustomerContrac
     }
 
     public CustomerViewModel(CustomerFragment fragment, FragmentManager fragmentManager) {
+        mCustomerFragment = fragment;
         mNavigator = new Navigator(fragment);
-        mFragmentManager = fragmentManager;
+        mIsFilterBill = fragment.isFilterBill();
         setCustomerAdapter(new CustomerAdapter(mNavigator.getContext(), new
             ArrayList<User>(), CustomerViewModel.this));
     }
@@ -159,6 +167,13 @@ public class CustomerViewModel extends BaseObservable implements CustomerContrac
     }
 
     public void onCustomerItemClick(User user) {
+        if (mIsFilterBill) {
+            Intent intent = new Intent();
+            intent.putExtra(EXTRA_CUSTOMER, user);
+            mCustomerFragment.getActivity().setResult(RESULT_OK, intent);
+            mCustomerFragment.getActivity().finish();
+            return;
+        }
         mNavigator.startActivity(CustomerInfoActivity.getInstance(mNavigator.getContext(), user));
     }
 
@@ -170,5 +185,20 @@ public class CustomerViewModel extends BaseObservable implements CustomerContrac
     @Override
     public void onSearchFail() {
         mNavigator.showToast(R.string.title_scheduler_failure);
+    }
+
+    @Override
+    public void onBack() {
+        mCustomerFragment.getActivity().finish();
+    }
+
+    @Bindable
+    public boolean isFilterBill() {
+        return mIsFilterBill;
+    }
+
+    public void setFilterBill(boolean filterBill) {
+        mIsFilterBill = filterBill;
+        notifyPropertyChanged(BR.filterBill);
     }
 }

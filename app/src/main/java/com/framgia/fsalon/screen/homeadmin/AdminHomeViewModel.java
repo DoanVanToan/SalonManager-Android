@@ -73,7 +73,7 @@ public class AdminHomeViewModel extends BaseObservable implements AdminHomeContr
         fragments.add(SchedulerFragment.newInstance());
         fragments.add(ListBillFragment.newInstance());
         fragments.add(ReportFragment.newInstance());
-        fragments.add(CustomerFragment.newInstance());
+        fragments.add(CustomerFragment.newInstance(false));
         fragments.add(InfoUserFragment.newInstance());
         mAdapter = new HomePagerAdapter(activity.getSupportFragmentManager(), fragments);
         setAdapter(mAdapter);
