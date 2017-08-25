@@ -2,7 +2,7 @@ package com.framgia.fsalon.screen.billcustomer;
 
 import com.framgia.fsalon.BasePresenter;
 import com.framgia.fsalon.BaseViewModel;
-import com.framgia.fsalon.data.model.ListBillRespond;
+import com.framgia.fsalon.data.model.BillResponse;
 
 import java.util.List;
 
@@ -16,8 +16,9 @@ interface BillCustomerContract {
     interface ViewModel extends BaseViewModel<Presenter> {
         void onHideProgressBar();
         void onShowProgressBar();
-        void onGetBillSuccessfully(List<ListBillRespond> listBillResponds);
+        void onGetBillSuccessfully(List<BillResponse> listBillResponds);
         void onError(String message);
+        void onBillDetailClick(BillResponse bill);
     }
 
     /**

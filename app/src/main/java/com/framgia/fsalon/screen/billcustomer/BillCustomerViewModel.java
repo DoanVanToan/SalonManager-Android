@@ -8,9 +8,7 @@ import android.view.View;
 
 import com.framgia.fsalon.BR;
 import com.framgia.fsalon.data.model.BillResponse;
-import com.framgia.fsalon.data.model.ListBillRespond;
 import com.framgia.fsalon.screen.billdetail.BillDetailActivity;
-import com.framgia.fsalon.screen.listbill.ListBillAdapter;
 import com.framgia.fsalon.utils.navigator.Navigator;
 import com.framgia.fsalon.wiget.StickyHeaderLayoutManager;
 
@@ -20,13 +18,13 @@ import java.util.List;
  * Exposes the data to be used in the Billcustomer screen.
  */
 public class BillCustomerViewModel extends BaseObservable
-    implements BillCustomerContract.ViewModel, ListBillAdapter.OnBillItemClick {
+    implements BillCustomerContract.ViewModel {
     private BillCustomerContract.Presenter mPresenter;
     private int mVisibleProgressBar;
     private StickyHeaderLayoutManager mLayoutManager = new StickyHeaderLayoutManager();
-    private ListBillAdapter mAdapter;
     private Navigator mNavigator;
     private Context mContext;
+    private BillCustomerAdapter mAdapter;
 
     public BillCustomerViewModel(Fragment fragment) {
         mContext = fragment.getContext();
@@ -59,13 +57,21 @@ public class BillCustomerViewModel extends BaseObservable
     }
 
     @Override
-    public void onGetBillSuccessfully(List<ListBillRespond> listBillResponds) {
-        setAdapter(new ListBillAdapter(listBillResponds, this));
+    public void onGetBillSuccessfully(List<BillResponse> billResponses) {
+        setAdapter(new BillCustomerAdapter(mContext, billResponses, this));
     }
 
     @Override
     public void onError(String message) {
         mNavigator.showToast(message);
+    }
+
+    @Override
+    public void onBillDetailClick(BillResponse bill) {
+        if (bill == null) {
+            return;
+        }
+        mNavigator.startActivity(BillDetailActivity.getInstance(mContext, bill.getId()));
     }
 
     @Bindable
@@ -89,20 +95,12 @@ public class BillCustomerViewModel extends BaseObservable
     }
 
     @Bindable
-    public ListBillAdapter getAdapter() {
+    public BillCustomerAdapter getAdapter() {
         return mAdapter;
     }
 
-    public void setAdapter(ListBillAdapter adapter) {
+    public void setAdapter(BillCustomerAdapter adapter) {
         mAdapter = adapter;
         notifyPropertyChanged(BR.adapter);
-    }
-
-    @Override
-    public void onBillDetailClick(BillResponse bill) {
-        if (bill == null) {
-            return;
-        }
-        mNavigator.startActivity(BillDetailActivity.getInstance(mContext, bill.getId()));
     }
 }

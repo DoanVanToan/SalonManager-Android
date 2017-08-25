@@ -144,22 +144,8 @@ public class BillRemoteDataSource extends BaseRemoteDataSource implements BillDa
     }
 
     @Override
-    public Observable<List<ListBillRespond>> getBillByCustomerId(int customerId) {
+    public Observable<List<BillResponse>> getBillsByCustomerId(int customerId) {
         return mFSalonApi.getBillsByCustomerId(customerId).flatMap(
-            new Function<Respone<List<ListBillRespond>>,
-                ObservableSource<List<ListBillRespond>>>() {
-                @Override
-                public ObservableSource<List<ListBillRespond>> apply(
-                    @NonNull Respone<List<ListBillRespond>> listRespone)
-                    throws Exception {
-                    return Utils.getResponse(listRespone);
-                }
-            });
-    }
-
-    @Override
-    public Observable<List<BillResponse>> getBillsByCustomerIdWithImages(int customerId) {
-        return mFSalonApi.getBillByCustomerIdWithImages(customerId).flatMap(
             new Function<Respone<List<BillResponse>>, ObservableSource<List<BillResponse>>>() {
                 @Override
                 public ObservableSource<List<BillResponse>> apply(

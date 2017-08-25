@@ -71,10 +71,8 @@ public interface FSalonApi {
     @PUT("api/v0/bill/{id}")
     Observable<Respone<BillResponse>> editBill(@Path("id") int id,
                                                @QueryMap Map<String, String> params);
-    // TODO: 22/08/2017  call @GET API
-    Observable<Respone<List<ListBillRespond>>> getBillsByCustomerId(@Path("id") int id);
     @GET("api/v0/get-bill-by-customer-id-with-images")
-    Observable<Respone<List<BillResponse>>> getBillByCustomerIdWithImages(
+    Observable<Respone<List<BillResponse>>> getBillsByCustomerId(
         @Query("customer_id") int customerId);
 }
 

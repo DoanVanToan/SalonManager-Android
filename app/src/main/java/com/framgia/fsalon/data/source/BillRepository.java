@@ -43,12 +43,7 @@ public class BillRepository implements BillDataSource {
     }
 
     @Override
-    public Observable<List<ListBillRespond>> getBillByCustomerId(int customerId) {
-        return mRemoteDataSource.getBillByCustomerId(customerId);
-    }
-
-    @Override
-    public Observable<List<BillResponse>> getBillsByCustomerIdWithImages(int customerId) {
-        return mRemoteDataSource.getBillsByCustomerIdWithImages(customerId);
+    public Observable<List<BillResponse>> getBillsByCustomerId(int customerId) {
+        return mRemoteDataSource.getBillsByCustomerId(customerId);
     }
 }
