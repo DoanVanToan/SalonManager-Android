@@ -7,6 +7,7 @@ import android.support.v4.app.Fragment;
 
 import com.framgia.fsalon.BR;
 import com.framgia.fsalon.screen.homeadmin.HomePagerAdapter;
+import com.framgia.fsalon.screen.report.customerreport.CustomerReportFragment;
 import com.framgia.fsalon.screen.report.reportsales.ReportSalesFragment;
 
 import java.lang.annotation.Retention;
@@ -29,7 +30,7 @@ public class ReportViewModel extends BaseObservable implements ReportContract.Vi
     public ReportViewModel(Fragment fragment) {
         List<Fragment> fragments = new ArrayList<>();
         fragments.add(ReportSalesFragment.newInstance());
-        fragments.add(new Fragment());
+        fragments.add(CustomerReportFragment.newInstance());
         fragments.add(new Fragment());
         mAdapter = new HomePagerAdapter(fragment.getChildFragmentManager(), fragments);
         setAdapter(mAdapter);
