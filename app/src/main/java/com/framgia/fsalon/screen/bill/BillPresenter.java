@@ -249,7 +249,6 @@ public class BillPresenter implements BillContract.Presenter {
             });
         mCompositeDisposable.add(disposable);
     }
-
     @Override
     public void getCustomerByPhone(String phone) {
         Disposable disposable = mUserRepository.getCustomerByPhone(phone)
