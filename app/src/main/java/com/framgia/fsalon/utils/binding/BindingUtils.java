@@ -4,10 +4,12 @@ import android.app.Activity;
 import android.databinding.BindingAdapter;
 import android.databinding.InverseBindingAdapter;
 import android.databinding.InverseBindingListener;
+import android.graphics.Color;
 import android.graphics.drawable.Drawable;
 import android.support.design.widget.BottomNavigationView;
 import android.support.design.widget.TabLayout;
 import android.support.design.widget.TextInputLayout;
+import android.support.v4.content.ContextCompat;
 import android.support.v4.view.PagerAdapter;
 import android.support.v4.view.ViewPager;
 import android.support.v4.widget.DrawerLayout;
@@ -31,9 +33,21 @@ import com.framgia.fsalon.data.model.Service;
 import com.framgia.fsalon.data.model.Stylist;
 import com.framgia.fsalon.screen.booking.BookingViewModel;
 import com.framgia.fsalon.utils.LayoutManager;
+import com.github.mikephil.charting.charts.BarChart;
 import com.github.mikephil.charting.charts.LineChart;
+import com.github.mikephil.charting.components.Legend;
+import com.github.mikephil.charting.components.XAxis;
+import com.github.mikephil.charting.data.BarData;
+import com.github.mikephil.charting.data.BarDataSet;
+import com.github.mikephil.charting.data.BarEntry;
 import com.github.mikephil.charting.data.LineData;
+import com.github.mikephil.charting.formatter.IAxisValueFormatter;
+import com.github.mikephil.charting.formatter.IValueFormatter;
+import com.github.mikephil.charting.interfaces.datasets.IBarDataSet;
 import com.toptoche.searchablespinnerlibrary.SearchableSpinner;
+
+import java.util.ArrayList;
+import java.util.List;
 
 import static com.framgia.fsalon.utils.Constant.NO_SCROLL;
 
@@ -349,5 +363,64 @@ public class BindingUtils {
                 view.getTabAt(i).setIcon(iconList[i]);
             }
         }
+    }
+
+    @BindingAdapter("pinch_zoom")
+    public static void setPinchZoom(BarChart chart, boolean isEnable) {
+        if (isEnable) {
+            chart.setPinchZoom(true);
+        }
+        chart.setDrawValueAboveBar(false);
+        chart.getAxisLeft().setAxisMinimum(0f);
+        chart.getAxisRight().setEnabled(false);
+        chart.getXAxis().setPosition(XAxis.XAxisPosition.BOTTOM);
+        chart.getDescription().setEnabled(false);
+        Legend l = chart.getLegend();
+        l.setVerticalAlignment(Legend.LegendVerticalAlignment.BOTTOM);
+        l.setHorizontalAlignment(Legend.LegendHorizontalAlignment.RIGHT);
+        l.setOrientation(Legend.LegendOrientation.HORIZONTAL);
+        l.setDrawInside(false);
+        l.setFormSize(8f);
+        l.setFormToTextSpace(4f);
+        l.setXEntrySpace(20f);
+    }
+
+    @BindingAdapter("x_axis_formatter")
+    public static void setXAxisFormatter(BarChart chart, IAxisValueFormatter formatter) {
+        chart.getXAxis().setValueFormatter(formatter);
+    }
+
+    @BindingAdapter("y_axis_formatter")
+    public static void setYAxisFormatter(BarChart chart, IAxisValueFormatter formatter) {
+        chart.getAxisLeft().setValueFormatter(formatter);
+    }
+
+    @BindingAdapter(value = {"data", "formatter", "legend", "labels", "colors"})
+    public static void setValueFormatter(BarChart chart, List<BarEntry> data,
+                                         IValueFormatter formatter, String legend,
+                                         String[] labels, int[] colors) {
+        BarDataSet set;
+        if (chart.getData() != null && chart.getData().getDataSetCount() > 0) {
+            set = (BarDataSet) chart.getData().getDataSetByIndex(0);
+            set.setValues(data);
+            chart.getData().notifyDataChanged();
+            chart.notifyDataSetChanged();
+        } else {
+            set = new BarDataSet(data, legend);
+            int[] arr = new int[colors.length];
+            for (int i = 0; i < colors.length; i++) {
+                arr[i] = ContextCompat.getColor(chart.getContext(), colors[i]);
+            }
+            set.setColors(arr);
+            set.setStackLabels(labels);
+            List<IBarDataSet> dataSets = new ArrayList<IBarDataSet>();
+            dataSets.add(set);
+            BarData barData = new BarData(dataSets);
+            barData.setValueFormatter(formatter);
+            barData.setValueTextColor(Color.WHITE);
+            chart.setData(barData);
+        }
+        chart.setFitBars(true);
+        chart.invalidate();
     }
 }
