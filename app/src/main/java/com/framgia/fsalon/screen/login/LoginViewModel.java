@@ -6,17 +6,18 @@ import android.databinding.Bindable;
 import android.support.design.widget.Snackbar;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
+
 import com.framgia.fsalon.BR;
 import com.framgia.fsalon.R;
 import com.framgia.fsalon.screen.home.HomeActivity;
 import com.framgia.fsalon.screen.homeadmin.AdminHomeActivity;
+import com.framgia.fsalon.screen.homestylist.HomeStylistActivity;
 import com.framgia.fsalon.utils.navigator.Navigator;
 
 /**
  * Exposes the data to be used in the Login screen.
  */
 public class LoginViewModel extends BaseObservable implements LoginContract.ViewModel {
-
     private LoginContract.Presenter mPresenter;
     private AppCompatActivity mActivity;
     private Context mContext;
@@ -149,6 +150,12 @@ public class LoginViewModel extends BaseObservable implements LoginContract.View
     @Override
     public void onAdminLoginSuccess() {
         mNavigator.startActivity(AdminHomeActivity.getInstance(mNavigator.getContext()));
+        mNavigator.finishActivity();
+    }
+
+    @Override
+    public void onStylistLoginSuccess() {
+        mNavigator.startActivity(HomeStylistActivity.class);
         mNavigator.finishActivity();
     }
 }

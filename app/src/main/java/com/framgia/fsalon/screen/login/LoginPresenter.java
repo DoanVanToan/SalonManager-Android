@@ -2,6 +2,7 @@ package com.framgia.fsalon.screen.login;
 
 import android.text.TextUtils;
 import android.util.Log;
+
 import com.framgia.fsalon.data.model.UserRespone;
 import com.framgia.fsalon.data.source.UserRepository;
 
@@ -14,13 +15,14 @@ import io.reactivex.observers.DisposableObserver;
 import io.reactivex.schedulers.Schedulers;
 
 import static com.framgia.fsalon.utils.Constant.Permission.PERMISSION_ADMIN;
+import static com.framgia.fsalon.utils.Constant.Permission.PERMISSION_MAIN_WORKER;
+import static com.framgia.fsalon.utils.Constant.Permission.PERMISSION_NOMAL;
 
 /**
  * Listens to user actions from the UI ({@link LoginActivity}), retrieves the data and updates
  * the UI as required.
  */
 public class LoginPresenter implements LoginContract.Presenter {
-
     private static final String TAG = LoginPresenter.class.getName();
     private final LoginContract.ViewModel mViewModel;
     private UserRepository mRepository;
@@ -114,10 +116,18 @@ public class LoginPresenter implements LoginContract.Presenter {
     }
 
     private void loginWithPermission(int permission) {
-        if (permission == PERMISSION_ADMIN) {
-            mViewModel.onAdminLoginSuccess();
-        } else {
-            mViewModel.onCustomerLoginSuccess();
+        switch (permission) {
+            case PERMISSION_ADMIN:
+                mViewModel.onAdminLoginSuccess();
+                break;
+            case PERMISSION_NOMAL:
+                mViewModel.onCustomerLoginSuccess();
+                break;
+            case PERMISSION_MAIN_WORKER:
+                mViewModel.onStylistLoginSuccess();
+                break;
+            default:
+                break;
         }
     }
 }
