@@ -2,6 +2,7 @@ package com.framgia.fsalon.data.source.api;
 
 import com.framgia.fsalon.data.model.BillResponse;
 import com.framgia.fsalon.data.model.BookingOder;
+import com.framgia.fsalon.data.model.CustomerReportResponse;
 import com.framgia.fsalon.data.model.BookingResponse;
 import com.framgia.fsalon.data.model.CustomerResponse;
 import com.framgia.fsalon.data.model.ListBillRespond;
@@ -74,5 +75,8 @@ public interface FSalonApi {
     @GET("api/v0/get-bill-by-customer-id-with-images")
     Observable<Respone<List<BillResponse>>> getBillsByCustomerId(
         @Query("customer_id") int customerId);
+    @GET("api/v0/report-customer")
+    Observable<Respone<CustomerReportResponse>> getBookingReport(@QueryMap Map<String, String>
+                                                                    parrams);
 }
 
