@@ -5,6 +5,7 @@ import android.content.DialogInterface;
 import android.databinding.BaseObservable;
 import android.databinding.Bindable;
 import android.support.annotation.IdRes;
+import android.support.v4.app.Fragment;
 import android.support.v4.widget.DrawerLayout;
 import android.view.Gravity;
 import android.view.View;
@@ -15,7 +16,9 @@ import com.framgia.fsalon.FSalonApplication;
 import com.framgia.fsalon.R;
 import com.framgia.fsalon.data.model.ManageBookingResponse;
 import com.framgia.fsalon.screen.scheduler.SchedulerAdapter;
+import com.framgia.fsalon.screen.scheduler.detail.BookingDetailActivity;
 import com.framgia.fsalon.utils.Utils;
+import com.framgia.fsalon.utils.navigator.Navigator;
 import com.framgia.fsalon.wiget.StickyHeaderLayoutManager;
 import com.wdullaer.materialdatetimepicker.date.DatePickerDialog;
 
@@ -39,7 +42,7 @@ import static com.framgia.fsalon.utils.Constant.OUT_OF_INDEX;
  */
 public class StylistBookingViewModel extends BaseObservable
     implements StylistBookingContract.ViewModel, DatePickerDialog.OnDateSetListener,
-    DialogInterface.OnCancelListener {
+    DialogInterface.OnCancelListener, SchedulerAdapter.BookingDetailListener {
     private StylistBookingContract.Presenter mPresenter;
     private SchedulerAdapter mDateAdapter;
     private int mStartDate = OUT_OF_INDEX;
@@ -56,6 +59,7 @@ public class StylistBookingViewModel extends BaseObservable
     private FragmentManager mFragmentManager;
     private int mVisibleProgressBar = GONE;
     private StickyHeaderLayoutManager mLayoutManager = new StickyHeaderLayoutManager();
+    private Navigator mNavigator;
     private DrawerLayout.DrawerListener mDrawerListener = new DrawerLayout.DrawerListener() {
         @Override
         public void onDrawerSlide(View drawerView, float slideOffset) {
@@ -130,11 +134,12 @@ public class StylistBookingViewModel extends BaseObservable
         }
     };
 
-    public StylistBookingViewModel(FragmentManager fragmentManager) {
-        mFragmentManager = fragmentManager;
+    public StylistBookingViewModel(Fragment fragment) {
         if (mCalendar == null) {
             mCalendar = Calendar.getInstance();
         }
+        mNavigator = new Navigator(fragment);
+        mFragmentManager = fragment.getActivity().getFragmentManager();
         mDatePickerDialog =
             DatePickerDialog.newInstance(this, mCalendar.get(Calendar.YEAR),
                 mCalendar.get(Calendar.MONTH), mCalendar.get(Calendar.DAY_OF_MONTH));
@@ -301,7 +306,7 @@ public class StylistBookingViewModel extends BaseObservable
 
     @Override
     public void onFilterSuccessfully(List<ManageBookingResponse> manageBookingResponse) {
-        setDateAdapter(new SchedulerAdapter(null, manageBookingResponse));
+        setDateAdapter(new SchedulerAdapter(this, manageBookingResponse));
         hideLoadMore();
     }
 
@@ -340,5 +345,10 @@ public class StylistBookingViewModel extends BaseObservable
         mCalendar.set(Calendar.MILLISECOND, 0);
         mStartDate = (int) (mCalendar.getTimeInMillis() / 1000);
         showDatePickerDialog();
+    }
+
+    @Override
+    public void onBookingItemClick(int id) {
+        mNavigator.startActivity(BookingDetailActivity.getInstance(mNavigator.getContext(), id));
     }
 }

@@ -26,13 +26,14 @@ public class SchedulerAdapter extends SectioningAdapter {
     private static final int HEADER = -1;
     private static final int GHOST_HEADER = -1;
     private List<ManageBookingResponse> mSections = new ArrayList<>();
-    private SchedulerContract.ViewModel mViewModel;
+    private BookingDetailListener mItemListener;
     private List<BookingOder> mBookingOders = new ArrayList<>();
 
-    public SchedulerAdapter(SchedulerContract.ViewModel viewModel, List<ManageBookingResponse>
-        sections) {
+    public SchedulerAdapter(BookingDetailListener bookingDetailListener,
+                            List<ManageBookingResponse>
+                                sections) {
         mSections = sections;
-        mViewModel = viewModel;
+        mItemListener = bookingDetailListener;
     }
 
     public void updateData(List<ManageBookingResponse> sections) {
@@ -66,7 +67,7 @@ public class SchedulerAdapter extends SectioningAdapter {
                                                  int itemUserType) {
         ItemContentSchedulerBinding binding = DataBindingUtil.inflate(LayoutInflater.from(parent
             .getContext()), R.layout.item_content_scheduler, parent, false);
-        binding.setViewModel(mViewModel);
+        binding.setItemListener(mItemListener);
         return new ItemViewHolder(binding);
     }
 
@@ -145,5 +146,12 @@ public class SchedulerAdapter extends SectioningAdapter {
             mHeaderBinding.setSection(section);
             mHeaderBinding.executePendingBindings();
         }
+    }
+
+    /**
+     * Interface listener for item bookings
+     */
+    public interface BookingDetailListener {
+        void onBookingItemClick(int id);
     }
 }

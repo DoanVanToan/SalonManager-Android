@@ -23,7 +23,6 @@ public interface SchedulerContract {
         void onSchedulerFail();
         void showLoadMore();
         void hideLoadMore();
-        void onBookingItemClick(int id);
         void onFilterClick(DrawerLayout layout);
         void onGetSalonsSuccess(List<Salon> salons);
         void onError(String message);

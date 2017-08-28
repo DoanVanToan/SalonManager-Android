@@ -27,7 +27,7 @@ public class StylistBookingFragment extends Fragment {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        mViewModel = new StylistBookingViewModel(getActivity().getFragmentManager());
+        mViewModel = new StylistBookingViewModel(this);
         StylistBookingContract.Presenter presenter =
             new StylistBookingPresenter(mViewModel, new ManageBookingRepository(
                 new ManageBookingRemoteDataSource(FSalonServiceClient.getInstance())));

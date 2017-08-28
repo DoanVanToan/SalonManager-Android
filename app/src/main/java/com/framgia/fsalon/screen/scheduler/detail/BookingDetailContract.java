@@ -9,7 +9,7 @@ import com.framgia.fsalon.data.model.BookingOder;
 /**
  * This specifies the contract between the view and the presenter.
  */
-interface BookingDetailContract {
+public interface BookingDetailContract {
     /**
      * View.
      */
