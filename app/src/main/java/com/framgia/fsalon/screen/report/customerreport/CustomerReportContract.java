@@ -14,14 +14,15 @@ interface CustomerReportContract {
      * View.
      */
     interface ViewModel extends BaseViewModel<Presenter> {
-        void onGetReportSuccess(List<BarEntry> barEntries);
-        void onGetReportFail();
+        void onGetReportSuccess(List<BarEntry> barEntries, int oldCustomer, int newCustomer,
+                                List<String> labels);
+        void onGetReportFail(String msg);
     }
 
     /**
      * Presenter.
      */
     interface Presenter extends BasePresenter {
-        void getReport();
+        void getReport(String type, long start, long end);
     }
 }

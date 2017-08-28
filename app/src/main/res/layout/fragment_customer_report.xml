@@ -22,8 +22,8 @@
         <com.github.mikephil.charting.charts.BarChart
             android:layout_width="match_parent"
             android:layout_height="0dp"
-            android:layout_weight="1"
             android:layout_marginTop="@dimen/dp_10"
+            android:layout_weight="1"
             android:padding="@dimen/dp_10"
             bind:colors="@{viewModel.colors}"
             bind:data="@{viewModel.barEntries}"
@@ -47,17 +47,20 @@
                 android:layout_marginLeft="@dimen/dp_20"
                 android:layout_marginStart="@dimen/dp_20"
                 android:gravity="center"
-                android:text="@string/title_total"
-                android:textSize="@dimen/sp_30"
+                android:text="@string/title_total_old"
+                android:textSize="@dimen/sp_20"
                 android:textStyle="bold"/>
 
             <TextView
+
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:gravity="center"
-                android:text="@{viewModel.total}"
+                android:layout_marginEnd="@dimen/dp_20"
+                android:layout_marginRight="@dimen/dp_20"
+                android:gravity="end"
+                android:text="@{viewModel.oldCustomer}"
                 android:textColor="@color/color_red"
-                android:textSize="@dimen/sp_30"
+                android:textSize="@dimen/sp_20"
                 android:textStyle="bold"/>
         </LinearLayout>
 
@@ -74,15 +77,17 @@
                 android:layout_marginLeft="@dimen/dp_20"
                 android:layout_marginStart="@dimen/dp_20"
                 android:gravity="center"
-                android:text="@string/title_average"
+                android:text="@string/title_total_new"
                 android:textSize="@dimen/sp_20"
                 android:textStyle="bold"/>
 
             <TextView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:gravity="center"
-                android:text="@{viewModel.average}"
+                android:layout_marginEnd="@dimen/dp_20"
+                android:layout_marginRight="@dimen/dp_20"
+                android:gravity="end"
+                android:text="@{viewModel.newCustomer}"
                 android:textColor="@color/color_red"
                 android:textSize="@dimen/sp_20"
                 android:textStyle="bold"/>

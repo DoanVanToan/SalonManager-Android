@@ -30,7 +30,10 @@ public class ReportViewModel extends BaseObservable implements ReportContract.Vi
     public ReportViewModel(Fragment fragment) {
         List<Fragment> fragments = new ArrayList<>();
         fragments.add(ReportSalesFragment.newInstance());
-        fragments.add(CustomerReportFragment.newInstance());
+        String testType = "day";
+        long start = 1498900037;
+        long end = 1501578437;
+        fragments.add(CustomerReportFragment.newInstance(testType, start, end));
         fragments.add(new Fragment());
         mAdapter = new HomePagerAdapter(fragment.getChildFragmentManager(), fragments);
         setAdapter(mAdapter);
