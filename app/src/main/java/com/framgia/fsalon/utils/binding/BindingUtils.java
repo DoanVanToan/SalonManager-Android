@@ -387,6 +387,9 @@ public class BindingUtils {
 
     @BindingAdapter("x_axis_formatter")
     public static void setXAxisFormatter(BarChart chart, IAxisValueFormatter formatter) {
+        if (formatter == null) {
+            return;
+        }
         chart.getXAxis().setValueFormatter(formatter);
     }
 
@@ -399,28 +402,30 @@ public class BindingUtils {
     public static void setValueFormatter(BarChart chart, List<BarEntry> data,
                                          IValueFormatter formatter, String legend,
                                          String[] labels, int[] colors) {
-        BarDataSet set;
-        if (chart.getData() != null && chart.getData().getDataSetCount() > 0) {
-            set = (BarDataSet) chart.getData().getDataSetByIndex(0);
-            set.setValues(data);
-            chart.getData().notifyDataChanged();
-            chart.notifyDataSetChanged();
-        } else {
-            set = new BarDataSet(data, legend);
-            int[] arr = new int[colors.length];
-            for (int i = 0; i < colors.length; i++) {
-                arr[i] = ContextCompat.getColor(chart.getContext(), colors[i]);
+        if (!data.isEmpty()) {
+            BarDataSet set;
+            if (chart.getData() != null && chart.getData().getDataSetCount() > 0) {
+                set = (BarDataSet) chart.getData().getDataSetByIndex(0);
+                set.setValues(data);
+                chart.getData().notifyDataChanged();
+                chart.notifyDataSetChanged();
+            } else {
+                set = new BarDataSet(data, legend);
+                int[] arr = new int[colors.length];
+                for (int i = 0; i < colors.length; i++) {
+                    arr[i] = ContextCompat.getColor(chart.getContext(), colors[i]);
+                }
+                set.setColors(arr);
+                set.setStackLabels(labels);
+                List<IBarDataSet> dataSets = new ArrayList<IBarDataSet>();
+                dataSets.add(set);
+                BarData barData = new BarData(dataSets);
+                barData.setValueFormatter(formatter);
+                barData.setValueTextColor(Color.WHITE);
+                chart.setData(barData);
             }
-            set.setColors(arr);
-            set.setStackLabels(labels);
-            List<IBarDataSet> dataSets = new ArrayList<IBarDataSet>();
-            dataSets.add(set);
-            BarData barData = new BarData(dataSets);
-            barData.setValueFormatter(formatter);
-            barData.setValueTextColor(Color.WHITE);
-            chart.setData(barData);
+            chart.setFitBars(true);
+            chart.invalidate();
         }
-        chart.setFitBars(true);
-        chart.invalidate();
     }
 }

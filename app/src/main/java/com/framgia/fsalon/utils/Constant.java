@@ -68,6 +68,15 @@ public class Constant {
     }
 
     /**
+     * Bundle for report
+     */
+    public class Report {
+        public static final String BUNDLE_TYPE = "Type";
+        public static final String BUNDLE_START = "Start";
+        public static final String BUNDLE_END = "End";
+    }
+
+    /**
      * Status for Booking
      */
     public class BookingStatus {
