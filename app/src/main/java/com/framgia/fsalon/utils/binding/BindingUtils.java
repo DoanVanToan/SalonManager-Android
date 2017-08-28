@@ -346,7 +346,7 @@ public class BindingUtils {
         actionBarDrawerToggle.syncState();
     }
 
-    @BindingAdapter("textColor")
+    @BindingAdapter("bind:textColor")
     public static void setTextColor(TextView text, int textColor) {
         text.setTextColor(text.getResources().getColor(textColor));
     }

@@ -13,6 +13,13 @@ import com.framgia.fsalon.databinding.ItemBillCustomerBinding;
 
 import java.util.List;
 
+import static com.framgia.fsalon.screen.listbill.ListBillViewModel.STATUS_CANCEL;
+import static com.framgia.fsalon.screen.listbill.ListBillViewModel.STATUS_COMPLETED;
+import static com.framgia.fsalon.screen.listbill.ListBillViewModel.STATUS_WAITING;
+import static com.framgia.fsalon.screen.listbill.ListBillViewModel.STT_CANCEL;
+import static com.framgia.fsalon.screen.listbill.ListBillViewModel.STT_COMPLETED;
+import static com.framgia.fsalon.screen.listbill.ListBillViewModel.STT_WAITING;
+
 /**
  * Created by MyPC on 24/08/2017.
  */
@@ -72,6 +79,20 @@ public class BillCustomerAdapter extends RecyclerView.Adapter<BillCustomerAdapte
         void bindData(BillResponse bill) {
             if (bill == null) {
                 return;
+            }
+            switch (bill.getStatus()) {
+                case STATUS_WAITING:
+                    bill.setStatusName(STT_WAITING);
+                    bill.setStatusColor(R.color.colorPrimary);
+                    break;
+                case STATUS_COMPLETED:
+                    bill.setStatusName(STT_COMPLETED);
+                    bill.setStatusColor(R.color.color_green_300);
+                    break;
+                case STATUS_CANCEL:
+                    bill.setStatusName(STT_CANCEL);
+                    bill.setStatusColor(R.color.color_red);
+                    break;
             }
             mBinding.setViewModel(mViewModel);
             mBinding.setBill(bill);

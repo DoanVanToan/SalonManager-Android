@@ -8,7 +8,9 @@ import android.support.v7.app.AppCompatActivity;
 import com.framgia.fsalon.BR;
 import com.framgia.fsalon.R;
 import com.framgia.fsalon.data.model.User;
+import com.framgia.fsalon.screen.billcustomer.BillCustomerFragment;
 import com.framgia.fsalon.screen.customerinfo.user.UserFragment;
+import com.framgia.fsalon.screen.imagecustomer.ImageCustomerFragment;
 
 import static com.framgia.fsalon.screen.customerinfo.CustomerInfoViewModel.Tab.BILL;
 import static com.framgia.fsalon.screen.customerinfo.CustomerInfoViewModel.Tab.INFO;
@@ -26,8 +28,8 @@ public class CustomerInfoViewModel extends BaseObservable
     public CustomerInfoViewModel(AppCompatActivity activity, User user) {
         mPagerAdapter = new CustomerInfoAdapter(activity.getSupportFragmentManager());
         mPagerAdapter.addFragment(UserFragment.newInstance(user), INFO);
-        mPagerAdapter.addFragment(UserFragment.newInstance(user), BILL);
-        mPagerAdapter.addFragment(UserFragment.newInstance(user), PICTURE);
+        mPagerAdapter.addFragment(BillCustomerFragment.newInstance(user.getId()), BILL);
+        mPagerAdapter.addFragment(ImageCustomerFragment.newInstance(user.getId()), PICTURE);
     }
 
     @Override
