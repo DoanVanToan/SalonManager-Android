@@ -30,6 +30,7 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             bind:adapter="@{viewModel.adapter}"
+            bind:deviderItem="@{@integer/div_1}"
             bind:layoutManager="@{LayoutManager.linear()}"/>
     </android.support.design.widget.CoordinatorLayout>
 </layout>

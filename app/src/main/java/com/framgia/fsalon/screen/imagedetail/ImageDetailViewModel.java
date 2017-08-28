@@ -17,10 +17,11 @@ public class ImageDetailViewModel extends BaseObservable implements ImageDetailC
     private List<ImageResponse> mImages;
     private String mImageURL;
 
-    public ImageDetailViewModel(List<ImageResponse> images) {
-        if (images != null) {
+    public ImageDetailViewModel(List<ImageResponse> images, int position) {
+        if (images != null && images.size() > 0) {
             mImages = images;
-            setImageURL(mImages.get(0).getPathOrigin());
+            mPosition = position;
+            setImageURL(mImages.get(mPosition).getPathOrigin());
         }
     }
 
