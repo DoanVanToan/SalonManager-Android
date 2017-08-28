@@ -1,0 +1,275 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:bind="http://schemas.android.com/apk/res-auto"
+    xmlns:fab="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    >
+
+    <data>
+
+        <import type="android.support.v4.widget.DrawerLayout"/>
+
+        <variable
+            name="viewModel"
+            type="com.framgia.fsalon.screen.stylistbooking.StylistBookingViewModel"
+            />
+    </data>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical"
+        tools:context="com.framgia.fsalon.screen.stylistbooking.StylistBookingActivity">
+
+        <LinearLayout
+            android:id="@+id/linear_layout"
+            android:layout_width="match_parent"
+            android:layout_height="?attr/actionBarSize"
+            android:background="@color/colorPrimary"
+            android:gravity="center_vertical"
+            android:orientation="horizontal"
+            >
+
+            <ImageView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="@dimen/dp_10"
+                android:layout_marginStart="@dimen/dp_10"
+                android:onClick="@{() -> viewModel.onFilterClick(drawerLayout)}"
+                android:padding="@dimen/dp_10"
+                app:srcCompat="@drawable/ic_filter_30dp"
+                tools:ignore="@null"/>
+
+            <TextView
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="@dimen/dp_10"
+                android:layout_marginStart="@dimen/dp_10"
+                android:layout_weight="2"
+                android:text="@{viewModel.titleDate}"
+                android:textColor="@color/color_white"
+                android:textSize="@dimen/sp_18"/>
+        </LinearLayout>
+
+        <android.support.v4.widget.DrawerLayout
+            android:id="@+id/drawer_layout"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            bind:drawerListener="@{viewModel.drawerListener}"
+            bind:lockMode="@{DrawerLayout.LOCK_MODE_LOCKED_CLOSED}"
+            >
+
+            <android.support.design.widget.CoordinatorLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                >
+
+                <android.support.v7.widget.RecyclerView
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:background="@color/color_grey_100"
+                    bind:deviderItem="@{@integer/div_1}"
+                    bind:layoutManager="@{viewModel.layoutManager}"
+                    bind:recyclerAdapter="@{viewModel.dateAdapter}"
+                    />
+
+                <ProgressBar
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="top|center"
+                    android:visibility="@{viewModel.visibleProgressBar}"/>
+
+                <com.github.clans.fab.FloatingActionMenu
+                    android:id="@+id/menu_yellow"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_gravity="bottom|start"
+                    android:paddingBottom="@dimen/dp_10"
+                    android:paddingEnd="@dimen/dp_16"
+                    android:paddingLeft="@dimen/dp_16"
+                    android:paddingRight="@dimen/dp_16"
+                    android:paddingStart="@dimen/dp_16"
+                    app:menu_fab_size="mini"
+                    app:menu_icon="@drawable/ic_question_24dp"
+                    fab:menu_animationDelayPerItem="0"
+                    fab:menu_backgroundColor="@color/color_white_transparent"
+                    fab:menu_colorNormal="@color/colorPrimaryDark"
+                    fab:menu_colorPressed="@color/colorPrimary"
+                    fab:menu_labels_position="right">
+
+                    <com.github.clans.fab.FloatingActionButton
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:src="@drawable/ic_sad_24dp"
+                        fab:fab_colorNormal="@color/color_white"
+                        fab:fab_label="@string/title_in_late"
+                        fab:fab_size="mini"
+                        tools:ignore="VectorDrawableCompat"/>
+
+                    <com.github.clans.fab.FloatingActionButton
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:src="@drawable/ic_smile_24dp"
+                        app:rippleColor="@color/color_white"
+                        fab:fab_colorNormal="@color/color_white"
+                        fab:fab_label="@string/tilte_finished"
+                        fab:fab_size="mini"
+                        tools:ignore="VectorDrawableCompat"/>
+
+                    <com.github.clans.fab.FloatingActionButton
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:src="@drawable/ic_broken_heart_24dp"
+                        fab:fab_colorNormal="@color/color_white"
+                        fab:fab_label="@string/title_cancel"
+                        fab:fab_size="mini"
+                        tools:ignore="VectorDrawableCompat"/>
+
+                    <com.github.clans.fab.FloatingActionButton
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:src="@drawable/ic_waiting_room_24_dp"
+                        fab:fab_colorNormal="@color/color_white"
+                        fab:fab_label="@string/title_waiting"
+                        fab:fab_size="mini"
+                        tools:ignore="VectorDrawableCompat"/>
+
+                    <com.github.clans.fab.FloatingActionButton
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:src="@drawable/ic_scissors_and_comb_24dp"
+                        fab:fab_colorNormal="@color/color_white"
+                        fab:fab_label="@string/title_in_progress"
+                        fab:fab_size="mini"
+                        tools:ignore="VectorDrawableCompat"/>
+                </com.github.clans.fab.FloatingActionMenu>
+
+
+            </android.support.design.widget.CoordinatorLayout>
+
+
+            <android.support.design.widget.NavigationView
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:layout_gravity="start"
+                android:background="@color/color_white"
+                >
+
+                <android.support.v4.widget.NestedScrollView
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    >
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:orientation="vertical"
+                        android:paddingEnd="@dimen/dp_10"
+                        android:paddingLeft="@dimen/dp_10"
+                        android:paddingRight="@dimen/dp_10"
+                        android:paddingStart="@dimen/dp_10"
+                        android:paddingTop="@dimen/dp_5">
+
+                        <TextView
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:text="@string/mdtp_date"
+                            android:textColor="@color/colorPrimary"
+                            android:textSize="@dimen/sp_15"/>
+
+                        <RadioGroup
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            bind:changeListener="@{viewModel.changeListener}"
+                            bind:check="@{viewModel.radioButtonId}">
+
+                            <RadioButton
+                                android:id="@+id/filter_today"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:padding="@dimen/dp_10"
+                                android:text="@string/title_today"/>
+
+                            <RadioButton
+                                android:id="@+id/filter_yesterday"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:padding="@dimen/dp_10"
+                                android:text="@string/title_yesterday"/>
+
+                            <RadioButton
+                                android:id="@+id/filter_tomorrow"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:padding="@dimen/dp_10"
+                                android:text="@string/title_tomorrow"/>
+
+                            <RadioButton
+                                android:id="@+id/filter_select_date"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:onClick="@{() -> viewModel.onSelectDateClick()}"
+                                android:padding="@dimen/dp_10"
+                                android:text="@string/title_select_date"/>
+                        </RadioGroup>
+
+                        <TextView
+                            android:layout_width="match_parent"
+                            android:layout_height="@dimen/dp_1"
+                            android:background="@color/color_grey_400"/>
+
+                        <TextView
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:text="@string/title_status"
+                            android:textColor="@color/colorPrimary"
+                            android:textSize="@dimen/sp_15"/>
+
+                        <CheckBox
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:checked="@={viewModel.watting}"
+                            android:padding="@dimen/dp_10"
+                            android:text="@string/title_waiting"/>
+
+                        <CheckBox
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:checked="@={viewModel.finished}"
+                            android:padding="@dimen/dp_10"
+                            android:text="@string/tilte_finished"/>
+
+                        <CheckBox
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:checked="@={viewModel.canceled}"
+                            android:padding="@dimen/dp_10"
+                            android:text="@string/title_canceled"/>
+
+                        <CheckBox
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:checked="@={viewModel.inLate}"
+                            android:padding="@dimen/dp_10"
+                            android:text="@string/title_in_late"/>
+
+                        <CheckBox
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:checked="@={viewModel.inProgress}"
+                            android:padding="@dimen/dp_10"
+                            android:text="@string/title_in_late"/>
+
+                        <TextView
+                            android:layout_width="match_parent"
+                            android:layout_height="@dimen/dp_1"
+                            android:background="@color/color_grey_400"/>
+
+                    </LinearLayout>
+                </android.support.v4.widget.NestedScrollView>
+            </android.support.design.widget.NavigationView>
+        </android.support.v4.widget.DrawerLayout>
+    </LinearLayout>
+</layout>

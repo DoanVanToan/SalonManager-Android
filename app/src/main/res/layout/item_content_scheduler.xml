@@ -100,7 +100,7 @@
                         android:drawablePadding="@dimen/dp_5"
                         android:gravity="center_vertical"
                         android:text="@{timeBook}"
-                        android:textColor="@color/color_grey_500"
+                        android:textColor="@color/color_red"
                         android:textSize="@dimen/sp_10"/>
                 </LinearLayout>
             </LinearLayout>

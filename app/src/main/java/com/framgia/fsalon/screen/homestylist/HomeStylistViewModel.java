@@ -11,6 +11,7 @@ import android.view.MenuItem;
 
 import com.android.databinding.library.baseAdapters.BR;
 import com.framgia.fsalon.R;
+import com.framgia.fsalon.screen.stylistbooking.StylistBookingFragment;
 
 import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
@@ -45,6 +46,7 @@ public class HomeStylistViewModel extends BaseObservable implements HomeStylistC
     public HomeStylistViewModel(AppCompatActivity activity) {
         mActivity = activity;
         List<Fragment> fragments = new ArrayList<>();
+        fragments.add(StylistBookingFragment.newInstance());
         mAdapter = new StylistHomePagerAdapter(activity.getSupportFragmentManager(), fragments);
         setAdapter(mAdapter);
     }

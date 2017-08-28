@@ -54,7 +54,6 @@ public class ManageBookingRemoteDataSource extends BaseRemoteDataSource
                                              int endDate, int departmentId) {
         Map<String, String> params = new HashMap<>();
         params.put(FILTER_TYPE, filterChoice);
-        params.put(STATUS, status);
         switch (filterChoice) {
             case FILTER_DAY:
                 if (startDate > 0) {
@@ -74,6 +73,9 @@ public class ManageBookingRemoteDataSource extends BaseRemoteDataSource
         }
         if (departmentId != OUT_OF_INDEX) {
             params.put(DEPARTMENT_ID, String.valueOf(departmentId));
+        }
+        if (status != null) {
+            params.put(STATUS, status);
         }
         return params;
     }
