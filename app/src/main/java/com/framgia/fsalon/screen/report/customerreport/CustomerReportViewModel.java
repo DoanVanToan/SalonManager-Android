@@ -10,6 +10,7 @@ import com.framgia.fsalon.R;
 import com.framgia.fsalon.utils.formatter.ColNameIAxisValueFormatter;
 import com.framgia.fsalon.utils.formatter.IntIAxisValueFormatter;
 import com.framgia.fsalon.utils.formatter.IntValueFormatter;
+import com.framgia.fsalon.utils.navigator.Navigator;
 import com.github.mikephil.charting.data.BarEntry;
 import com.github.mikephil.charting.formatter.IAxisValueFormatter;
 import com.github.mikephil.charting.formatter.IValueFormatter;
@@ -31,20 +32,21 @@ public class CustomerReportViewModel extends BaseObservable
     private int[] mColors = {R.color.color_red, R.color.color_cyan_400};
     private String[] mLabels = new String[BAR_NUMBER];
     private String mLegend;
-    private String mTotal;
-    private String mAverage;
     private Context mContext;
+    private Navigator mNavigator;
+    private String mOldCustomer;
+    private String mNewCustomer;
 
     public CustomerReportViewModel(Fragment fragment) {
         mContext = fragment.getContext();
-        String[] labels = {mContext.getResources().getString(R.string.title_customer_new),
-            mContext.getResources().getString(R.string.title_customer_old)};
+        mNavigator = new Navigator(fragment);
+        String[] labels = {mContext.getResources().getString(R.string.title_customer_old),
+            mContext.getResources().getString(R.string.title_customer_new)};
         setLabels(labels);
         mBarEntries = new ArrayList<>();
         mYIAxisValueFormatter = new IntIAxisValueFormatter();
         mIValueFormatter = new IntValueFormatter();
-        String[] mColNames = {"a", "b", "c", "d", "e"};
-        mXIAxisValueFormatter = new ColNameIAxisValueFormatter(mColNames);
+        mXIAxisValueFormatter = null;
         setLegend(mContext.getResources().getString(R.string.title_customer));
     }
 
@@ -61,15 +63,6 @@ public class CustomerReportViewModel extends BaseObservable
     @Override
     public void setPresenter(CustomerReportContract.Presenter presenter) {
         mPresenter = presenter;
-    }
-
-    @Override
-    public void onGetReportSuccess(List<BarEntry> barEntries) {
-        setBarEntries(barEntries);
-    }
-
-    @Override
-    public void onGetReportFail() {
     }
 
     @Bindable
@@ -113,6 +106,26 @@ public class CustomerReportViewModel extends BaseObservable
     }
 
     @Bindable
+    public String getOldCustomer() {
+        return mOldCustomer;
+    }
+
+    public void setOldCustomer(String oldCustomer) {
+        mOldCustomer = oldCustomer;
+        notifyPropertyChanged(BR.oldCustomer);
+    }
+
+    @Bindable
+    public String getNewCustomer() {
+        return mNewCustomer;
+    }
+
+    public void setNewCustomer(String newCustomer) {
+        mNewCustomer = newCustomer;
+        notifyPropertyChanged(BR.newCustomer);
+    }
+
+    @Bindable
     public int[] getColors() {
         return mColors;
     }
@@ -138,23 +151,17 @@ public class CustomerReportViewModel extends BaseObservable
         mLabels = labels;
     }
 
-    @Bindable
-    public String getTotal() {
-        return mTotal;
+    @Override
+    public void onGetReportSuccess(List<BarEntry> barEntries, int oldCustomer, int newCustomer,
+                                   List<String> labels) {
+        setBarEntries(barEntries);
+        setOldCustomer(String.valueOf(oldCustomer));
+        setNewCustomer(String.valueOf(newCustomer));
+        setXIAxisValueFormatter(new ColNameIAxisValueFormatter(labels));
     }
 
-    public void setTotal(String total) {
-        mTotal = total;
-        notifyPropertyChanged(BR.total);
-    }
-
-    @Bindable
-    public String getAverage() {
-        return mAverage;
-    }
-
-    public void setAvarage(String average) {
-        mAverage = average;
-        notifyPropertyChanged(BR.average);
+    @Override
+    public void onGetReportFail(String msg) {
+        mNavigator.showToast(msg);
     }
 }

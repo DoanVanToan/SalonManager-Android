@@ -106,7 +106,8 @@
     <string name="title_completed">Completed</string>
     <string name="cancel">Cancel</string>
     <string name="update">Update</string>
-    <string name="title_total">Total</string>
+    <string name="title_total_old">Total Old</string>
+    <string name="title_total_new">Total New</string>
     <string name="title_average">Average</string>
     <string name="title_customer_old">Old</string>
     <string name="title_customer_new">New</string>
