@@ -17,6 +17,8 @@ interface EditStatusDialogContract {
         void onChangeStatusClick();
         void onCancelClick();
         void onGetStatusesSuccess(List<Status> statuses);
+        void onChangeStatusSuccess(String s);
+        void onError(String message);
     }
 
     /**
