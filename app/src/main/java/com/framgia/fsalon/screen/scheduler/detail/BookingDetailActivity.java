@@ -2,7 +2,6 @@ package com.framgia.fsalon.screen.scheduler.detail;
 
 import android.content.Context;
 import android.content.Intent;
-import android.content.pm.PackageManager;
 import android.databinding.DataBindingUtil;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
@@ -10,7 +9,6 @@ import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
 
 import com.framgia.fsalon.R;
-import com.framgia.fsalon.data.model.BookingOder;
 import com.framgia.fsalon.data.source.BookingRepository;
 import com.framgia.fsalon.data.source.api.FSalonServiceClient;
 import com.framgia.fsalon.data.source.remote.BookingRemoteDataSource;
@@ -79,29 +77,12 @@ public class BookingDetailActivity extends AppCompatActivity
     @Override
     public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions,
                                            @NonNull int[] grantResults) {
-        switch (requestCode) {
-            case Constant.REQUEST_CALL_PERMISSION:
-                if (grantResults[0] != PackageManager.PERMISSION_GRANTED) {
-                    mViewModel.onPermissionDenied();
-                } else {
-                    mViewModel.onPermissionGranted();
-                }
-        }
+        mViewModel.onRequestPermissionsResult(requestCode, permissions, grantResults);
     }
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-        if (resultCode != RESULT_OK) {
-            return;
-        }
-        switch (requestCode) {
-            case Constant.REQUEST_ADMIN_BOOKING_ACTIVITY:
-                mViewModel
-                    .returnData((BookingOder) data.getParcelableExtra(Constant.BUNDLE_ORDER));
-                break;
-            default:
-                break;
-        }
+        mViewModel.onActivityResult(requestCode, resultCode, data);
     }
 
     @Override

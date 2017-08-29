@@ -56,11 +56,10 @@ dependencies {
     compile 'org.zakariya.stickyheaders:stickyheaders:0.7.6'
     compile 'com.github.clans:fab:1.6.4'
     compile 'com.wdullaer:materialdatetimepicker:3.2.2'
-    compile 'com.github.PhilJay:MPAndroidChart:v2.2.4'
-    compile 'com.codewaves.stickyheadergrid:stickyheadergrid:0.9.4'
-    testCompile 'junit:junit:4.12'
     compile 'com.github.PhilJay:MPAndroidChart:v3.0.2'
+    compile 'com.codewaves.stickyheadergrid:stickyheadergrid:0.9.4'
     compile 'com.github.chrisbanes:PhotoView:2.0.0'
+    testCompile 'junit:junit:4.12'
 }
 
 buildscript {

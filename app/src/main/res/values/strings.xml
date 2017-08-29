@@ -115,4 +115,9 @@
     <string name="title_no_salon">No Salon</string>
     <string name="action_change">Change</string>
     <string name="action_change_status">Change Status</string>
+    <string name="title_pick_image">pick image</string>
+    <string name="msg_request_read_camera">Please grant permission open camera permission  to
+        make an image</string>
+    <string name="action_agree">AGREE</string>
+    <string name="action_dis_agree">DIS AGREE</string>
 </resources>

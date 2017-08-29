@@ -2,6 +2,7 @@ package com.framgia.fsalon.data.source.remote;
 
 import com.framgia.fsalon.data.model.BookingOder;
 import com.framgia.fsalon.data.model.BookingResponse;
+import com.framgia.fsalon.data.model.ImageResponse;
 import com.framgia.fsalon.data.source.BookingDataSource;
 import com.framgia.fsalon.data.source.api.FSalonApi;
 import com.framgia.fsalon.utils.Utils;
@@ -18,11 +19,14 @@ import io.reactivex.functions.Function;
 
 import static com.framgia.fsalon.utils.Constant.ApiParram.DATE;
 import static com.framgia.fsalon.utils.Constant.ApiParram.DEPARTMENT_ID;
+import static com.framgia.fsalon.utils.Constant.ApiParram.IMAGE;
 import static com.framgia.fsalon.utils.Constant.ApiParram.NAME;
+import static com.framgia.fsalon.utils.Constant.ApiParram.ORDER_BOOKING_ID;
 import static com.framgia.fsalon.utils.Constant.ApiParram.PHONE;
 import static com.framgia.fsalon.utils.Constant.ApiParram.RENDER_BOOKING_ID;
 import static com.framgia.fsalon.utils.Constant.ApiParram.STYLIST_CHOSEN;
 import static com.framgia.fsalon.utils.Constant.ApiParram.STYLIST_ID;
+import static com.framgia.fsalon.utils.Constant.OUT_OF_INDEX;
 
 /**
  * Created by framgia on 7/21/17.
@@ -112,6 +116,27 @@ public class BookingRemoteDataSource extends BaseRemoteDataSource implements Boo
                     @NonNull Respone<List<String>> listRespone)
                     throws Exception {
                     return Utils.getResponse(listRespone);
+                }
+            });
+    }
+
+    @Override
+    public Observable<BookingOder> postImageByStylist(@NonNull int orderBookingId,
+                                                      @NonNull ImageResponse image) {
+        Map<String, String> parram = new HashMap<>();
+        if (orderBookingId > OUT_OF_INDEX) {
+            parram.put(ORDER_BOOKING_ID, String.valueOf(orderBookingId));
+        }
+        if (image != null) {
+            parram.put(IMAGE, image.toString());
+        }
+        return mFSalonApi.postImageByStylist(parram).flatMap(
+            new Function<Respone<BookingOder>, ObservableSource<BookingOder>>() {
+                @Override
+                public ObservableSource<BookingOder> apply(
+                    @NonNull Respone<BookingOder> bookingOderRespone)
+                    throws Exception {
+                    return Utils.getResponse(bookingOderRespone);
                 }
             });
     }

@@ -81,5 +81,7 @@ public interface FSalonApi {
     @PUT("api/v0/change-status-booking/{id}")
     Observable<Respone<List<String>>> changeStatusBooking(@Path("id") int id,
                                                           @Query("status") int statusId);
+    @POST("api/v0/order-booking/stylist-upload-image")
+    Observable<Respone<BookingOder>> postImageByStylist(@QueryMap Map<String, String> params);
 }
 

@@ -30,6 +30,7 @@ import static com.framgia.fsalon.screen.scheduler.SchedulerViewModel.TabFilter.T
 import static com.framgia.fsalon.screen.scheduler.SchedulerViewModel.TabFilter.TAB_TOMORROW;
 import static com.framgia.fsalon.screen.scheduler.SchedulerViewModel.TabFilter.TAB_YESTERDAY;
 import static com.framgia.fsalon.utils.Constant.ApiParram.OUT_OF_INDEX;
+import static com.framgia.fsalon.utils.Constant.RequestPermission.REQUEST_CALL_PERMISSION;
 import static com.framgia.fsalon.utils.Constant.Status.CANCEL;
 import static com.framgia.fsalon.utils.Constant.Status.COMPLETE;
 import static com.framgia.fsalon.utils.Constant.Status.STATUS_CANCEL;
@@ -143,14 +144,14 @@ public class Utils {
                     public void onClick(DialogInterface dialog, int which) {
                         ActivityCompat.requestPermissions((Activity) context,
                             new String[]{Manifest.permission.CALL_PHONE},
-                            Constant.REQUEST_CALL_PERMISSION);
+                            REQUEST_CALL_PERMISSION);
                     }
                 })
                 .setNegativeButton(R.string.action_close, null);
             builder.create().show();
         } else {
             ActivityCompat.requestPermissions((Activity) context,
-                new String[]{Manifest.permission.CALL_PHONE}, Constant.REQUEST_CALL_PERMISSION);
+                new String[]{Manifest.permission.CALL_PHONE}, REQUEST_CALL_PERMISSION);
         }
     }
 

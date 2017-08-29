@@ -49,7 +49,7 @@ public class BookingOder implements Parcelable {
     @Expose
     private Date mUpdatedAt;
     /**
-     * status for order: waiting, finished or canceled
+     * status for order: waiting, finished, canceled, inlate or inprogress
      */
     @SerializedName("status")
     @Expose

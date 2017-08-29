@@ -6,6 +6,9 @@ import android.content.pm.PackageManager;
 import android.databinding.BaseObservable;
 import android.databinding.Bindable;
 import android.net.Uri;
+import android.os.Bundle;
+import android.support.annotation.IntDef;
+import android.support.annotation.NonNull;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v4.widget.SwipeRefreshLayout;
@@ -13,15 +16,35 @@ import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 
 import com.framgia.fsalon.BR;
+import com.framgia.fsalon.FSalonApplication;
 import com.framgia.fsalon.R;
 import com.framgia.fsalon.data.model.BookingOder;
+import com.framgia.fsalon.data.model.ImageResponse;
 import com.framgia.fsalon.data.model.Status;
 import com.framgia.fsalon.screen.editbooking.EditBookingActivity;
 import com.framgia.fsalon.screen.editstatusdialog.EditStatusDialogFragment;
 import com.framgia.fsalon.utils.Constant;
+import com.framgia.fsalon.utils.ImagePicker;
 import com.framgia.fsalon.utils.Utils;
 import com.framgia.fsalon.utils.navigator.Navigator;
+import com.framgia.fsalon.utils.permission.PermissionUtils;
 import com.github.clans.fab.FloatingActionMenu;
+
+import java.io.File;
+import java.lang.annotation.ElementType;
+import java.lang.annotation.Target;
+
+import static android.app.Activity.RESULT_OK;
+import static com.framgia.fsalon.screen.scheduler.detail.BookingDetailViewModel.SideCapture.SIDE_BEHIND;
+import static com.framgia.fsalon.screen.scheduler.detail.BookingDetailViewModel.SideCapture.SIDE_FRONT_UP;
+import static com.framgia.fsalon.screen.scheduler.detail.BookingDetailViewModel.SideCapture.SIDE_LEFT;
+import static com.framgia.fsalon.screen.scheduler.detail.BookingDetailViewModel.SideCapture.SIDE_RIGHT;
+import static com.framgia.fsalon.utils.Constant.RequestPermission.REQUEST_ADMIN_BOOKING_ACTIVITY;
+import static com.framgia.fsalon.utils.Constant.RequestPermission.REQUEST_CALL_PERMISSION;
+import static com.framgia.fsalon.utils.Constant.RequestPermission.REQUEST_PERMISSION_CAMERA;
+import static com.framgia.fsalon.utils.Constant.RequestPermission.REQUEST_PICK_IMAGE;
+import static com.framgia.fsalon.utils.ImagePicker.BUNDLE_IS_CAPTURED;
+import static com.framgia.fsalon.utils.ImagePicker.TEMP_IMAGE_NAME;
 
 /**
  * Exposes the data to be used in the Detail screen.
@@ -38,6 +61,11 @@ public class BookingDetailViewModel extends BaseObservable
     private boolean mIsSelected;
     private boolean mIsChangeStatus;
     private AppCompatActivity mActivity;
+    private int mSidePhoto;
+    private String mPathImageSideLeft;
+    private String mPathImageSideRight;
+    private String mPathImageSideBehind;
+    private String mPathImageSideFrontUp;
     private SwipeRefreshLayout.OnRefreshListener mListener =
         new SwipeRefreshLayout.OnRefreshListener() {
             @Override
@@ -50,6 +78,7 @@ public class BookingDetailViewModel extends BaseObservable
         mActivity = activity;
         mNavigator = new Navigator(activity);
         mId = id;
+        mActivity = activity;
     }
 
     public SwipeRefreshLayout.OnRefreshListener getListener() {
@@ -159,7 +188,7 @@ public class BookingDetailViewModel extends BaseObservable
         fapMenu.close(true);
         mNavigator.startActivityForResult(
             EditBookingActivity.getInstance(mNavigator.getContext(), mBookingOder),
-            Constant.REQUEST_ADMIN_BOOKING_ACTIVITY);
+            REQUEST_ADMIN_BOOKING_ACTIVITY);
     }
 
     @Override
@@ -212,6 +241,87 @@ public class BookingDetailViewModel extends BaseObservable
         mPresenter.getBookingById(mId);
     }
 
+    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions,
+                                           @NonNull int[] grantResults) {
+        switch (requestCode) {
+            case REQUEST_CALL_PERMISSION:
+                if (grantResults[0] != PackageManager.PERMISSION_GRANTED) {
+                    onPermissionDenied();
+                } else {
+                    onPermissionGranted();
+                }
+                break;
+            case REQUEST_PERMISSION_CAMERA:
+                if (grantResults[0] != PackageManager.PERMISSION_GRANTED) {
+                    onPermissionDenied();
+                } else {
+                    mNavigator.startActivityForResult(ImagePicker.getPickImageIntent(
+                        FSalonApplication.getInstant()),
+                        REQUEST_PICK_IMAGE);
+                }
+                break;
+            default:
+                break;
+        }
+    }
+
+    @Override
+    public void onActivityResult(int requestCode, int resultCode, Intent data) {
+        if (resultCode != RESULT_OK) {
+            return;
+        }
+        switch (requestCode) {
+            case REQUEST_ADMIN_BOOKING_ACTIVITY:
+                returnData((BookingOder) data.getParcelableExtra(Constant.BUNDLE_ORDER));
+                break;
+            case REQUEST_PICK_IMAGE:
+                if (data == null) {
+                    return;
+                }
+                Uri uri = getPickImageResultUri(data);
+                if (uri == null) {
+                    return;
+                }
+                ImageResponse image = new ImageResponse();
+                image.setPathOrigin(uri.toString());
+                mPresenter.postImageByStylist(mId, image);
+                updateImage(uri.toString());
+                break;
+            default:
+                break;
+        }
+    }
+
+    @Override
+    public void pickImage(@BookingDetailViewModel.SideCapture int sideCapture) {
+        if (PermissionUtils.checkCameraPermission(mActivity)) {
+            setSidePhoto(sideCapture);
+            mActivity.startActivityForResult(
+                ImagePicker.getPickImageIntent(FSalonApplication.getInstant()),
+                REQUEST_PICK_IMAGE);
+        }
+    }
+
+    @Override
+    public void updateImage(String pathOrigin) {
+        switch (mSidePhoto) {
+            case SIDE_LEFT:
+                setPathImageSideLeft(pathOrigin);
+                break;
+            case SIDE_RIGHT:
+                setPathImageSideRight(pathOrigin);
+                break;
+            case SIDE_BEHIND:
+                setPathImageSideBehind(pathOrigin);
+                break;
+            case SIDE_FRONT_UP:
+                setPathImageSideFrontUp(pathOrigin);
+                break;
+            default:
+                break;
+        }
+    }
+
     @Bindable
     public int getId() {
         return mId;
@@ -230,5 +340,97 @@ public class BookingDetailViewModel extends BaseObservable
     public void setChangeStatus(boolean changeStatus) {
         mIsChangeStatus = changeStatus;
         notifyPropertyChanged(BR.changeStatus);
+    }
+
+    public AppCompatActivity getActivity() {
+        return mActivity;
+    }
+
+    public void setActivity(AppCompatActivity activity) {
+        mActivity = activity;
+        notifyPropertyChanged(BR.activity);
+    }
+
+    @Bindable
+    public String getPathImageSideLeft() {
+        return mPathImageSideLeft;
+    }
+
+    public void setPathImageSideLeft(String pathImageSideLeft) {
+        mPathImageSideLeft = pathImageSideLeft;
+        notifyPropertyChanged(BR.pathImageSideLeft);
+    }
+
+    @Bindable
+    public String getPathImageSideRight() {
+        return mPathImageSideRight;
+    }
+
+    public void setPathImageSideRight(String pathImageSideRight) {
+        mPathImageSideRight = pathImageSideRight;
+        notifyPropertyChanged(BR.pathImageSideRight);
+    }
+
+    @Bindable
+    public String getPathImageSideBehind() {
+        return mPathImageSideBehind;
+    }
+
+    public void setPathImageSideBehind(String pathImageSideBehind) {
+        mPathImageSideBehind = pathImageSideBehind;
+        notifyPropertyChanged(BR.pathImageSideBehind);
+    }
+
+    @Bindable
+    public String getPathImageSideFrontUp() {
+        return mPathImageSideFrontUp;
+    }
+
+    public void setPathImageSideFrontUp(String pathImageSideFrontUp) {
+        mPathImageSideFrontUp = pathImageSideFrontUp;
+        notifyPropertyChanged(BR.pathImageSideFrontUp);
+    }
+
+    public int getSidePhoto() {
+        return mSidePhoto;
+    }
+
+    public void setSidePhoto(int sidePhoto) {
+        mSidePhoto = sidePhoto;
+    }
+
+    private Uri getPickImageResultUri(Intent data) {
+        boolean isCamera = false;
+        if (data != null) {
+            Bundle bundle = data.getExtras();
+            if (bundle != null) {
+                isCamera = bundle.getBoolean(BUNDLE_IS_CAPTURED);
+            }
+        }
+        return isCamera ? getCaptureImageOutputUri() : data.getData();
+    }
+
+    /**
+     * Get URI to image received from capture by camera.
+     */
+    private Uri getCaptureImageOutputUri() {
+        Uri outputFileUri = null;
+        File imageFile = mActivity.getExternalCacheDir();
+        if (imageFile != null) {
+            outputFileUri = Uri.fromFile(new File(imageFile.getPath(), TEMP_IMAGE_NAME));
+        }
+        return outputFileUri;
+    }
+
+    /**
+     * Define all side of customer 's photos
+     */
+    @IntDef({SIDE_LEFT, SIDE_RIGHT, SIDE_BEHIND, SIDE_FRONT_UP})
+    @Target(ElementType.PARAMETER)
+    public @interface SideCapture {
+        int SIDE_LEFT = 0;
+        int SIDE_RIGHT = 1;
+        int SIDE_BEHIND = 2;
+        int SIDE_FRONT_UP = 3;
     }
 }
