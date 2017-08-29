@@ -56,7 +56,8 @@ import static com.framgia.fsalon.utils.Constant.NO_SCROLL;
  */
 public class SchedulerViewModel extends BaseObservable
     implements SchedulerContract.ViewModel, DatePickerDialog.OnDateSetListener,
-    DialogInterface.OnCancelListener, OnDepartmentItemClick {
+    DialogInterface.OnCancelListener, OnDepartmentItemClick,
+    SchedulerAdapter.BookingDetailListener {
     private SchedulerContract.Presenter mPresenter;
     private int mTabFilter;
     private SchedulerAdapter mAdapter;
