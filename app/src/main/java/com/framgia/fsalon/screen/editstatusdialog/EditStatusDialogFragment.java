@@ -1,5 +1,6 @@
 package com.framgia.fsalon.screen.editstatusdialog;
 
+import android.content.Context;
 import android.databinding.DataBindingUtil;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
@@ -24,6 +25,7 @@ public class EditStatusDialogFragment extends DialogFragment {
     private static final String BOOKING_ID = "BOOKING_ID";
     private static final String STATUS_ID = "STATUS_ID";
     private EditStatusDialogContract.ViewModel mViewModel;
+    private EditStatusDialogViewModel.OnClickDialogListener mListener;
 
     public static EditStatusDialogFragment newInstance(int bookingId, int statusId) {
         EditStatusDialogFragment fragment = new EditStatusDialogFragment();
@@ -35,6 +37,12 @@ public class EditStatusDialogFragment extends DialogFragment {
     }
 
     @Override
+    public void onAttach(Context context) {
+        super.onAttach(context);
+        mListener = (EditStatusDialogViewModel.OnClickDialogListener) context;
+    }
+
+    @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         int bookingId = OUT_OF_INDEX;
@@ -43,7 +51,7 @@ public class EditStatusDialogFragment extends DialogFragment {
             bookingId = getArguments().getInt(BOOKING_ID);
             statusId = getArguments().getInt(STATUS_ID);
         }
-        mViewModel = new EditStatusDialogViewModel(this);
+        mViewModel = new EditStatusDialogViewModel(this, mListener);
         EditStatusDialogContract.Presenter presenter =
             new EditStatusDialogPresenter(mViewModel, bookingId, statusId, new BookingRepository(
                 new BookingRemoteDataSource(FSalonServiceClient.getInstance())));

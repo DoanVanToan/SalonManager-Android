@@ -22,9 +22,19 @@ public class EditStatusDialogViewModel extends BaseObservable
     private DialogFragment mDialogFragment;
     private Status mStatus;
     private Navigator mNavigator;
+    private OnClickDialogListener mListener;
 
-    public EditStatusDialogViewModel(DialogFragment dialogFragment) {
+    /**
+     * OnClickDialogListener
+     */
+    public interface OnClickDialogListener {
+        void onRefresh();
+    }
+
+    public EditStatusDialogViewModel(DialogFragment dialogFragment,
+                                     OnClickDialogListener listener) {
         mDialogFragment = dialogFragment;
+        mListener = listener;
         mNavigator = new Navigator(mDialogFragment.getActivity());
     }
 
@@ -66,6 +76,7 @@ public class EditStatusDialogViewModel extends BaseObservable
     @Override
     public void onChangeStatusSuccess(String s) {
         mNavigator.showToast(s);
+        mListener.onRefresh();
         mDialogFragment.dismiss();
     }
 
