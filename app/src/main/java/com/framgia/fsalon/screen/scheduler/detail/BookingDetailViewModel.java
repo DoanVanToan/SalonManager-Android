@@ -7,6 +7,7 @@ import android.databinding.BaseObservable;
 import android.databinding.Bindable;
 import android.net.Uri;
 import android.support.v4.app.ActivityCompat;
+import android.support.v4.app.FragmentTransaction;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
@@ -14,7 +15,9 @@ import android.view.View;
 import com.framgia.fsalon.BR;
 import com.framgia.fsalon.R;
 import com.framgia.fsalon.data.model.BookingOder;
+import com.framgia.fsalon.data.model.Status;
 import com.framgia.fsalon.screen.editbooking.EditBookingActivity;
+import com.framgia.fsalon.screen.editstatusdialog.EditStatusDialogFragment;
 import com.framgia.fsalon.utils.Constant;
 import com.framgia.fsalon.utils.Utils;
 import com.framgia.fsalon.utils.navigator.Navigator;
@@ -25,6 +28,7 @@ import com.github.clans.fab.FloatingActionMenu;
  */
 public class BookingDetailViewModel extends BaseObservable
     implements BookingDetailContract.ViewModel {
+    private static final String EDIT_STATUS_DIALOG = "EDIT_STATUS_DIALOG";
     private BookingDetailContract.Presenter mPresenter;
     private BookingOder mBookingOder;
     private int mId;
@@ -32,6 +36,8 @@ public class BookingDetailViewModel extends BaseObservable
     private boolean mIsFinish = true;
     private Navigator mNavigator;
     private boolean mIsSelected;
+    private boolean mIsChangeStatus;
+    private AppCompatActivity mActivity;
     private SwipeRefreshLayout.OnRefreshListener mListener =
         new SwipeRefreshLayout.OnRefreshListener() {
             @Override
@@ -41,6 +47,7 @@ public class BookingDetailViewModel extends BaseObservable
         };
 
     public BookingDetailViewModel(AppCompatActivity activity, int id) {
+        mActivity = activity;
         mNavigator = new Navigator(activity);
         mId = id;
     }
@@ -116,6 +123,7 @@ public class BookingDetailViewModel extends BaseObservable
     @Override
     public void onGetBookingSuccess(BookingOder bookingOder) {
         setBookingOder(bookingOder);
+        setChangeStatus(Status.getStatuses(bookingOder.getStatus()).size() > 0);
     }
 
     @Override
@@ -186,6 +194,17 @@ public class BookingDetailViewModel extends BaseObservable
         mPresenter.getBookingById(mId);
     }
 
+    @Override
+    public void onChangeStatusClick() {
+        if (mBookingOder == null) {
+            return;
+        }
+        FragmentTransaction ft = mActivity.getSupportFragmentManager().beginTransaction();
+        EditStatusDialogFragment newFragment = EditStatusDialogFragment.newInstance(mBookingOder
+            .getId(), mBookingOder.getStatus());
+        newFragment.show(ft, EDIT_STATUS_DIALOG);
+    }
+
     @Bindable
     public int getId() {
         return mId;
@@ -194,5 +213,15 @@ public class BookingDetailViewModel extends BaseObservable
     public void setId(int id) {
         mId = id;
         notifyPropertyChanged(BR.id);
+    }
+
+    @Bindable
+    public boolean isChangeStatus() {
+        return mIsChangeStatus;
+    }
+
+    public void setChangeStatus(boolean changeStatus) {
+        mIsChangeStatus = changeStatus;
+        notifyPropertyChanged(BR.changeStatus);
     }
 }

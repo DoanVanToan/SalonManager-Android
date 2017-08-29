@@ -6,6 +6,8 @@
 
     <data>
 
+        <import type="android.view.View"/>
+
         <variable
             name="viewModel"
             type="com.framgia.fsalon.screen.scheduler.detail.BookingDetailViewModel"
@@ -31,11 +33,11 @@
                 />
 
             <android.support.v7.widget.Toolbar
-                android:theme="@style/ToolbarColoredBackArrow"
                 android:id="@+id/toolbar_admin_booking_detail"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:background="@color/colorPrimary"/>
+                android:background="@color/colorPrimary"
+                android:theme="@style/ToolbarColoredBackArrow"/>
 
             <android.support.design.widget.CoordinatorLayout
                 android:layout_width="match_parent"
@@ -296,7 +298,6 @@
                 </LinearLayout>
 
                 <com.github.clans.fab.FloatingActionMenu
-                    bind:selected="@{viewModel.selected}"
                     android:id="@+id/menu_yellow"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
@@ -312,7 +313,8 @@
                     bind:menu_colorPressed="@color/colorPrimary"
                     bind:menu_fab_size="normal"
                     bind:menu_icon="@drawable/ic_add"
-                    bind:menu_labels_position="left">
+                    bind:menu_labels_position="left"
+                    bind:selected="@{viewModel.selected}">
 
                     <com.github.clans.fab.FloatingActionButton
                         android:layout_width="wrap_content"
@@ -342,6 +344,17 @@
                         android:src="@drawable/ic_phone_receiver_24dp"
                         bind:fab_colorNormal="@color/color_white"
                         bind:fab_label="@string/title_call"
+                        bind:fab_size="mini"
+                        tool:ignore="VectorDrawableCompat"/>
+
+                    <com.github.clans.fab.FloatingActionButton
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:onClick="@{() -> viewModel.onChangeStatusClick()}"
+                        android:src="@drawable/ic_shuffle_24dp"
+                        android:visibility="@{viewModel.changeStatus ? View.VISIBLE : View.GONE}"
+                        bind:fab_colorNormal="@color/color_white"
+                        bind:fab_label="@string/action_change_status"
                         bind:fab_size="mini"
                         tool:ignore="VectorDrawableCompat"/>
                 </com.github.clans.fab.FloatingActionMenu>
