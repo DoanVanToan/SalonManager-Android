@@ -3,6 +3,8 @@ package com.framgia.fsalon.data.source;
 import com.framgia.fsalon.data.model.BookingOder;
 import com.framgia.fsalon.data.model.BookingResponse;
 
+import java.util.List;
+
 import io.reactivex.Observable;
 
 /**
@@ -39,5 +41,10 @@ public class BookingRepository implements BookingDataSource {
     @Override
     public Observable<BookingOder> getBookingById(int id) {
         return mRemoteDataSource.getBookingById(id);
+    }
+
+    @Override
+    public Observable<List<String>> changeStatusBooking(int id, int statusId) {
+        return mRemoteDataSource.changeStatusBooking(id, statusId);
     }
 }

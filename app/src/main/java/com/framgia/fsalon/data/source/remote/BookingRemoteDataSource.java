@@ -7,6 +7,7 @@ import com.framgia.fsalon.data.source.api.FSalonApi;
 import com.framgia.fsalon.utils.Utils;
 
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 import framgia.retrofitservicecreator.api.model.Respone;
@@ -98,6 +99,19 @@ public class BookingRemoteDataSource extends BaseRemoteDataSource implements Boo
                     @NonNull Respone<BookingOder> bookingOderRespone)
                     throws Exception {
                     return Utils.getResponse(bookingOderRespone);
+                }
+            });
+    }
+
+    @Override
+    public Observable<List<String>> changeStatusBooking(int id, int statusId) {
+        return mFSalonApi.changeStatusBooking(id, statusId).flatMap(
+            new Function<Respone<List<String>>, ObservableSource<List<String>>>() {
+                @Override
+                public ObservableSource<List<String>> apply(
+                    @NonNull Respone<List<String>> listRespone)
+                    throws Exception {
+                    return Utils.getResponse(listRespone);
                 }
             });
     }

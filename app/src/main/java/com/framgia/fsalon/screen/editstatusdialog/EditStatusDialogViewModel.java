@@ -8,6 +8,7 @@ import android.widget.ArrayAdapter;
 import com.android.databinding.library.baseAdapters.BR;
 import com.framgia.fsalon.R;
 import com.framgia.fsalon.data.model.Status;
+import com.framgia.fsalon.utils.navigator.Navigator;
 
 import java.util.List;
 
@@ -20,9 +21,11 @@ public class EditStatusDialogViewModel extends BaseObservable
     private ArrayAdapter<Status> mStatusAdapter;
     private DialogFragment mDialogFragment;
     private Status mStatus;
+    private Navigator mNavigator;
 
     public EditStatusDialogViewModel(DialogFragment dialogFragment) {
         mDialogFragment = dialogFragment;
+        mNavigator = new Navigator(mDialogFragment.getActivity());
     }
 
     @Override
@@ -58,6 +61,18 @@ public class EditStatusDialogViewModel extends BaseObservable
         mStatusAdapter =
             new ArrayAdapter<>(mDialogFragment.getContext(),
                 R.layout.support_simple_spinner_dropdown_item, statuses);
+    }
+
+    @Override
+    public void onChangeStatusSuccess(String s) {
+        mNavigator.showToast(s);
+        mDialogFragment.dismiss();
+    }
+
+    @Override
+    public void onError(String message) {
+        mNavigator.showToast(message);
+        mDialogFragment.dismiss();
     }
 
     @Bindable

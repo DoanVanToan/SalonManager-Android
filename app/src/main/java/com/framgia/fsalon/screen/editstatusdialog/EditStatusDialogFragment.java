@@ -10,6 +10,9 @@ import android.view.ViewGroup;
 import android.view.Window;
 
 import com.framgia.fsalon.R;
+import com.framgia.fsalon.data.source.BookingRepository;
+import com.framgia.fsalon.data.source.api.FSalonServiceClient;
+import com.framgia.fsalon.data.source.remote.BookingRemoteDataSource;
 import com.framgia.fsalon.databinding.FragmentEditStatusDialogBinding;
 
 import static com.framgia.fsalon.utils.Constant.OUT_OF_INDEX;
@@ -42,7 +45,8 @@ public class EditStatusDialogFragment extends DialogFragment {
         }
         mViewModel = new EditStatusDialogViewModel(this);
         EditStatusDialogContract.Presenter presenter =
-            new EditStatusDialogPresenter(mViewModel, bookingId, statusId);
+            new EditStatusDialogPresenter(mViewModel, bookingId, statusId, new BookingRepository(
+                new BookingRemoteDataSource(FSalonServiceClient.getInstance())));
         mViewModel.setPresenter(presenter);
     }
 
