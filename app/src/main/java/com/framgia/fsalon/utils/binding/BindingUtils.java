@@ -431,13 +431,13 @@ public class BindingUtils {
     }
 
     @InverseBindingAdapter(attribute = "bind:statusBooking", event = "statusAttrChanged")
-    public static Status captureStatusBooking(SearchableSpinner view) {
+    public static Status captureStatusBooking(Spinner view) {
         Object selectedItem = view.getSelectedItem();
         return (Status) selectedItem;
     }
 
     @BindingAdapter(value = {"bind:statusBooking", "statusAttrChanged"}, requireAll = false)
-    public static void setStatusBooking(SearchableSpinner view, Status value,
+    public static void setStatusBooking(Spinner view, Status value,
                                         final InverseBindingListener bindingListener) {
         AdapterView.OnItemSelectedListener listener = new AdapterView.OnItemSelectedListener() {
             @Override
@@ -450,5 +450,10 @@ public class BindingUtils {
             }
         };
         view.setOnItemSelectedListener(listener);
+    }
+
+    @BindingAdapter({"spinnerAdapter"})
+    public static void setSpinnerAdapter(Spinner view, ArrayAdapter adapter) {
+        view.setAdapter(adapter);
     }
 }

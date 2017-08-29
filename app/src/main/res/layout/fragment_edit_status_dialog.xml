@@ -42,12 +42,11 @@
                     app:cardBackgroundColor="@color/color_grey_100"
                     car_view:cardElevation="@dimen/dp_1">
 
-                    <com.toptoche.searchablespinnerlibrary.SearchableSpinner
+                    <Spinner
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:scrollbarSize="@dimen/dp_20"
-                        bind:searchableSpinnerAdapter="@{viewModel.statusAdapter}"
-                        bind:statusBooking="@{viewModel.status}"
+                        bind:spinnerAdapter="@{viewModel.statusAdapter}"
+                        bind:statusBooking="@={viewModel.status}"
                         />
                 </android.support.v7.widget.CardView>
             </LinearLayout>

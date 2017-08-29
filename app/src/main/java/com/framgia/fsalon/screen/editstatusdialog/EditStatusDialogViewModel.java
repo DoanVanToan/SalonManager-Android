@@ -56,7 +56,8 @@ public class EditStatusDialogViewModel extends BaseObservable
     @Override
     public void onGetStatusesSuccess(List<Status> statuses) {
         mStatusAdapter =
-            new ArrayAdapter<>(mDialogFragment.getContext(), R.layout.item_spinner_small, statuses);
+            new ArrayAdapter<>(mDialogFragment.getContext(),
+                R.layout.support_simple_spinner_dropdown_item, statuses);
     }
 
     @Bindable
