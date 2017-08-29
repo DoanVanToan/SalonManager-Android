@@ -15,12 +15,14 @@ import com.framgia.fsalon.data.source.BookingRepository;
 import com.framgia.fsalon.data.source.api.FSalonServiceClient;
 import com.framgia.fsalon.data.source.remote.BookingRemoteDataSource;
 import com.framgia.fsalon.databinding.ActivityBookingDetailBinding;
+import com.framgia.fsalon.screen.editstatusdialog.EditStatusDialogViewModel;
 import com.framgia.fsalon.utils.Constant;
 
 /**
  * Detail Screen.
  */
-public class BookingDetailActivity extends AppCompatActivity {
+public class BookingDetailActivity extends AppCompatActivity
+    implements EditStatusDialogViewModel.OnClickDialogListener {
     private BookingDetailContract.ViewModel mViewModel;
     private static final int DEFAULT_ID = 0;
     private static final int DEFAULT_STATUS = -1;
@@ -100,5 +102,10 @@ public class BookingDetailActivity extends AppCompatActivity {
             default:
                 break;
         }
+    }
+
+    @Override
+    public void onRefresh() {
+        mViewModel.onGetData();
     }
 }

@@ -350,9 +350,9 @@
                     <com.github.clans.fab.FloatingActionButton
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:onClick="@{() -> viewModel.onChangeStatusClick()}"
+                        android:onClick="@{(view) -> viewModel.onChangeStatusClick(view)}"
                         android:src="@drawable/ic_shuffle_24dp"
-                        android:visibility="@{viewModel.changeStatus ? View.VISIBLE : View.GONE}"
+                        android:visibility="@{viewModel.changeStatus ? View.INVISIBLE : View.GONE}"
                         bind:fab_colorNormal="@color/color_white"
                         bind:fab_label="@string/action_change_status"
                         bind:fab_size="mini"

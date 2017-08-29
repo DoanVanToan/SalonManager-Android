@@ -26,7 +26,8 @@ public interface BookingDetailContract {
         void onPermissionDenied();
         void returnData(BookingOder order);
         void getBooking();
-        void onChangeStatusClick();
+        void onChangeStatusClick(View view);
+        void onGetData();
     }
 
     /**

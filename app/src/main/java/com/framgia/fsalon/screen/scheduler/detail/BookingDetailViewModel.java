@@ -195,7 +195,9 @@ public class BookingDetailViewModel extends BaseObservable
     }
 
     @Override
-    public void onChangeStatusClick() {
+    public void onChangeStatusClick(View view) {
+        FloatingActionMenu fapMenu = (FloatingActionMenu) view.getParent();
+        fapMenu.close(true);
         if (mBookingOder == null) {
             return;
         }
@@ -203,6 +205,11 @@ public class BookingDetailViewModel extends BaseObservable
         EditStatusDialogFragment newFragment = EditStatusDialogFragment.newInstance(mBookingOder
             .getId(), mBookingOder.getStatus());
         newFragment.show(ft, EDIT_STATUS_DIALOG);
+    }
+
+    @Override
+    public void onGetData() {
+        mPresenter.getBookingById(mId);
     }
 
     @Bindable
