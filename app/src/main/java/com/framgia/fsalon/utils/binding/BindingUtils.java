@@ -30,6 +30,7 @@ import com.framgia.fsalon.FSalonApplication;
 import com.framgia.fsalon.R;
 import com.framgia.fsalon.data.model.Salon;
 import com.framgia.fsalon.data.model.Service;
+import com.framgia.fsalon.data.model.Status;
 import com.framgia.fsalon.data.model.Stylist;
 import com.framgia.fsalon.screen.booking.BookingViewModel;
 import com.framgia.fsalon.utils.LayoutManager;
@@ -427,5 +428,27 @@ public class BindingUtils {
             chart.setFitBars(true);
             chart.invalidate();
         }
+    }
+
+    @InverseBindingAdapter(attribute = "bind:statusBooking", event = "statusAttrChanged")
+    public static Status captureStatusBooking(SearchableSpinner view) {
+        Object selectedItem = view.getSelectedItem();
+        return (Status) selectedItem;
+    }
+
+    @BindingAdapter(value = {"bind:statusBooking", "statusAttrChanged"}, requireAll = false)
+    public static void setStatusBooking(SearchableSpinner view, Status value,
+                                        final InverseBindingListener bindingListener) {
+        AdapterView.OnItemSelectedListener listener = new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+                bindingListener.onChange();
+            }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> parent) {
+            }
+        };
+        view.setOnItemSelectedListener(listener);
     }
 }
