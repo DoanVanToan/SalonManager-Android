@@ -1,5 +1,6 @@
 package com.framgia.fsalon.screen.imagecustomer;
 
+import android.content.Context;
 import android.databinding.BaseObservable;
 import android.databinding.Bindable;
 import android.support.v4.app.Fragment;
@@ -8,6 +9,7 @@ import android.view.View;
 import com.android.databinding.library.baseAdapters.BR;
 import com.codewaves.stickyheadergrid.StickyHeaderGridLayoutManager;
 import com.framgia.fsalon.data.model.BillResponse;
+import com.framgia.fsalon.screen.imagedetail.ImageDetailActivity;
 import com.framgia.fsalon.utils.navigator.Navigator;
 
 import java.util.List;
@@ -24,9 +26,12 @@ public class ImageCustomerViewModel extends BaseObservable
     private StickyHeaderGridLayoutManager mLayoutManager =
         new StickyHeaderGridLayoutManager(SPAN_COUNT);
     private ImageCustomerAdapter mAdapter;
+    private Context mContext;
+    List<BillResponse> mBillResponses;
 
     public ImageCustomerViewModel(Fragment fragment) {
         mNavigator = new Navigator(fragment);
+        mContext = fragment.getContext();
     }
 
     @Override
@@ -62,6 +67,7 @@ public class ImageCustomerViewModel extends BaseObservable
     @Override
     public void onGetBillSuccessfully(List<BillResponse> billResponses) {
         setAdapter(new ImageCustomerAdapter(billResponses, this));
+        mBillResponses = billResponses;
     }
 
     @Bindable
@@ -92,5 +98,15 @@ public class ImageCustomerViewModel extends BaseObservable
     public void setAdapter(ImageCustomerAdapter adapter) {
         mAdapter = adapter;
         notifyPropertyChanged(BR.adapter);
+    }
+
+    @Override
+    public void onDetailImageClick(int section, int positon) {
+        if (mBillResponses == null || mBillResponses.get(section).getBookingOder() == null) {
+            return;
+        }
+        mNavigator.startActivity(ImageDetailActivity
+            .getInstance(mContext, mBillResponses.get(section).getBookingOder().getImages(),
+                positon));
     }
 }

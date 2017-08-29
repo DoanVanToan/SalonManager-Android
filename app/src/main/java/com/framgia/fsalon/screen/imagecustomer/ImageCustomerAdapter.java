@@ -80,7 +80,7 @@ public class ImageCustomerAdapter extends StickyHeaderGridAdapter {
     public void onBindItemViewHolder(StickyHeaderGridAdapter.ItemViewHolder viewHolder, int section,
                                      int offset) {
         ((ItemViewHolder) viewHolder)
-            .bind(mSections.get(section).getBookingOder().getImages().get(offset));
+            .bind(mSections.get(section).getBookingOder().getImages().get(offset), section, offset);
     }
 
     /**
@@ -111,8 +111,11 @@ public class ImageCustomerAdapter extends StickyHeaderGridAdapter {
             mBinding = binding;
         }
 
-        private void bind(ImageResponse image) {
+        private void bind(ImageResponse image, int section, int position) {
+            mBinding.setSection(section);
+            mBinding.setPosition(position);
             mBinding.setImage(image);
+            mBinding.setListenner(mOnImageItemClick);
             mBinding.executePendingBindings();
         }
     }
@@ -121,5 +124,6 @@ public class ImageCustomerAdapter extends StickyHeaderGridAdapter {
      * To use with many ViewModel
      */
     public interface OnImageItemClick {
+        void onDetailImageClick(int section, int position);
     }
 }

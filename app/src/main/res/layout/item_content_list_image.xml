@@ -8,6 +8,14 @@
     <data>
 
         <variable
+            name="position"
+            type="int"/>
+
+        <variable
+            name="section"
+            type="int"/>
+
+        <variable
             name="image"
             type="com.framgia.fsalon.data.model.ImageResponse"/>
 
@@ -28,8 +36,9 @@
             >
 
             <ImageView
-                android:layout_width="@dimen/dp_100"
-                android:layout_height="@dimen/dp_100"
+                android:layout_width="@dimen/dp_120"
+                android:layout_height="@dimen/dp_120"
+                android:onClick="@{() -> listenner.onDetailImageClick(section, position)}"
                 bind:imageUrl="@{image.pathOrigin}"
                 tools:ignore="@null"/>
         </android.support.v7.widget.CardView>
