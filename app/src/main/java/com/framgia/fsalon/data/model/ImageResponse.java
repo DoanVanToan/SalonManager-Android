@@ -3,6 +3,7 @@ package com.framgia.fsalon.data.model;
 import android.os.Parcel;
 import android.os.Parcelable;
 
+import com.google.gson.Gson;
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 
@@ -11,7 +12,7 @@ import java.util.Date;
 /**
  * Created by MyPC on 24/08/2017.
  */
-public class ImageResponse implements Parcelable{
+public class ImageResponse implements Parcelable {
     @Expose
     @SerializedName("id")
     private int mId;
@@ -125,5 +126,10 @@ public class ImageResponse implements Parcelable{
         parcel.writeString(mPathThumb);
         parcel.writeInt(mMediaTableId);
         parcel.writeString(mMediaTableType);
+    }
+
+    @Override
+    public String toString() {
+        return new Gson().toJson(this);
     }
 }

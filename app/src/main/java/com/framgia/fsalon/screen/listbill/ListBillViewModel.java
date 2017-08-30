@@ -48,7 +48,7 @@ import static com.framgia.fsalon.screen.scheduler.SchedulerViewModel.TabFilter.T
 import static com.framgia.fsalon.utils.Constant.EXTRA_CUSTOMER;
 import static com.framgia.fsalon.utils.Constant.FIRST_ITEM;
 import static com.framgia.fsalon.utils.Constant.OUT_OF_INDEX;
-import static com.framgia.fsalon.utils.Constant.REQUEST_START_CUSTOMER_FILTER_ACTIVITY;
+import static com.framgia.fsalon.utils.Constant.RequestPermission.REQUEST_START_CUSTOMER_FILTER_ACTIVITY;
 
 /**
  * Exposes the data to be used in the Listbill screen.

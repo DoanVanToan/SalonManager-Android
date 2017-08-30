@@ -15,6 +15,8 @@ import com.framgia.fsalon.data.model.User;
 import com.framgia.fsalon.databinding.FragmentUserBinding;
 import com.framgia.fsalon.utils.Constant;
 
+import static com.framgia.fsalon.utils.Constant.RequestPermission.REQUEST_CALL_PERMISSION;
+
 /**
  * User Screen.
  */
@@ -65,7 +67,7 @@ public class UserFragment extends Fragment {
     public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions,
                                            @NonNull int[] grantResults) {
         switch (requestCode) {
-            case Constant.REQUEST_CALL_PERMISSION:
+            case REQUEST_CALL_PERMISSION:
                 if (grantResults[0] != PackageManager.PERMISSION_GRANTED) {
                     mViewModel.onPermissionDenied();
                 } else {

@@ -14,13 +14,10 @@ public class Constant {
     public static final int OFF_WORK = 2;
     public static final String BUNDLE_ORDER = "BUNDLE_ORDER";
     public static final String BOOKING_ID = "BOOKING_ID";
-    public static final int REQUEST_CALL_PERMISSION = 1;
     public static final int NO_SCROLL = -1;
-    public static final int REQUEST_ADMIN_BOOKING_ACTIVITY = 1;
     public static final String BUNDLE_USER = "BUNDLE_USER";
     public static final int FIRST_ITEM = 0;
     public static final String BUNDLE_BILL_ID = "BUNDLE_BILL_ID";
-    public static final int REQUEST_START_CUSTOMER_FILTER_ACTIVITY = 2;
     public static final String EXTRA_CUSTOMER = "EXTRA_CUSTOMER";
 
     public class ApiParram {
@@ -46,6 +43,7 @@ public class Constant {
         public static final String START_DATE = "start_date";
         public static final String END_DATE = "end_date";
         public static final String ID = "id";
+        public static final String IMAGE = "images";
     }
 
     public class Permission {
@@ -53,6 +51,17 @@ public class Constant {
         public static final int PERMISSION_ASSISTANT = 1;
         public static final int PERMISSION_MAIN_WORKER = 2;
         public static final int PERMISSION_ADMIN = 3;
+    }
+
+    /**
+     * Define the value of request permission when running app
+     */
+    public class RequestPermission {
+        public static final int REQUEST_ADMIN_BOOKING_ACTIVITY = 1;
+        public static final int REQUEST_START_CUSTOMER_FILTER_ACTIVITY = 2;
+        public static final int REQUEST_CALL_PERMISSION = 3;
+        public static final int REQUEST_PERMISSION_CAMERA = 4;
+        public static final int REQUEST_PICK_IMAGE = 5;
     }
 
     /**

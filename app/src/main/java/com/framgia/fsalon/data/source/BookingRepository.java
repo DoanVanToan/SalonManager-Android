@@ -1,7 +1,10 @@
 package com.framgia.fsalon.data.source;
 
+import android.support.annotation.NonNull;
+
 import com.framgia.fsalon.data.model.BookingOder;
 import com.framgia.fsalon.data.model.BookingResponse;
+import com.framgia.fsalon.data.model.ImageResponse;
 
 import java.util.List;
 
@@ -46,5 +49,11 @@ public class BookingRepository implements BookingDataSource {
     @Override
     public Observable<List<String>> changeStatusBooking(int id, int statusId) {
         return mRemoteDataSource.changeStatusBooking(id, statusId);
+    }
+
+    @Override
+    public Observable<BookingOder> postImageByStylist(@NonNull int orderBookingId,
+                                                      @NonNull ImageResponse image) {
+        return mRemoteDataSource.postImageByStylist(orderBookingId, image);
     }
 }
