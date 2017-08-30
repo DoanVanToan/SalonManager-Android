@@ -19,6 +19,7 @@ public class Constant {
     public static final int FIRST_ITEM = 0;
     public static final String BUNDLE_BILL_ID = "BUNDLE_BILL_ID";
     public static final String EXTRA_CUSTOMER = "EXTRA_CUSTOMER";
+    public static final String EXTRA_PERMISSION = "EXTRA_PERMISSION";
 
     public class ApiParram {
         public static final String DEPARTMENT_ID = "department_id";

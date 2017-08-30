@@ -14,6 +14,7 @@ import android.support.v4.app.FragmentTransaction;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
+import android.widget.LinearLayout;
 
 import com.framgia.fsalon.BR;
 import com.framgia.fsalon.FSalonApplication;
@@ -21,6 +22,7 @@ import com.framgia.fsalon.R;
 import com.framgia.fsalon.data.model.BookingOder;
 import com.framgia.fsalon.data.model.ImageResponse;
 import com.framgia.fsalon.data.model.Status;
+import com.framgia.fsalon.data.model.User;
 import com.framgia.fsalon.screen.editbooking.EditBookingActivity;
 import com.framgia.fsalon.screen.editstatusdialog.EditStatusDialogFragment;
 import com.framgia.fsalon.utils.Constant;
@@ -31,14 +33,16 @@ import com.framgia.fsalon.utils.permission.PermissionUtils;
 import com.github.clans.fab.FloatingActionMenu;
 
 import java.io.File;
-import java.lang.annotation.ElementType;
-import java.lang.annotation.Target;
 
 import static android.app.Activity.RESULT_OK;
+import static android.view.View.GONE;
+import static android.view.View.VISIBLE;
+import static com.framgia.fsalon.data.model.BookingOder.STATUS_IN_PROGRESS;
 import static com.framgia.fsalon.screen.scheduler.detail.BookingDetailViewModel.SideCapture.SIDE_BEHIND;
 import static com.framgia.fsalon.screen.scheduler.detail.BookingDetailViewModel.SideCapture.SIDE_FRONT_UP;
 import static com.framgia.fsalon.screen.scheduler.detail.BookingDetailViewModel.SideCapture.SIDE_LEFT;
 import static com.framgia.fsalon.screen.scheduler.detail.BookingDetailViewModel.SideCapture.SIDE_RIGHT;
+import static com.framgia.fsalon.utils.Constant.Permission.PERMISSION_MAIN_WORKER;
 import static com.framgia.fsalon.utils.Constant.RequestPermission.REQUEST_ADMIN_BOOKING_ACTIVITY;
 import static com.framgia.fsalon.utils.Constant.RequestPermission.REQUEST_CALL_PERMISSION;
 import static com.framgia.fsalon.utils.Constant.RequestPermission.REQUEST_PERMISSION_CAMERA;
@@ -66,6 +70,8 @@ public class BookingDetailViewModel extends BaseObservable
     private String mPathImageSideRight;
     private String mPathImageSideBehind;
     private String mPathImageSideFrontUp;
+    private User mCurrentUser;
+    private int mAddPhotoVisibility = GONE;
     private SwipeRefreshLayout.OnRefreshListener mListener =
         new SwipeRefreshLayout.OnRefreshListener() {
             @Override
@@ -153,6 +159,11 @@ public class BookingDetailViewModel extends BaseObservable
     public void onGetBookingSuccess(BookingOder bookingOder) {
         setBookingOder(bookingOder);
         setChangeStatus(Status.getStatuses(bookingOder.getStatus()).size() > 0);
+        if (mCurrentUser.getPermission() == PERMISSION_MAIN_WORKER
+            && bookingOder.getStatus() == STATUS_IN_PROGRESS
+            && mCurrentUser.getId() == bookingOder.getStylistId()) {
+            setAddPhotoVisibility(VISIBLE);
+        }
     }
 
     @Override
@@ -167,7 +178,7 @@ public class BookingDetailViewModel extends BaseObservable
 
     @Override
     public void hideProgressBar() {
-        setProgressBarVisibility(View.GONE);
+        setProgressBarVisibility(GONE);
     }
 
     @Override
@@ -292,8 +303,7 @@ public class BookingDetailViewModel extends BaseObservable
         }
     }
 
-    @Override
-    public void pickImage(@BookingDetailViewModel.SideCapture int sideCapture) {
+    public void pickImage(@SideCapture int sideCapture) {
         if (PermissionUtils.checkCameraPermission(mActivity)) {
             setSidePhoto(sideCapture);
             mActivity.startActivityForResult(
@@ -320,6 +330,18 @@ public class BookingDetailViewModel extends BaseObservable
             default:
                 break;
         }
+    }
+
+    @Override
+    public void onAddPhoto(LinearLayout layoutPhoto, View view) {
+        FloatingActionMenu fapMenu = (FloatingActionMenu) view.getParent();
+        fapMenu.close(true);
+        layoutPhoto.setVisibility(VISIBLE);
+    }
+
+    @Override
+    public void onDeterminePermissionSuccessfully(User user) {
+        setCurrentUser(user);
     }
 
     @Bindable
@@ -399,6 +421,26 @@ public class BookingDetailViewModel extends BaseObservable
         mSidePhoto = sidePhoto;
     }
 
+    @Bindable
+    public User getCurrentUser() {
+        return mCurrentUser;
+    }
+
+    public void setCurrentUser(User currentUser) {
+        mCurrentUser = currentUser;
+        notifyPropertyChanged(BR.currentUser);
+    }
+
+    @Bindable
+    public int getAddPhotoVisibility() {
+        return mAddPhotoVisibility;
+    }
+
+    public void setAddPhotoVisibility(int addPhotoVisibility) {
+        mAddPhotoVisibility = addPhotoVisibility;
+        notifyPropertyChanged(BR.addPhotoVisibility);
+    }
+
     private Uri getPickImageResultUri(Intent data) {
         boolean isCamera = false;
         if (data != null) {
@@ -426,7 +468,6 @@ public class BookingDetailViewModel extends BaseObservable
      * Define all side of customer 's photos
      */
     @IntDef({SIDE_LEFT, SIDE_RIGHT, SIDE_BEHIND, SIDE_FRONT_UP})
-    @Target(ElementType.PARAMETER)
     public @interface SideCapture {
         int SIDE_LEFT = 0;
         int SIDE_RIGHT = 1;

@@ -121,4 +121,8 @@
     <string name="action_agree">AGREE</string>
     <string name="action_dis_agree">DIS AGREE</string>
     <string name="action_add_photo">Add Photo</string>
+    <string name="title_side_left_photo">Left</string>
+    <string name="title_side_right_photo">Right</string>
+    <string name="title_side_behind_photo">Behind</string>
+    <string name="title_side_front_up_photo">Front up</string>
 </resources>
