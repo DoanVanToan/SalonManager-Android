@@ -1,5 +1,6 @@
 package com.framgia.fsalon.screen.customerinfo.user;
 
+import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.databinding.DataBindingUtil;
 import android.os.Bundle;
@@ -22,6 +23,9 @@ import static com.framgia.fsalon.utils.Constant.RequestPermission.REQUEST_CALL_P
  */
 public class UserFragment extends Fragment {
     private UserContract.ViewModel mViewModel;
+    private static final int RESULT = 2;
+    private static final String USER = "USER";
+    private User mUser;
 
     public static UserFragment newInstance(User user) {
         UserFragment fragment = new UserFragment();
@@ -34,8 +38,8 @@ public class UserFragment extends Fragment {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        User user = getArguments().getParcelable(Constant.BUNDLE_USER);
-        mViewModel = new UserViewModel(this, user);
+        mUser = getArguments().getParcelable(Constant.BUNDLE_USER);
+        mViewModel = new UserViewModel(this, mUser);
         UserContract.Presenter presenter =
             new UserPresenter(mViewModel);
         mViewModel.setPresenter(presenter);
@@ -76,6 +80,20 @@ public class UserFragment extends Fragment {
                 break;
             default:
                 break;
+        }
+    }
+
+    @Override
+    public void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if (requestCode == 1) {
+            if (resultCode == RESULT) {
+                User user = data.getExtras().getParcelable(USER);
+                mUser.setBirthday(user.getBirthday());
+                mUser.setName(user.getName());
+                mUser.setPhone(user.getPhone());
+                mUser.setAvatar(user.getAvatar());
+            }
         }
     }
 }

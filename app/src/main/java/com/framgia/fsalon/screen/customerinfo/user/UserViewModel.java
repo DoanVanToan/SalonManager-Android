@@ -12,6 +12,7 @@ import android.support.v4.app.Fragment;
 import com.framgia.fsalon.BR;
 import com.framgia.fsalon.R;
 import com.framgia.fsalon.data.model.User;
+import com.framgia.fsalon.screen.editcustomerinfo.EditcustomerinfoActivity;
 import com.framgia.fsalon.utils.Utils;
 import com.framgia.fsalon.utils.navigator.Navigator;
 
@@ -22,10 +23,13 @@ public class UserViewModel extends BaseObservable implements UserContract.ViewMo
     private UserContract.Presenter mPresenter;
     private User mUser;
     private Navigator mNavigator;
+    private boolean mIsEdit = false;
+    private UserFragment mFragment;
 
     public UserViewModel(Fragment fragment, User user) {
         mNavigator = new Navigator(fragment);
         mUser = user;
+        mFragment = (UserFragment) fragment;
     }
 
     @Bindable
@@ -77,5 +81,22 @@ public class UserViewModel extends BaseObservable implements UserContract.ViewMo
     @Override
     public void onPermissionDenied() {
         mNavigator.showToast(R.string.msg_no_permission);
+    }
+
+    @Bindable
+    public boolean isEdit() {
+        return mIsEdit;
+    }
+
+    public void setEdit(boolean edit) {
+        mIsEdit = edit;
+        notifyPropertyChanged(BR.edit);
+    }
+
+    public void onEditButtonClick() {
+        setEdit(true);
+        mFragment
+            .startActivityForResult(EditcustomerinfoActivity.getInstance(mNavigator.getContext(),
+                mUser), 1);
     }
 }
