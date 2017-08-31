@@ -49,4 +49,5 @@
     <integer name="span_3">3</integer>
     <integer name="span_4">4</integer>
     <integer name="div_1">1</integer>
+    <item name="float_0.6" format="float" type="dimen">0.6</item>
 </resources>

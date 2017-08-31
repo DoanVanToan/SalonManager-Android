@@ -1,0 +1,64 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:bind="http://schemas.android.com/apk/res-auto"
+    xmlns:card_view="http://schemas.android.com/tools"
+    xmlns:tool="http://schemas.android.com/tools">
+
+    <data>
+
+        <import type="android.view.View"/>
+        <variable
+            name="viewModel"
+            type="com.framgia.fsalon.screen.scheduler.detail.BookingDetailViewModel"
+            />
+        <variable
+            name="sidePhoto"
+            type="Integer"/>
+        <variable
+            name="pathPhoto"
+            type="String"/>
+        <variable
+            name="titlePhoto"
+            type="String"/>
+    </data>
+
+    <android.support.v7.widget.CardView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        card_view:cardElevation="@dimen/dp_1">
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/dp_80"
+            android:onClick="@{()-> viewModel.pickImage(sidePhoto)}">
+
+            <ImageView
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:scaleType="centerCrop"
+                bind:imageUrl="@{pathPhoto}"
+                tool:ignore="ContentDescription"/>
+
+            <ImageView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerInParent="true"
+                android:alpha="@dimen/float_0.6"
+                android:visibility="@{pathPhoto != null ? View.GONE : View.VISIBLE}"
+                bind:srcCompat="@drawable/ic_camera_24dp"
+                tool:ignore="ContentDescription"/>
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_alignParentBottom="true"
+                android:alpha="@dimen/float_0.6"
+                android:background="@color/color_transparent"
+                android:gravity="center"
+                android:padding="@dimen/dp_1"
+                android:text="@{titlePhoto}"
+                android:textColor="@color/color_white"/>
+        </RelativeLayout>
+    </android.support.v7.widget.CardView>
+</layout>

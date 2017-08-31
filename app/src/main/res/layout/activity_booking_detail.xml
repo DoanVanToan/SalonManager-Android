@@ -50,7 +50,7 @@
                     android:id="@+id/layout_admin_booking_detail"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
-                    android:layout_marginTop="@dimen/dp_24"
+                    android:layout_marginTop="@dimen/dp_10"
                     android:orientation="vertical"
                     android:paddingLeft="@dimen/dp_12"
                     android:paddingRight="@dimen/dp_12">
@@ -58,104 +58,8 @@
                     <LinearLayout
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:orientation="horizontal">
-
-                        <RelativeLayout
-                            android:layout_width="0dp"
-                            android:layout_height="@dimen/dp_80"
-                            android:layout_weight="1"
-                            android:onClick="@{()->viewModel.pickImage(SideCapture.SIDE_LEFT)}">
-
-                            <ImageView
-                                android:layout_width="match_parent"
-                                android:layout_height="match_parent"
-                                android:scaleType="centerCrop"
-                                bind:imageUrl="@{viewModel.pathImageSideLeft}"
-                                bind:srcCompat="@drawable/ic_is_dashed_square"
-                                tool:ignore="ContentDescription"/>
-
-                            <ImageView
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:layout_centerInParent="true"
-                                android:background="@drawable/ic_is_dashed_square"
-                                android:src="@drawable/ic_camera"
-                                tool:ignore="ContentDescription"/>
-                        </RelativeLayout>
-
-                        <RelativeLayout
-                            android:layout_width="0dp"
-                            android:layout_height="@dimen/dp_80"
-                            android:layout_weight="1"
-                            android:onClick="@{()->viewModel.pickImage(SideCapture.SIDE_RIGHT)}">
-
-                            <ImageView
-                                android:layout_width="match_parent"
-                                android:layout_height="match_parent"
-                                android:scaleType="centerCrop"
-                                bind:imageUrl="@{viewModel.pathImageSideRight}"
-                                bind:srcCompat="@drawable/ic_is_dashed_square"/>
-
-                            <ImageView
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:layout_centerInParent="true"
-                                android:background="@drawable/ic_is_dashed_square"
-                                android:scaleType="centerCrop"
-                                android:src="@drawable/ic_camera"/>
-                        </RelativeLayout>
-
-                        <RelativeLayout
-                            android:layout_width="0dp"
-                            android:layout_height="@dimen/dp_80"
-                            android:layout_weight="1"
-                            android:onClick="@{()->viewModel.pickImage(SideCapture.SIDE_BEHIND)}">
-
-                            <ImageView
-                                android:layout_width="match_parent"
-                                android:layout_height="match_parent"
-                                android:scaleType="centerCrop"
-                                bind:imageUrl="@{viewModel.pathImageSideBehind}"
-                                bind:srcCompat="@drawable/ic_is_dashed_square"
-                                tool:ignore="ContentDescription"/>
-
-                            <ImageView
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:layout_centerInParent="true"
-                                android:background="@drawable/ic_is_dashed_square"
-                                android:src="@drawable/ic_camera"
-                                tool:ignore="ContentDescription"/>
-                        </RelativeLayout>
-
-                        <RelativeLayout
-                            android:layout_width="0dp"
-                            android:layout_height="@dimen/dp_80"
-                            android:layout_weight="1"
-                            android:onClick="@{()->viewModel.pickImage(SideCapture.SIDE_FRONT_UP)}">
-
-                            <ImageView
-                                android:layout_width="match_parent"
-                                android:layout_height="match_parent"
-                                android:scaleType="centerCrop"
-                                bind:imageUrl="@{viewModel.pathImageSideFrontUp}"
-                                bind:srcCompat="@drawable/ic_is_dashed_square"
-                                tool:ignore="ContentDescription"/>
-
-                            <ImageView
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:layout_centerInParent="true"
-                                android:background="@drawable/ic_is_dashed_square"
-                                android:src="@drawable/ic_camera"
-                                tool:ignore="ContentDescription"/>
-                        </RelativeLayout>
-                    </LinearLayout>
-
-                    <LinearLayout
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
                         android:layout_marginBottom="@dimen/dp_24"
+                        android:layout_marginTop="@dimen/dp_10"
                         android:orientation="horizontal">
 
                         <ImageView
@@ -394,6 +298,62 @@
                                 android:textSize="@dimen/sp_18"/>
                         </LinearLayout>
                     </LinearLayout>
+
+                    <LinearLayout
+                        android:id="@+id/linear_photo"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:baselineAligned="false"
+                        android:orientation="horizontal"
+                        android:visibility="gone">
+
+                        <include
+                            layout="@layout/item_photo"
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_marginEnd="@dimen/dp_3"
+                            android:layout_marginRight="@dimen/dp_3"
+                            android:layout_weight="1"
+                            bind:pathPhoto="@{viewModel.pathImageSideLeft}"
+                            bind:sidePhoto="@{SideCapture.SIDE_LEFT}"
+                            bind:titlePhoto="@{@string/title_side_left_photo}"
+                            bind:viewModel="@{viewModel}"/>
+
+                        <include
+                            layout="@layout/item_photo"
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_marginEnd="@dimen/dp_3"
+                            android:layout_marginRight="@dimen/dp_3"
+                            android:layout_weight="1"
+                            bind:pathPhoto="@{viewModel.pathImageSideRight}"
+                            bind:sidePhoto="@{SideCapture.SIDE_RIGHT}"
+                            bind:titlePhoto="@{@string/title_side_right_photo}"
+                            bind:viewModel="@{viewModel}"/>
+
+                        <include
+                            layout="@layout/item_photo"
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_marginEnd="@dimen/dp_3"
+                            android:layout_marginRight="@dimen/dp_3"
+                            android:layout_weight="1"
+                            bind:pathPhoto="@{viewModel.pathImageSideBehind}"
+                            bind:sidePhoto="@{SideCapture.SIDE_BEHIND}"
+                            bind:titlePhoto="@{@string/title_side_behind_photo}"
+                            bind:viewModel="@{viewModel}"/>
+
+                        <include
+                            layout="@layout/item_photo"
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            bind:pathPhoto="@{viewModel.pathImageSideFrontUp}"
+                            bind:sidePhoto="@{SideCapture.SIDE_FRONT_UP}"
+                            bind:titlePhoto="@{@string/title_side_front_up_photo}"
+                            bind:viewModel="@{viewModel}"/>
+                    </LinearLayout>
+
                 </LinearLayout>
 
                 <com.github.clans.fab.FloatingActionMenu
@@ -454,6 +414,17 @@
                         android:visibility="@{viewModel.changeStatus ? View.INVISIBLE : View.GONE}"
                         bind:fab_colorNormal="@color/color_white"
                         bind:fab_label="@string/action_change_status"
+                        bind:fab_size="mini"
+                        tool:ignore="VectorDrawableCompat"/>
+
+                    <com.github.clans.fab.FloatingActionButton
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:onClick="@{(view)->viewModel.onAddPhoto(linearPhoto,view)}"
+                        android:src="@drawable/ic_camera_24dp"
+                        android:visibility="@{viewModel.addPhotoVisibility}"
+                        bind:fab_colorNormal="@color/color_white"
+                        bind:fab_label="@string/action_add_photo"
                         bind:fab_size="mini"
                         tool:ignore="VectorDrawableCompat"/>
                 </com.github.clans.fab.FloatingActionMenu>

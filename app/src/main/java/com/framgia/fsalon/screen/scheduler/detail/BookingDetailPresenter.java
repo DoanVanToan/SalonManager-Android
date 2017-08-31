@@ -2,7 +2,9 @@ package com.framgia.fsalon.screen.scheduler.detail;
 
 import com.framgia.fsalon.data.model.BookingOder;
 import com.framgia.fsalon.data.model.ImageResponse;
+import com.framgia.fsalon.data.model.UserRespone;
 import com.framgia.fsalon.data.source.BookingRepository;
+import com.framgia.fsalon.data.source.UserRepository;
 
 import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.annotations.NonNull;
@@ -21,11 +23,14 @@ final class BookingDetailPresenter implements BookingDetailContract.Presenter {
     private final BookingDetailContract.ViewModel mViewModel;
     private BookingRepository mBookingRepository;
     private CompositeDisposable mCompositeDisposable = new CompositeDisposable();
+    private UserRepository mUserRepository;
 
     BookingDetailPresenter(BookingDetailContract.ViewModel viewModel,
-                           BookingRepository bookingRepository) {
+                           BookingRepository bookingRepository, UserRepository userRepository) {
         mViewModel = viewModel;
         mBookingRepository = bookingRepository;
+        mUserRepository = userRepository;
+        determinePermission();
     }
 
     @Override
@@ -73,6 +78,31 @@ final class BookingDetailPresenter implements BookingDetailContract.Presenter {
             .subscribeWith(new DisposableObserver<BookingOder>() {
                 @Override
                 public void onNext(@NonNull BookingOder bookingOder) {
+                }
+
+                @Override
+                public void onError(@NonNull Throwable e) {
+                }
+
+                @Override
+                public void onComplete() {
+                }
+            });
+        mCompositeDisposable.add(disposable);
+    }
+
+    @Override
+    public void determinePermission() {
+        Disposable disposable = mUserRepository.getCurrentUser()
+            .subscribeOn(Schedulers.io())
+            .observeOn(AndroidSchedulers.mainThread())
+            .subscribeWith(new DisposableObserver<UserRespone>() {
+                @Override
+                public void onNext(@NonNull UserRespone userRespone) {
+                    if (userRespone.getUser() != null) {
+                        mViewModel.onDeterminePermissionSuccessfully(
+                            userRespone.getUser());
+                    }
                 }
 
                 @Override

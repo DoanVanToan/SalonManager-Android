@@ -3,11 +3,13 @@ package com.framgia.fsalon.screen.scheduler.detail;
 import android.content.Intent;
 import android.support.annotation.NonNull;
 import android.view.View;
+import android.widget.LinearLayout;
 
 import com.framgia.fsalon.BasePresenter;
 import com.framgia.fsalon.BaseViewModel;
 import com.framgia.fsalon.data.model.BookingOder;
 import com.framgia.fsalon.data.model.ImageResponse;
+import com.framgia.fsalon.data.model.User;
 
 /**
  * This specifies the contract between the view and the presenter.
@@ -34,8 +36,9 @@ public interface BookingDetailContract {
         void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions,
                                         @NonNull int[] grantResults);
         void onActivityResult(int requestCode, int resultCode, Intent data);
-        void pickImage(@BookingDetailViewModel.SideCapture int sideCapture);
         void updateImage(String pathOrigin);
+        void onAddPhoto(LinearLayout layoutPhoto, View view);
+        void onDeterminePermissionSuccessfully(User user);
     }
 
     /**
@@ -44,5 +47,6 @@ public interface BookingDetailContract {
     interface Presenter extends BasePresenter {
         void getBookingById(int id);
         void postImageByStylist(@NonNull int bookingOrderId, @NonNull ImageResponse image);
+        void determinePermission();
     }
 }

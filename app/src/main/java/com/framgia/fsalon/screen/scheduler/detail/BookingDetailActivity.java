@@ -10,11 +10,17 @@ import android.support.v7.app.AppCompatActivity;
 
 import com.framgia.fsalon.R;
 import com.framgia.fsalon.data.source.BookingRepository;
+import com.framgia.fsalon.data.source.UserDataSource;
+import com.framgia.fsalon.data.source.UserRepository;
 import com.framgia.fsalon.data.source.api.FSalonServiceClient;
+import com.framgia.fsalon.data.source.local.UserLocalDataSource;
+import com.framgia.fsalon.data.source.local.sharepref.SharePreferenceImp;
 import com.framgia.fsalon.data.source.remote.BookingRemoteDataSource;
+import com.framgia.fsalon.data.source.remote.UserRemoteDataSource;
 import com.framgia.fsalon.databinding.ActivityBookingDetailBinding;
 import com.framgia.fsalon.screen.editstatusdialog.EditStatusDialogViewModel;
-import com.framgia.fsalon.utils.Constant;
+
+import static com.framgia.fsalon.utils.Constant.BOOKING_ID;
 
 /**
  * Detail Screen.
@@ -23,24 +29,28 @@ public class BookingDetailActivity extends AppCompatActivity
     implements EditStatusDialogViewModel.OnClickDialogListener {
     private BookingDetailContract.ViewModel mViewModel;
     private static final int DEFAULT_ID = 0;
-    private static final int DEFAULT_STATUS = -1;
+    private int mIdBooking;
+    private int mPermission;
 
     public static Intent getInstance(Context context, int id) {
         Intent intent = new Intent(context, BookingDetailActivity.class);
-        Bundle args = new Bundle();
-        args.putInt(Constant.BOOKING_ID, id);
-        intent.putExtras(args);
+        intent.putExtra(BOOKING_ID, id);
         return intent;
     }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        mViewModel = new BookingDetailViewModel(this, getIntent().getIntExtra(Constant
-            .BOOKING_ID, DEFAULT_ID));
+        getBundle();
+        mViewModel = new BookingDetailViewModel(this, mIdBooking);
+        UserDataSource.RemoteDataSource remoteDataSource =
+            new UserRemoteDataSource(FSalonServiceClient.getInstance());
+        UserDataSource.LocalDataSource localDataSource =
+            new UserLocalDataSource(new SharePreferenceImp(this));
         BookingDetailContract.Presenter presenter =
             new BookingDetailPresenter(mViewModel, new BookingRepository(
-                new BookingRemoteDataSource(FSalonServiceClient.getInstance())));
+                new BookingRemoteDataSource(FSalonServiceClient.getInstance())),
+                new UserRepository(remoteDataSource, localDataSource));
         mViewModel.setPresenter(presenter);
         ActivityBookingDetailBinding binding =
             DataBindingUtil.setContentView(this, R.layout.activity_booking_detail);
@@ -88,5 +98,13 @@ public class BookingDetailActivity extends AppCompatActivity
     @Override
     public void onRefresh() {
         mViewModel.onGetData();
+    }
+
+    private void getBundle() {
+        Intent intent = getIntent();
+        if (intent == null) {
+            return;
+        }
+        mIdBooking = intent.getIntExtra(BOOKING_ID, DEFAULT_ID);
     }
 }
