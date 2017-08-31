@@ -84,6 +84,7 @@ public class Constant {
         public static final String BUNDLE_TYPE = "Type";
         public static final String BUNDLE_START = "Start";
         public static final String BUNDLE_END = "End";
+        public static final String BUNDLE_STATUS = "Status";
     }
 
     /**
