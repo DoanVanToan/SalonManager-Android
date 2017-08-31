@@ -125,4 +125,7 @@
     <string name="title_side_right_photo">Right</string>
     <string name="title_side_behind_photo">Behind</string>
     <string name="title_side_front_up_photo">Front up</string>
+    <string name="title_bill_label">Sale amount</string>
+    <string name="title_bill_description">Bill</string>
+    <string name="title_total">Total</string>
 </resources>

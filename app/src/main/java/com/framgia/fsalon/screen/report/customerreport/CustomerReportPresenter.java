@@ -43,7 +43,7 @@ final class CustomerReportPresenter implements CustomerReportContract.Presenter 
 
     @Override
     public void getReport(String type, long start, long end) {
-        Disposable disposable = mReportRepository.getBookingReport(type, start, end)
+        Disposable disposable = mReportRepository.getCustomerReport(type, start, end)
             .subscribeOn(Schedulers.io())
             .observeOn(AndroidSchedulers.mainThread())
             .subscribeWith(new DisposableObserver<CustomerReportResponse>() {

@@ -30,7 +30,7 @@
             bind:formatter="@{viewModel.iValueFormatter}"
             bind:labels="@{viewModel.labels}"
             bind:legend="@{viewModel.legend}"
-            bind:pinch_zoom="@{true}"
+            bind:axis_minimum="@{0f}"
             bind:x_axis_formatter="@{viewModel.xIAxisValueFormatter}"
             bind:y_axis_formatter="@{viewModel.yIAxisValueFormatter}"/>
 

@@ -366,15 +366,14 @@ public class BindingUtils {
         }
     }
 
-    @BindingAdapter("pinch_zoom")
-    public static void setPinchZoom(BarChart chart, boolean isEnable) {
-        if (isEnable) {
-            chart.setPinchZoom(true);
-        }
+    @BindingAdapter("axis_minimum")
+    public static void setBarChartAxisMin(BarChart chart, float minimum) {
+        chart.setPinchZoom(true);
         chart.setDrawValueAboveBar(false);
-        chart.getAxisLeft().setAxisMinimum(0f);
+        chart.getAxisLeft().setAxisMinimum(minimum);
         chart.getAxisRight().setEnabled(false);
         chart.getXAxis().setPosition(XAxis.XAxisPosition.BOTTOM);
+        chart.getXAxis().setAxisMaximum(5f);
         chart.getDescription().setEnabled(false);
         Legend l = chart.getLegend();
         l.setVerticalAlignment(Legend.LegendVerticalAlignment.BOTTOM);
@@ -385,6 +384,45 @@ public class BindingUtils {
         l.setFormToTextSpace(4f);
         l.setXEntrySpace(20f);
     }
+
+//    @BindingAdapter(value = {"axis_minimum", "description"})
+//    public static void setLineChartAxisMin(LineChart chart, float minimum,
+//                                           String description) {
+//        CustomMarkerView markerView = new CustomMarkerView(chart.getContext(), R.layout
+//            .message_marker_view);
+//        markerView.setChartView(chart);
+//        chart.setMarker(markerView);
+//        chart.setDrawGridBackground(false);
+//        chart.getDescription().setEnabled(true);
+//        chart.getDescription().setText(description);
+//        chart.getDescription().setTextSize(18f);
+//        chart.getAxisLeft().setAxisMinimum(minimum);
+//        chart.getAxisRight().setEnabled(false);
+//        chart.getXAxis().setPosition(XAxis.XAxisPosition.BOTTOM);
+//        chart.setTouchEnabled(true);
+//        chart.setDragEnabled(true);
+//        chart.setScaleEnabled(true);
+//        chart.setPinchZoom(true);
+//        XAxis xAxis = chart.getXAxis();
+//        xAxis.setAxisMaximum(7);
+//        xAxis.setAxisLineWidth(1f);
+//        xAxis.enableGridDashedLine(10f, 10f, 0f);
+//        xAxis.setPosition(XAxis.XAxisPosition.BOTTOM);
+//        YAxis leftAxis = chart.getAxisLeft();
+//        leftAxis.removeAllLimitLines();
+//        leftAxis.setAxisMinimum(minimum);
+//        leftAxis.enableGridDashedLine(10f, 10f, 0f);
+//        leftAxis.setDrawZeroLine(false);
+//        chart.getAxisRight().setEnabled(false);
+//        Legend l = chart.getLegend();
+//        l.setVerticalAlignment(Legend.LegendVerticalAlignment.BOTTOM);
+//        l.setHorizontalAlignment(Legend.LegendHorizontalAlignment.RIGHT);
+//        l.setOrientation(Legend.LegendOrientation.HORIZONTAL);
+//        l.setDrawInside(false);
+//        l.setFormSize(8f);
+//        l.setFormToTextSpace(4f);
+//        l.setXEntrySpace(20f);
+//    }
 
     @BindingAdapter("x_axis_formatter")
     public static void setXAxisFormatter(BarChart chart, IAxisValueFormatter formatter) {
@@ -398,6 +436,19 @@ public class BindingUtils {
     public static void setYAxisFormatter(BarChart chart, IAxisValueFormatter formatter) {
         chart.getAxisLeft().setValueFormatter(formatter);
     }
+
+//    @BindingAdapter("x_axis_formatter")
+//    public static void setXAxisFormatter(LineChart chart, IAxisValueFormatter formatter) {
+//        if (formatter == null) {
+//            return;
+//        }
+//        chart.getXAxis().setValueFormatter(formatter);
+//    }
+//
+//    @BindingAdapter("y_axis_formatter")
+//    public static void setYAxisFormatter(LineChart chart, IAxisValueFormatter formatter) {
+//        chart.getAxisLeft().setValueFormatter(formatter);
+//    }
 
     @BindingAdapter(value = {"data", "formatter", "legend", "labels", "colors"})
     public static void setValueFormatter(BarChart chart, List<BarEntry> data,
@@ -456,4 +507,44 @@ public class BindingUtils {
     public static void setSpinnerAdapter(Spinner view, ArrayAdapter adapter) {
         view.setAdapter(adapter);
     }
+
+//    @BindingAdapter(value = {"data", "formatter", "label"})
+//    public static void setValueFormatter(LineChart chart, List<Entry> data,
+//                                         IValueFormatter formatter, String label) {
+//        if (!data.isEmpty()) {
+//            LineDataSet set;
+//            if (chart.getData() != null && chart.getData().getDataSetCount() > 0) {
+//                set = (LineDataSet) chart.getData().getDataSetByIndex(0);
+//                set.setValues(data);
+//                chart.getData().notifyDataChanged();
+//                chart.notifyDataSetChanged();
+//            } else {
+//                set = new LineDataSet(data, label);
+//                set.setValueFormatter(formatter);
+//                set.enableDashedLine(10f, 5f, 0f);
+//                set.enableDashedHighlightLine(10f, 5f, 0f);
+//                set.setColor(ContextCompat.getColor(chart.getContext(), R.color.color_cyan_900));
+//                set.setCircleColor(
+//                    ContextCompat.getColor(chart.getContext(), R.color.color_cyan_900));
+//                set.setLineWidth(1f);
+//                set.setCircleRadius(3f);
+//                set.setDrawCircleHole(true);
+//                set.setValueTextSize(9f);
+//                set.setDrawFilled(true);
+//                set.setFormLineWidth(5f);
+//                set.setFormLineDashEffect(new DashPathEffect(new float[]{10f, 5f}, 0f));
+//                set.setFormSize(15.f);
+//                set.setFillDrawable(
+//                    ContextCompat.getDrawable(chart.getContext(), R.drawable.bg_linechart_fade));
+//                ArrayList<ILineDataSet> dataSets = new ArrayList<>();
+//                dataSets.add(set);
+//                LineData lineData = new LineData(dataSets);
+//                chart.setData(lineData);
+//            }
+//            chart.animateX(2500);
+//            Legend l = chart.getLegend();
+//            l.setForm(Legend.LegendForm.LINE);
+//            chart.invalidate();
+//        }
+//    }
 }
