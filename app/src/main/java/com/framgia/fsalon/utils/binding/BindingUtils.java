@@ -5,6 +5,7 @@ import android.databinding.BindingAdapter;
 import android.databinding.InverseBindingAdapter;
 import android.databinding.InverseBindingListener;
 import android.graphics.Color;
+import android.graphics.DashPathEffect;
 import android.graphics.drawable.Drawable;
 import android.support.design.widget.BottomNavigationView;
 import android.support.design.widget.TabLayout;
@@ -34,17 +35,22 @@ import com.framgia.fsalon.data.model.Status;
 import com.framgia.fsalon.data.model.Stylist;
 import com.framgia.fsalon.screen.booking.BookingViewModel;
 import com.framgia.fsalon.utils.LayoutManager;
+import com.framgia.fsalon.utils.formatter.CustomMarkerView;
 import com.github.mikephil.charting.charts.BarChart;
 import com.github.mikephil.charting.charts.LineChart;
 import com.github.mikephil.charting.components.Legend;
 import com.github.mikephil.charting.components.XAxis;
+import com.github.mikephil.charting.components.YAxis;
 import com.github.mikephil.charting.data.BarData;
 import com.github.mikephil.charting.data.BarDataSet;
 import com.github.mikephil.charting.data.BarEntry;
+import com.github.mikephil.charting.data.Entry;
 import com.github.mikephil.charting.data.LineData;
+import com.github.mikephil.charting.data.LineDataSet;
 import com.github.mikephil.charting.formatter.IAxisValueFormatter;
 import com.github.mikephil.charting.formatter.IValueFormatter;
 import com.github.mikephil.charting.interfaces.datasets.IBarDataSet;
+import com.github.mikephil.charting.interfaces.datasets.ILineDataSet;
 import com.toptoche.searchablespinnerlibrary.SearchableSpinner;
 
 import java.util.ArrayList;
@@ -385,44 +391,41 @@ public class BindingUtils {
         l.setXEntrySpace(20f);
     }
 
-//    @BindingAdapter(value = {"axis_minimum", "description"})
-//    public static void setLineChartAxisMin(LineChart chart, float minimum,
-//                                           String description) {
-//        CustomMarkerView markerView = new CustomMarkerView(chart.getContext(), R.layout
-//            .message_marker_view);
-//        markerView.setChartView(chart);
-//        chart.setMarker(markerView);
-//        chart.setDrawGridBackground(false);
-//        chart.getDescription().setEnabled(true);
-//        chart.getDescription().setText(description);
-//        chart.getDescription().setTextSize(18f);
-//        chart.getAxisLeft().setAxisMinimum(minimum);
-//        chart.getAxisRight().setEnabled(false);
-//        chart.getXAxis().setPosition(XAxis.XAxisPosition.BOTTOM);
-//        chart.setTouchEnabled(true);
-//        chart.setDragEnabled(true);
-//        chart.setScaleEnabled(true);
-//        chart.setPinchZoom(true);
-//        XAxis xAxis = chart.getXAxis();
-//        xAxis.setAxisMaximum(7);
-//        xAxis.setAxisLineWidth(1f);
-//        xAxis.enableGridDashedLine(10f, 10f, 0f);
-//        xAxis.setPosition(XAxis.XAxisPosition.BOTTOM);
-//        YAxis leftAxis = chart.getAxisLeft();
-//        leftAxis.removeAllLimitLines();
-//        leftAxis.setAxisMinimum(minimum);
-//        leftAxis.enableGridDashedLine(10f, 10f, 0f);
-//        leftAxis.setDrawZeroLine(false);
-//        chart.getAxisRight().setEnabled(false);
-//        Legend l = chart.getLegend();
-//        l.setVerticalAlignment(Legend.LegendVerticalAlignment.BOTTOM);
-//        l.setHorizontalAlignment(Legend.LegendHorizontalAlignment.RIGHT);
-//        l.setOrientation(Legend.LegendOrientation.HORIZONTAL);
-//        l.setDrawInside(false);
-//        l.setFormSize(8f);
-//        l.setFormToTextSpace(4f);
-//        l.setXEntrySpace(20f);
-//    }
+    @BindingAdapter("axis_minimum")
+    public static void setLineChartAxisMin(LineChart chart, float minimum) {
+        CustomMarkerView markerView =
+            new CustomMarkerView(chart.getContext(), R.layout.message_marker_view);
+        markerView.setChartView(chart);
+        chart.setMarker(markerView);
+        chart.setDrawGridBackground(false);
+        chart.getDescription().setEnabled(false);
+        chart.getAxisLeft().setAxisMinimum(minimum);
+        chart.getAxisRight().setEnabled(false);
+        chart.getXAxis().setPosition(XAxis.XAxisPosition.BOTTOM);
+        chart.setTouchEnabled(true);
+        chart.setDragEnabled(true);
+        chart.setScaleEnabled(true);
+        chart.setPinchZoom(true);
+        XAxis xAxis = chart.getXAxis();
+        xAxis.setAxisMaximum(7);
+        xAxis.setAxisLineWidth(1f);
+        xAxis.enableGridDashedLine(10f, 10f, 0f);
+        xAxis.setPosition(XAxis.XAxisPosition.BOTTOM);
+        YAxis leftAxis = chart.getAxisLeft();
+        leftAxis.removeAllLimitLines();
+        leftAxis.setAxisMinimum(minimum);
+        leftAxis.enableGridDashedLine(10f, 10f, 0f);
+        leftAxis.setDrawZeroLine(false);
+        chart.getAxisRight().setEnabled(false);
+        Legend l = chart.getLegend();
+        l.setVerticalAlignment(Legend.LegendVerticalAlignment.BOTTOM);
+        l.setHorizontalAlignment(Legend.LegendHorizontalAlignment.RIGHT);
+        l.setOrientation(Legend.LegendOrientation.HORIZONTAL);
+        l.setDrawInside(false);
+        l.setFormSize(8f);
+        l.setFormToTextSpace(4f);
+        l.setXEntrySpace(20f);
+    }
 
     @BindingAdapter("x_axis_formatter")
     public static void setXAxisFormatter(BarChart chart, IAxisValueFormatter formatter) {
@@ -437,18 +440,18 @@ public class BindingUtils {
         chart.getAxisLeft().setValueFormatter(formatter);
     }
 
-//    @BindingAdapter("x_axis_formatter")
-//    public static void setXAxisFormatter(LineChart chart, IAxisValueFormatter formatter) {
-//        if (formatter == null) {
-//            return;
-//        }
-//        chart.getXAxis().setValueFormatter(formatter);
-//    }
-//
-//    @BindingAdapter("y_axis_formatter")
-//    public static void setYAxisFormatter(LineChart chart, IAxisValueFormatter formatter) {
-//        chart.getAxisLeft().setValueFormatter(formatter);
-//    }
+    @BindingAdapter("x_axis_formatter")
+    public static void setXAxisFormatter(LineChart chart, IAxisValueFormatter formatter) {
+        if (formatter == null) {
+            return;
+        }
+        chart.getXAxis().setValueFormatter(formatter);
+    }
+
+    @BindingAdapter("y_axis_formatter")
+    public static void setYAxisFormatter(LineChart chart, IAxisValueFormatter formatter) {
+        chart.getAxisLeft().setValueFormatter(formatter);
+    }
 
     @BindingAdapter(value = {"data", "formatter", "legend", "labels", "colors"})
     public static void setValueFormatter(BarChart chart, List<BarEntry> data,
@@ -508,43 +511,43 @@ public class BindingUtils {
         view.setAdapter(adapter);
     }
 
-//    @BindingAdapter(value = {"data", "formatter", "label"})
-//    public static void setValueFormatter(LineChart chart, List<Entry> data,
-//                                         IValueFormatter formatter, String label) {
-//        if (!data.isEmpty()) {
-//            LineDataSet set;
-//            if (chart.getData() != null && chart.getData().getDataSetCount() > 0) {
-//                set = (LineDataSet) chart.getData().getDataSetByIndex(0);
-//                set.setValues(data);
-//                chart.getData().notifyDataChanged();
-//                chart.notifyDataSetChanged();
-//            } else {
-//                set = new LineDataSet(data, label);
-//                set.setValueFormatter(formatter);
-//                set.enableDashedLine(10f, 5f, 0f);
-//                set.enableDashedHighlightLine(10f, 5f, 0f);
-//                set.setColor(ContextCompat.getColor(chart.getContext(), R.color.color_cyan_900));
-//                set.setCircleColor(
-//                    ContextCompat.getColor(chart.getContext(), R.color.color_cyan_900));
-//                set.setLineWidth(1f);
-//                set.setCircleRadius(3f);
-//                set.setDrawCircleHole(true);
-//                set.setValueTextSize(9f);
-//                set.setDrawFilled(true);
-//                set.setFormLineWidth(5f);
-//                set.setFormLineDashEffect(new DashPathEffect(new float[]{10f, 5f}, 0f));
-//                set.setFormSize(15.f);
-//                set.setFillDrawable(
-//                    ContextCompat.getDrawable(chart.getContext(), R.drawable.bg_linechart_fade));
-//                ArrayList<ILineDataSet> dataSets = new ArrayList<>();
-//                dataSets.add(set);
-//                LineData lineData = new LineData(dataSets);
-//                chart.setData(lineData);
-//            }
-//            chart.animateX(2500);
-//            Legend l = chart.getLegend();
-//            l.setForm(Legend.LegendForm.LINE);
-//            chart.invalidate();
-//        }
-//    }
+    @BindingAdapter(value = {"data", "formatter", "label"})
+    public static void setValueFormatter(LineChart chart, List<Entry> data,
+                                         IValueFormatter formatter, String label) {
+        if (!data.isEmpty()) {
+            LineDataSet set;
+            if (chart.getData() != null && chart.getData().getDataSetCount() > 0) {
+                set = (LineDataSet) chart.getData().getDataSetByIndex(0);
+                set.setValues(data);
+                chart.getData().notifyDataChanged();
+                chart.notifyDataSetChanged();
+            } else {
+                set = new LineDataSet(data, label);
+                set.setValueFormatter(formatter);
+                set.enableDashedLine(10f, 5f, 0f);
+                set.enableDashedHighlightLine(10f, 5f, 0f);
+                set.setColor(ContextCompat.getColor(chart.getContext(), R.color.color_cyan_900));
+                set.setCircleColor(
+                    ContextCompat.getColor(chart.getContext(), R.color.color_cyan_900));
+                set.setLineWidth(1f);
+                set.setCircleRadius(3f);
+                set.setDrawCircleHole(true);
+                set.setValueTextSize(9f);
+                set.setDrawFilled(true);
+                set.setFormLineWidth(5f);
+                set.setFormLineDashEffect(new DashPathEffect(new float[]{10f, 5f}, 0f));
+                set.setFormSize(15.f);
+                set.setFillDrawable(
+                    ContextCompat.getDrawable(chart.getContext(), R.drawable.bg_linechart_fade));
+                ArrayList<ILineDataSet> dataSets = new ArrayList<>();
+                dataSets.add(set);
+                LineData lineData = new LineData(dataSets);
+                chart.setData(lineData);
+            }
+            chart.animateX(2500);
+            Legend l = chart.getLegend();
+            l.setForm(Legend.LegendForm.LINE);
+            chart.invalidate();
+        }
+    }
 }

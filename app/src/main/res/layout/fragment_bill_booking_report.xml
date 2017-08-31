@@ -1,0 +1,63 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:bind="http://schemas.android.com/apk/res-auto"
+    >
+
+    <data>
+
+        <variable
+            name="viewModel"
+            type="com.framgia.fsalon.screen.report.billbookingreport.BillBookingReportViewModel"
+            />
+
+    </data>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical"
+        android:paddingTop="@dimen/dp_24">
+
+        <com.github.mikephil.charting.charts.LineChart
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="1"
+            android:padding="@dimen/dp_20"
+            bind:axis_minimum="@{0f}"
+            bind:data="@{viewModel.entries}"
+            bind:formatter="@{viewModel.iValueFormatter}"
+            bind:label="@{viewModel.label}"
+            bind:x_axis_formatter="@{viewModel.xIAxisValueFormatter}"
+            bind:y_axis_formatter="@{viewModel.yIAxisValueFormatter}"
+            />
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="@dimen/dp_24"
+            android:layout_marginTop="@dimen/dp_24"
+            android:orientation="horizontal"
+            android:paddingEnd="@dimen/dp_10"
+            android:paddingLeft="@dimen/dp_10"
+            android:paddingRight="@dimen/dp_10"
+            android:paddingStart="@dimen/dp_10">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/title_total"
+                android:textSize="@dimen/sp_20"
+                android:textStyle="bold"/>
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:gravity="end"
+                android:text="@{viewModel.totalSale}"
+                android:textColor="@color/color_red"
+                android:textSize="@dimen/sp_20"
+                android:textStyle="bold"/>
+        </LinearLayout>
+    </LinearLayout>
+</layout>

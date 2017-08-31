@@ -89,8 +89,8 @@
                         android:layout_marginRight="@dimen/dp_2"
                         android:layout_marginStart="@dimen/dp_2"
                         android:layout_weight="1"
-                        android:background="@{viewModel.tabPosition == TabButton.TAB_BILLS? @drawable/bg_report_selected : @drawable/bg_report}"
-                        android:onClick="@{()-> viewModel.onTabFilterClick(TabButton.TAB_BILLS)}"
+                        android:background="@{viewModel.tabPosition == TabButton.TAB_BOOKING? @drawable/bg_report_selected : @drawable/bg_report}"
+                        android:onClick="@{()-> viewModel.onTabFilterClick(TabButton.TAB_BOOKING)}"
                         android:text="@string/title_bills"
                         />
                 </LinearLayout>
