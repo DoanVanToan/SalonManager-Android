@@ -4,8 +4,8 @@ import android.support.annotation.NonNull;
 
 import com.framgia.fsalon.data.model.BookingOder;
 import com.framgia.fsalon.data.model.BookingResponse;
-import com.framgia.fsalon.data.model.ImageResponse;
 
+import java.io.File;
 import java.util.List;
 
 import io.reactivex.Observable;
@@ -53,7 +53,13 @@ public class BookingRepository implements BookingDataSource {
 
     @Override
     public Observable<BookingOder> postImageByStylist(@NonNull int orderBookingId,
-                                                      @NonNull ImageResponse image) {
-        return mRemoteDataSource.postImageByStylist(orderBookingId, image);
+                                                      @NonNull String imagePaths) {
+        return mRemoteDataSource.postImageByStylist(orderBookingId, imagePaths);
+    }
+
+    @Override
+    public Observable<List<String>> postMultiImages(@NonNull List<File> files, String mediaType,
+                                                    String folder) {
+        return mRemoteDataSource.postMultiImages(files, mediaType, folder);
     }
 }

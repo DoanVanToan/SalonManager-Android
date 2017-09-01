@@ -338,62 +338,79 @@
                         android:id="@+id/linear_photo"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:baselineAligned="false"
-                        android:orientation="horizontal"
-                        android:visibility="gone"
-                        >
+                        android:orientation="vertical"
+                        android:visibility="gone">
 
-                        <include
-                            layout="@layout/item_photo"
-                            android:layout_width="0dp"
+                        <LinearLayout
+                            android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            android:layout_marginEnd="@dimen/dp_3"
-                            android:layout_marginRight="@dimen/dp_3"
-                            android:layout_weight="1"
-                            bind:pathPhoto="@{viewModel.pathImageSideLeft}"
-                            bind:sidePhoto="@{SideCapture.SIDE_LEFT}"
-                            bind:titlePhoto="@{@string/title_side_left_photo}"
-                            bind:viewModel="@{viewModel}"
-                            />
+                            android:baselineAligned="false"
+                            android:orientation="horizontal">
 
-                        <include
-                            layout="@layout/item_photo"
-                            android:layout_width="0dp"
-                            android:layout_height="wrap_content"
-                            android:layout_marginEnd="@dimen/dp_3"
-                            android:layout_marginRight="@dimen/dp_3"
-                            android:layout_weight="1"
-                            bind:pathPhoto="@{viewModel.pathImageSideRight}"
-                            bind:sidePhoto="@{SideCapture.SIDE_RIGHT}"
-                            bind:titlePhoto="@{@string/title_side_right_photo}"
-                            bind:viewModel="@{viewModel}"
-                            />
+                            <include
+                                layout="@layout/item_photo"
+                                android:layout_width="0dp"
+                                android:layout_height="wrap_content"
+                                android:layout_marginEnd="@dimen/dp_3"
+                                android:layout_marginRight="@dimen/dp_3"
+                                android:layout_weight="1"
+                                bind:pathPhoto="@{viewModel.pathImageSideLeft}"
+                                bind:sidePhoto="@{SideCapture.SIDE_LEFT}"
+                                bind:titlePhoto="@{@string/title_side_left_photo}"
+                                bind:viewModel="@{viewModel}"/>
 
-                        <include
-                            layout="@layout/item_photo"
-                            android:layout_width="0dp"
-                            android:layout_height="wrap_content"
-                            android:layout_marginEnd="@dimen/dp_3"
-                            android:layout_marginRight="@dimen/dp_3"
-                            android:layout_weight="1"
-                            bind:pathPhoto="@{viewModel.pathImageSideBehind}"
-                            bind:sidePhoto="@{SideCapture.SIDE_BEHIND}"
-                            bind:titlePhoto="@{@string/title_side_behind_photo}"
-                            bind:viewModel="@{viewModel}"
-                            />
+                            <include
+                                layout="@layout/item_photo"
+                                android:layout_width="0dp"
+                                android:layout_height="wrap_content"
+                                android:layout_marginEnd="@dimen/dp_3"
+                                android:layout_marginRight="@dimen/dp_3"
+                                android:layout_weight="1"
+                                bind:pathPhoto="@{viewModel.pathImageSideRight}"
+                                bind:sidePhoto="@{SideCapture.SIDE_RIGHT}"
+                                bind:titlePhoto="@{@string/title_side_right_photo}"
+                                bind:viewModel="@{viewModel}"/>
 
-                        <include
-                            layout="@layout/item_photo"
-                            android:layout_width="0dp"
+                            <include
+                                layout="@layout/item_photo"
+                                android:layout_width="0dp"
+                                android:layout_height="wrap_content"
+                                android:layout_marginEnd="@dimen/dp_3"
+                                android:layout_marginRight="@dimen/dp_3"
+                                android:layout_weight="1"
+                                bind:pathPhoto="@{viewModel.pathImageSideBehind}"
+                                bind:sidePhoto="@{SideCapture.SIDE_BEHIND}"
+                                bind:titlePhoto="@{@string/title_side_behind_photo}"
+                                bind:viewModel="@{viewModel}"/>
+
+                            <include
+                                layout="@layout/item_photo"
+                                android:layout_width="0dp"
+                                android:layout_height="wrap_content"
+                                android:layout_weight="1"
+                                bind:pathPhoto="@{viewModel.pathImageSideFrontUp}"
+                                bind:sidePhoto="@{SideCapture.SIDE_FRONT_UP}"
+                                bind:titlePhoto="@{@string/title_side_front_up_photo}"
+                                bind:viewModel="@{viewModel}"/>
+                        </LinearLayout>
+
+                        <TextView
+                            android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:layout_weight="1"
-                            bind:pathPhoto="@{viewModel.pathImageSideFrontUp}"
-                            bind:sidePhoto="@{SideCapture.SIDE_FRONT_UP}"
-                            bind:titlePhoto="@{@string/title_side_front_up_photo}"
-                            bind:viewModel="@{viewModel}"
-                            />
+                            android:layout_marginTop="@dimen/dp_10"
+                            android:onClick="@{()->viewModel.onUpdatePhotos()}"
+                            android:text="@string/title_update_photo"
+                            android:textColor="@color/colorPrimaryDark"
+                            android:textStyle="italic"/>
+
                     </LinearLayout>
 
+                    <ProgressBar
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="bottom|center"
+                        android:layout_marginBottom="@dimen/dp_3"
+                        android:visibility="@{viewModel.progressBarUpdatePhoto}"/>
                 </LinearLayout>
 
                 <com.github.clans.fab.FloatingActionMenu

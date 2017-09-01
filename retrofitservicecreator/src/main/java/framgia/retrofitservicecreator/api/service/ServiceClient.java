@@ -2,13 +2,15 @@ package framgia.retrofitservicecreator.api.service;
 
 import android.app.Application;
 import android.support.annotation.NonNull;
-import framgia.retrofitservicecreator.api.middleware.RxErrorHandlingCallAdapterFactory;
+
 import com.google.gson.FieldNamingPolicy;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 
 import java.util.Date;
 import java.util.concurrent.TimeUnit;
+
+import framgia.retrofitservicecreator.api.middleware.RxErrorHandlingCallAdapterFactory;
 import okhttp3.Cache;
 import okhttp3.Interceptor;
 import okhttp3.OkHttpClient;
@@ -18,7 +20,7 @@ import retrofit2.adapter.rxjava2.RxJava2CallAdapterFactory;
 import retrofit2.converter.gson.GsonConverterFactory;
 
 public class ServiceClient {
-    private static final int CONNECTION_TIMEOUT = 60;
+    private static final int CONNECTION_TIMEOUT = 120;
 
     public static <T> T createService(Application application, String endPoint, Class<T> serviceClass) {
         return createService(application, endPoint, serviceClass, getGsonConfig());

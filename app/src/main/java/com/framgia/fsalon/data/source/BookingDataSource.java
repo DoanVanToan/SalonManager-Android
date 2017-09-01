@@ -4,8 +4,8 @@ import android.support.annotation.NonNull;
 
 import com.framgia.fsalon.data.model.BookingOder;
 import com.framgia.fsalon.data.model.BookingResponse;
-import com.framgia.fsalon.data.model.ImageResponse;
 
+import java.io.File;
 import java.util.List;
 
 import io.reactivex.Observable;
@@ -21,5 +21,7 @@ public interface BookingDataSource {
     Observable<BookingOder> getBookingById(int id);
     Observable<List<String>> changeStatusBooking(int id, int statusId);
     Observable<BookingOder> postImageByStylist(@NonNull int orderBookingId,
-                                               @NonNull ImageResponse image);
+                                               @NonNull String imagePaths);
+    Observable<List<String>> postMultiImages(@NonNull List<File> files, String mediaType,
+                                             String folder);
 }

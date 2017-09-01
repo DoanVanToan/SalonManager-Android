@@ -2,11 +2,12 @@ package com.framgia.fsalon.data.source.remote;
 
 import com.framgia.fsalon.data.model.BookingOder;
 import com.framgia.fsalon.data.model.BookingResponse;
-import com.framgia.fsalon.data.model.ImageResponse;
 import com.framgia.fsalon.data.source.BookingDataSource;
 import com.framgia.fsalon.data.source.api.FSalonApi;
 import com.framgia.fsalon.utils.Utils;
 
+import java.io.File;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -16,6 +17,9 @@ import io.reactivex.Observable;
 import io.reactivex.ObservableSource;
 import io.reactivex.annotations.NonNull;
 import io.reactivex.functions.Function;
+import okhttp3.MediaType;
+import okhttp3.MultipartBody;
+import okhttp3.RequestBody;
 
 import static com.framgia.fsalon.utils.Constant.ApiParram.DATE;
 import static com.framgia.fsalon.utils.Constant.ApiParram.DEPARTMENT_ID;
@@ -23,6 +27,7 @@ import static com.framgia.fsalon.utils.Constant.ApiParram.IMAGE;
 import static com.framgia.fsalon.utils.Constant.ApiParram.NAME;
 import static com.framgia.fsalon.utils.Constant.ApiParram.ORDER_BOOKING_ID;
 import static com.framgia.fsalon.utils.Constant.ApiParram.PHONE;
+import static com.framgia.fsalon.utils.Constant.ApiParram.POST_IMAGE;
 import static com.framgia.fsalon.utils.Constant.ApiParram.RENDER_BOOKING_ID;
 import static com.framgia.fsalon.utils.Constant.ApiParram.STYLIST_CHOSEN;
 import static com.framgia.fsalon.utils.Constant.ApiParram.STYLIST_ID;
@@ -122,15 +127,15 @@ public class BookingRemoteDataSource extends BaseRemoteDataSource implements Boo
 
     @Override
     public Observable<BookingOder> postImageByStylist(@NonNull int orderBookingId,
-                                                      @NonNull ImageResponse image) {
-        Map<String, String> parram = new HashMap<>();
+                                                      @NonNull String imagePaths) {
+        Map<String, String> params = new HashMap<>();
         if (orderBookingId > OUT_OF_INDEX) {
-            parram.put(ORDER_BOOKING_ID, String.valueOf(orderBookingId));
+            params.put(ORDER_BOOKING_ID, String.valueOf(orderBookingId));
         }
-        if (image != null) {
-            parram.put(IMAGE, image.toString());
+        if (imagePaths != null) {
+            params.put(IMAGE, imagePaths);
         }
-        return mFSalonApi.postImageByStylist(parram).flatMap(
+        return mFSalonApi.postImageByStylist(params).flatMap(
             new Function<Respone<BookingOder>, ObservableSource<BookingOder>>() {
                 @Override
                 public ObservableSource<BookingOder> apply(
@@ -139,5 +144,52 @@ public class BookingRemoteDataSource extends BaseRemoteDataSource implements Boo
                     return Utils.getResponse(bookingOderRespone);
                 }
             });
+    }
+
+    /**
+     * post multi files to server
+     *
+     * @param files
+     * @param mediaType
+     * @param folder
+     * @return
+     */
+    @Override
+    public Observable<List<String>> postMultiImages(@NonNull List<File> files, String mediaType,
+                                                    String folder) {
+        List<MultipartBody.Part> parts = new ArrayList<>();
+        MultipartBody.Part part;
+        for (File file : files) {
+            part = createMultiPartBody(file, mediaType, folder);
+            if (part == null) {
+                break;
+            }
+            parts.add(part);
+        }
+        return mFSalonApi.postMultiImages(folder, parts)
+            .flatMap(new Function<Respone<List<String>>, ObservableSource<List<String>>>() {
+                @Override
+                public ObservableSource<List<String>> apply(@NonNull Respone<List<String>>
+                                                                listUrls)
+                    throws Exception {
+                    return Utils.getResponse(listUrls);
+                }
+            });
+    }
+
+    /***
+     * @param file: file to upload
+     * @param mediaType: media type of file
+     * @param folder: folder contents file uploaded
+     * @return
+     */
+    private MultipartBody.Part createMultiPartBody(File file, String mediaType, String folder) {
+        if (file == null) {
+            return null;
+        }
+        RequestBody requestFile =
+            RequestBody.create(
+                MediaType.parse(mediaType), file);
+        return MultipartBody.Part.createFormData(POST_IMAGE, file.getName(), requestFile);
     }
 }

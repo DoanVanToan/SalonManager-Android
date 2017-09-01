@@ -128,4 +128,9 @@
     <string name="title_bill_label">Sale amount</string>
     <string name="title_bill_description">Bill</string>
     <string name="title_total">Total</string>
+    <string name="msg_request_write_file">Write list device using</string>
+    <string name="title_update_photo"><![CDATA[Update Photo >>]]></string>
+    <string name="msg_error_enough_photos">Please make enough photos !!!</string>
+    <string name="msg_add_photo_sucessfully">You have added photos sucessfully !!!</string>
+    <string name="msg_error_add_photo">Some error occured, Sorry about that :\'(</string>
 </resources>
