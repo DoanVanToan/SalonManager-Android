@@ -8,8 +8,10 @@ import android.widget.LinearLayout;
 import com.framgia.fsalon.BasePresenter;
 import com.framgia.fsalon.BaseViewModel;
 import com.framgia.fsalon.data.model.BookingOder;
-import com.framgia.fsalon.data.model.ImageResponse;
 import com.framgia.fsalon.data.model.User;
+
+import java.io.File;
+import java.util.List;
 
 /**
  * This specifies the contract between the view and the presenter.
@@ -36,12 +38,17 @@ public interface BookingDetailContract {
         void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions,
                                         @NonNull int[] grantResults);
         void onActivityResult(int requestCode, int resultCode, Intent data);
-        void updateImage(String pathOrigin);
         void onAddPhoto(LinearLayout layoutPhoto, View view);
         void onDeterminePermissionSuccessfully(User user);
         void onUserClick();
         void onGetUserSuccess(User user);
         void onGetUserFailed(String message);
+        void onUpdatePhotos();
+        void onHideUpdatePhoto();
+        void onShowUpdatePhoto();
+        void onRequestEnoughPhotos();
+        void onAddPhotoSucessfully();
+        void onAddPhotoError();
     }
 
     /**
@@ -49,8 +56,10 @@ public interface BookingDetailContract {
      */
     interface Presenter extends BasePresenter {
         void getBookingById(int id);
-        void postImageByStylist(@NonNull int bookingOrderId, @NonNull ImageResponse image);
+        void postMutiImages(@NonNull int bookingOrderId, @NonNull List<File> images,
+                            String mediaType, String folder, int totalcapture);
         void determinePermission();
         void getUserByPhone(String phoneNumber);
+        boolean checkValidatePhoto(List<File> photos, int total);
     }
 }

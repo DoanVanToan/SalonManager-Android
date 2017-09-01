@@ -16,11 +16,11 @@ import android.support.v7.app.AppCompatActivity;
 import android.text.TextUtils;
 import android.view.View;
 import android.widget.LinearLayout;
+
 import com.framgia.fsalon.BR;
 import com.framgia.fsalon.FSalonApplication;
 import com.framgia.fsalon.R;
 import com.framgia.fsalon.data.model.BookingOder;
-import com.framgia.fsalon.data.model.ImageResponse;
 import com.framgia.fsalon.data.model.Status;
 import com.framgia.fsalon.data.model.User;
 import com.framgia.fsalon.screen.customerinfo.CustomerInfoActivity;
@@ -32,24 +32,24 @@ import com.framgia.fsalon.utils.Utils;
 import com.framgia.fsalon.utils.navigator.Navigator;
 import com.framgia.fsalon.utils.permission.PermissionUtils;
 import com.github.clans.fab.FloatingActionMenu;
+
 import java.io.File;
+import java.util.ArrayList;
+import java.util.List;
 
 import static android.app.Activity.RESULT_OK;
 import static android.view.View.GONE;
 import static android.view.View.VISIBLE;
 import static com.framgia.fsalon.data.model.BookingOder.STATUS_IN_PROGRESS;
-import static com.framgia.fsalon.screen.scheduler.detail.BookingDetailViewModel.SideCapture
-    .SIDE_BEHIND;
-import static com.framgia.fsalon.screen.scheduler.detail.BookingDetailViewModel.SideCapture
-    .SIDE_FRONT_UP;
-import static com.framgia.fsalon.screen.scheduler.detail.BookingDetailViewModel.SideCapture
-    .SIDE_LEFT;
-import static com.framgia.fsalon.screen.scheduler.detail.BookingDetailViewModel.SideCapture
-    .SIDE_RIGHT;
+import static com.framgia.fsalon.screen.scheduler.detail.BookingDetailViewModel.SideCapture.SIDE_BEHIND;
+import static com.framgia.fsalon.screen.scheduler.detail.BookingDetailViewModel.SideCapture.SIDE_FRONT_UP;
+import static com.framgia.fsalon.screen.scheduler.detail.BookingDetailViewModel.SideCapture.SIDE_LEFT;
+import static com.framgia.fsalon.screen.scheduler.detail.BookingDetailViewModel.SideCapture.SIDE_RIGHT;
 import static com.framgia.fsalon.utils.Constant.Permission.PERMISSION_MAIN_WORKER;
 import static com.framgia.fsalon.utils.Constant.RequestPermission.REQUEST_ADMIN_BOOKING_ACTIVITY;
 import static com.framgia.fsalon.utils.Constant.RequestPermission.REQUEST_CALL_PERMISSION;
 import static com.framgia.fsalon.utils.Constant.RequestPermission.REQUEST_PERMISSION_CAMERA;
+import static com.framgia.fsalon.utils.Constant.RequestPermission.REQUEST_PERMISSION_WRITE_STORGE;
 import static com.framgia.fsalon.utils.Constant.RequestPermission.REQUEST_PICK_IMAGE;
 import static com.framgia.fsalon.utils.ImagePicker.BUNDLE_IS_CAPTURED;
 import static com.framgia.fsalon.utils.ImagePicker.TEMP_IMAGE_NAME;
@@ -59,8 +59,10 @@ import static com.framgia.fsalon.utils.ImagePicker.TEMP_IMAGE_NAME;
  */
 public class BookingDetailViewModel extends BaseObservable
     implements BookingDetailContract.ViewModel {
-
     private static final String EDIT_STATUS_DIALOG = "EDIT_STATUS_DIALOG";
+    private static final String MEDIA_TYPE = "image/*";
+    private static final String FOlDER_PHOTO = "Stylist-";
+    private static final int TOTAL_SIDE_CAPTURE = 4;
     private BookingDetailContract.Presenter mPresenter;
     private BookingOder mBookingOder;
     private int mId;
@@ -77,6 +79,15 @@ public class BookingDetailViewModel extends BaseObservable
     private String mPathImageSideFrontUp;
     private User mCurrentUser;
     private int mAddPhotoVisibility = GONE;
+    private File mPhotoLeft;
+    private File mPhotoRight;
+    private File mPhotoBehind;
+    private File mPhotoFrontUp;
+    private List<File> mPhotoCustomers = new ArrayList<>();
+    private int mProgressBarUpdatePhoto = GONE;
+    private String mFolderImage;
+    private boolean mCameraGranted = false;
+    private boolean mWriteStorageGranted = false;
     private SwipeRefreshLayout.OnRefreshListener mListener =
         new SwipeRefreshLayout.OnRefreshListener() {
             @Override
@@ -169,6 +180,9 @@ public class BookingDetailViewModel extends BaseObservable
             && mCurrentUser.getId() == bookingOder.getStylistId()) {
             setAddPhotoVisibility(VISIBLE);
         }
+        mFolderImage = FOlDER_PHOTO.concat(String.valueOf(bookingOder.getStylistId()))
+            .concat("-")
+            .concat(String.valueOf(mId));
     }
 
     @Override
@@ -258,7 +272,7 @@ public class BookingDetailViewModel extends BaseObservable
     }
 
     public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions,
-        @NonNull int[] grantResults) {
+                                           @NonNull int[] grantResults) {
         switch (requestCode) {
             case REQUEST_CALL_PERMISSION:
                 if (grantResults[0] != PackageManager.PERMISSION_GRANTED) {
@@ -268,12 +282,20 @@ public class BookingDetailViewModel extends BaseObservable
                 }
                 break;
             case REQUEST_PERMISSION_CAMERA:
-                if (grantResults[0] != PackageManager.PERMISSION_GRANTED) {
-                    onPermissionDenied();
+                if (grantResults[0] == PackageManager.PERMISSION_GRANTED
+                    && mWriteStorageGranted) {
+                    mNavigator.startActivityForResult(ImagePicker.getPickImageIntent(
+                        FSalonApplication.getInstant()), REQUEST_PICK_IMAGE);
+                    mCameraGranted = true;
                 } else {
-                    mNavigator.startActivityForResult(
-                        ImagePicker.getPickImageIntent(FSalonApplication.getInstant()),
-                        REQUEST_PICK_IMAGE);
+                    onPermissionDenied();
+                }
+                break;
+            case REQUEST_PERMISSION_WRITE_STORGE:
+                if (grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+                    mWriteStorageGranted = true;
+                } else {
+                    onPermissionDenied();
                 }
                 break;
             default:
@@ -298,10 +320,7 @@ public class BookingDetailViewModel extends BaseObservable
                 if (uri == null) {
                     return;
                 }
-                ImageResponse image = new ImageResponse();
-                image.setPathOrigin(uri.toString());
-                mPresenter.postImageByStylist(mId, image);
-                updateImage(uri.toString());
+                updateImage(uri);
                 break;
             default:
                 break;
@@ -309,27 +328,47 @@ public class BookingDetailViewModel extends BaseObservable
     }
 
     public void pickImage(@SideCapture int sideCapture) {
-        if (PermissionUtils.checkCameraPermission(mActivity)) {
+        if (PermissionUtils.checkWritePermission(mActivity)
+            && PermissionUtils.checkCameraPermission(mActivity)) {
             setSidePhoto(sideCapture);
             mActivity.startActivityForResult(
                 ImagePicker.getPickImageIntent(FSalonApplication.getInstant()), REQUEST_PICK_IMAGE);
         }
     }
 
-    @Override
-    public void updateImage(String pathOrigin) {
+    private void updateImage(Uri uri) {
         switch (mSidePhoto) {
             case SIDE_LEFT:
-                setPathImageSideLeft(pathOrigin);
+                if (mPhotoLeft != null) {
+                    mPhotoCustomers.remove(mPhotoLeft);
+                }
+                setPathImageSideLeft(uri.toString());
+                mPhotoLeft = new File(Utils.getPathFromUri(FSalonApplication.getInstant(), uri));
+                mPhotoCustomers.add(mPhotoLeft);
                 break;
             case SIDE_RIGHT:
-                setPathImageSideRight(pathOrigin);
+                if (mPhotoRight != null) {
+                    mPhotoCustomers.remove(mPhotoRight);
+                }
+                setPathImageSideRight(uri.toString());
+                mPhotoRight = new File(Utils.getPathFromUri(FSalonApplication.getInstant(), uri));
+                mPhotoCustomers.add(mPhotoRight);
                 break;
             case SIDE_BEHIND:
-                setPathImageSideBehind(pathOrigin);
+                if (mPhotoBehind != null) {
+                    mPhotoCustomers.remove(mPhotoBehind);
+                }
+                setPathImageSideBehind(uri.toString());
+                mPhotoBehind = new File(Utils.getPathFromUri(FSalonApplication.getInstant(), uri));
+                mPhotoCustomers.add(mPhotoBehind);
                 break;
             case SIDE_FRONT_UP:
-                setPathImageSideFrontUp(pathOrigin);
+                if (mPhotoFrontUp != null) {
+                    mPhotoCustomers.remove(mPhotoFrontUp);
+                }
+                setPathImageSideFrontUp(uri.toString());
+                mPhotoFrontUp = new File(Utils.getPathFromUri(FSalonApplication.getInstant(), uri));
+                mPhotoCustomers.add(mPhotoFrontUp);
                 break;
             default:
                 break;
@@ -346,6 +385,37 @@ public class BookingDetailViewModel extends BaseObservable
     @Override
     public void onDeterminePermissionSuccessfully(User user) {
         setCurrentUser(user);
+    }
+
+    @Override
+    public void onUpdatePhotos() {
+        mPresenter
+            .postMutiImages(mId, mPhotoCustomers, MEDIA_TYPE, mFolderImage, TOTAL_SIDE_CAPTURE);
+    }
+
+    @Override
+    public void onHideUpdatePhoto() {
+        setProgressBarUpdatePhoto(GONE);
+    }
+
+    @Override
+    public void onShowUpdatePhoto() {
+        setProgressBarUpdatePhoto(VISIBLE);
+    }
+
+    @Override
+    public void onRequestEnoughPhotos() {
+        mNavigator.showToast(R.string.msg_error_enough_photos);
+    }
+
+    @Override
+    public void onAddPhotoSucessfully() {
+        mNavigator.showToast(R.string.msg_add_photo_sucessfully);
+    }
+
+    @Override
+    public void onAddPhotoError() {
+        mNavigator.showToast(R.string.msg_error_add_photo);
     }
 
     @Bindable
@@ -463,6 +533,16 @@ public class BookingDetailViewModel extends BaseObservable
         notifyPropertyChanged(BR.addPhotoVisibility);
     }
 
+    @Bindable
+    public int getProgressBarUpdatePhoto() {
+        return mProgressBarUpdatePhoto;
+    }
+
+    public void setProgressBarUpdatePhoto(int progressBarUpdatePhoto) {
+        mProgressBarUpdatePhoto = progressBarUpdatePhoto;
+        notifyPropertyChanged(BR.progressBarUpdatePhoto);
+    }
+
     private Uri getPickImageResultUri(Intent data) {
         boolean isCamera = false;
         if (data != null) {
@@ -489,9 +569,8 @@ public class BookingDetailViewModel extends BaseObservable
     /**
      * Define all side of customer 's photos
      */
-    @IntDef({ SIDE_LEFT, SIDE_RIGHT, SIDE_BEHIND, SIDE_FRONT_UP })
+    @IntDef({SIDE_LEFT, SIDE_RIGHT, SIDE_BEHIND, SIDE_FRONT_UP})
     public @interface SideCapture {
-
         int SIDE_LEFT = 0;
         int SIDE_RIGHT = 1;
         int SIDE_BEHIND = 2;

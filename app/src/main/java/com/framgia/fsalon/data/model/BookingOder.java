@@ -258,6 +258,8 @@ public class BookingOder implements Parcelable {
                 return R.drawable.ic_smile_24dp;
             case STATUS_IN_LATE:
                 return R.drawable.ic_sad_24dp;
+            case STATUS_IN_PROGRESS:
+                return R.drawable.ic_scissors_and_comb_24dp;
             default:
                 return R.drawable.ic_waiting_room_24_dp;
         }

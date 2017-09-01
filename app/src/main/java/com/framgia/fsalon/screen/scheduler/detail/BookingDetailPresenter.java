@@ -1,15 +1,19 @@
 package com.framgia.fsalon.screen.scheduler.detail;
 
 import com.framgia.fsalon.data.model.BookingOder;
-import com.framgia.fsalon.data.model.ImageResponse;
 import com.framgia.fsalon.data.model.User;
 import com.framgia.fsalon.data.model.UserRespone;
 import com.framgia.fsalon.data.source.BookingRepository;
 import com.framgia.fsalon.data.source.UserRepository;
+
+import java.io.File;
+import java.util.List;
+
 import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.annotations.NonNull;
 import io.reactivex.disposables.CompositeDisposable;
 import io.reactivex.disposables.Disposable;
+import io.reactivex.functions.Consumer;
 import io.reactivex.observers.DisposableObserver;
 import io.reactivex.schedulers.Schedulers;
 
@@ -19,7 +23,6 @@ import io.reactivex.schedulers.Schedulers;
  * the UI as required.
  */
 final class BookingDetailPresenter implements BookingDetailContract.Presenter {
-
     private static final String TAG = BookingDetailPresenter.class.getName();
     private final BookingDetailContract.ViewModel mViewModel;
     private BookingRepository mBookingRepository;
@@ -27,7 +30,7 @@ final class BookingDetailPresenter implements BookingDetailContract.Presenter {
     private UserRepository mUserRepository;
 
     BookingDetailPresenter(BookingDetailContract.ViewModel viewModel,
-        BookingRepository bookingRepository, UserRepository userRepository) {
+                           BookingRepository bookingRepository, UserRepository userRepository) {
         mViewModel = viewModel;
         mBookingRepository = bookingRepository;
         mUserRepository = userRepository;
@@ -71,21 +74,37 @@ final class BookingDetailPresenter implements BookingDetailContract.Presenter {
     }
 
     @Override
-    public void postImageByStylist(@NonNull int bookingOrderId, @NonNull ImageResponse image) {
-        Disposable disposable = mBookingRepository.postImageByStylist(bookingOrderId, image)
+    public void postMutiImages(@NonNull final int bookingOrderId, @NonNull List<File> images,
+                               String mediaType, String folder, int totalcapture) {
+        if (!checkValidatePhoto(images, totalcapture)) {
+            mViewModel.onRequestEnoughPhotos();
+            return;
+        }
+        Disposable disposable = mBookingRepository.postMultiImages(images, mediaType, folder)
             .subscribeOn(Schedulers.io())
             .observeOn(AndroidSchedulers.mainThread())
-            .subscribeWith(new DisposableObserver<BookingOder>() {
+            .doOnSubscribe(new Consumer<Disposable>() {
                 @Override
-                public void onNext(@NonNull BookingOder bookingOder) {
+                public void accept(@NonNull Disposable disposable) throws Exception {
+                    mViewModel.onShowUpdatePhoto();
+                }
+            })
+            .subscribeWith(new DisposableObserver<List<String>>() {
+                @Override
+                public void onNext(@NonNull List<String> strings) {
+                    mBookingRepository.postImageByStylist(bookingOrderId, strings.toString());
                 }
 
                 @Override
                 public void onError(@NonNull Throwable e) {
+                    mViewModel.onHideUpdatePhoto();
+                    mViewModel.onAddPhotoError();
                 }
 
                 @Override
                 public void onComplete() {
+                    mViewModel.onHideUpdatePhoto();
+                    mViewModel.onAddPhotoSucessfully();
                 }
             });
         mCompositeDisposable.add(disposable);
@@ -139,5 +158,17 @@ final class BookingDetailPresenter implements BookingDetailContract.Presenter {
                 }
             });
         mCompositeDisposable.add(disposable);
+    }
+
+    public boolean checkValidatePhoto(List<File> photos, int total) {
+        if (photos == null || photos.size() != total) {
+            return false;
+        }
+        for (int i = 0; i < total; i++) {
+            if (photos.get(i) == null) {
+                return false;
+            }
+        }
+        return true;
     }
 }

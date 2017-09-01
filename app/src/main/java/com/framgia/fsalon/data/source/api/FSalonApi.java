@@ -19,9 +19,12 @@ import java.util.Map;
 
 import framgia.retrofitservicecreator.api.model.Respone;
 import io.reactivex.Observable;
+import okhttp3.MultipartBody;
 import retrofit2.http.GET;
+import retrofit2.http.Multipart;
 import retrofit2.http.POST;
 import retrofit2.http.PUT;
+import retrofit2.http.Part;
 import retrofit2.http.Path;
 import retrofit2.http.Query;
 import retrofit2.http.QueryMap;
@@ -73,7 +76,7 @@ public interface FSalonApi {
     @PUT("api/v0/bill/{id}")
     Observable<Respone<BillResponse>> editBill(@Path("id") int id,
                                                @QueryMap Map<String, String> params);
-    @GET("api/v0/get-bill-by-customer-id-with-images")
+    @GET("api/v0/bill-by-customer-id-with-images")
     Observable<Respone<List<BillResponse>>> getBillsByCustomerId(
         @Query("customer_id") int customerId);
     @GET("api/v0/report-customer")
@@ -84,6 +87,10 @@ public interface FSalonApi {
                                                           @Query("status") int statusId);
     @POST("api/v0/order-booking/stylist-upload-image")
     Observable<Respone<BookingOder>> postImageByStylist(@QueryMap Map<String, String> params);
+    @Multipart
+    @POST("api/v0/media-upload/{folder}")
+    Observable<Respone<List<String>>> postMultiImages(@Path("folder") String folder,
+                                                      @Part List<MultipartBody.Part> files);
     @GET("api/v0/report-bill")
     Observable<Respone<BillReportResponse>> getBillReport(@QueryMap Map<String, String> parrams);
 }

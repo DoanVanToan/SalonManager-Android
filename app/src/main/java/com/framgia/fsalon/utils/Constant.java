@@ -45,6 +45,7 @@ public class Constant {
         public static final String END_DATE = "end_date";
         public static final String ID = "id";
         public static final String IMAGE = "images";
+        public static final String POST_IMAGE = "images[]";
     }
 
     public class Permission {
@@ -63,6 +64,7 @@ public class Constant {
         public static final int REQUEST_CALL_PERMISSION = 3;
         public static final int REQUEST_PERMISSION_CAMERA = 4;
         public static final int REQUEST_PICK_IMAGE = 5;
+        public static final int REQUEST_PERMISSION_WRITE_STORGE = 6;
     }
 
     /**
