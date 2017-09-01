@@ -39,6 +39,9 @@ public interface BookingDetailContract {
         void updateImage(String pathOrigin);
         void onAddPhoto(LinearLayout layoutPhoto, View view);
         void onDeterminePermissionSuccessfully(User user);
+        void onUserClick();
+        void onGetUserSuccess(User user);
+        void onGetUserFailed(String message);
     }
 
     /**
@@ -48,5 +51,6 @@ public interface BookingDetailContract {
         void getBookingById(int id);
         void postImageByStylist(@NonNull int bookingOrderId, @NonNull ImageResponse image);
         void determinePermission();
+        void getUserByPhone(String phoneNumber);
     }
 }

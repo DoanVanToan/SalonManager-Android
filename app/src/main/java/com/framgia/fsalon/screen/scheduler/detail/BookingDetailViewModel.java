@@ -13,9 +13,9 @@ import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.app.AppCompatActivity;
+import android.text.TextUtils;
 import android.view.View;
 import android.widget.LinearLayout;
-
 import com.framgia.fsalon.BR;
 import com.framgia.fsalon.FSalonApplication;
 import com.framgia.fsalon.R;
@@ -23,6 +23,7 @@ import com.framgia.fsalon.data.model.BookingOder;
 import com.framgia.fsalon.data.model.ImageResponse;
 import com.framgia.fsalon.data.model.Status;
 import com.framgia.fsalon.data.model.User;
+import com.framgia.fsalon.screen.customerinfo.CustomerInfoActivity;
 import com.framgia.fsalon.screen.editbooking.EditBookingActivity;
 import com.framgia.fsalon.screen.editstatusdialog.EditStatusDialogFragment;
 import com.framgia.fsalon.utils.Constant;
@@ -31,17 +32,20 @@ import com.framgia.fsalon.utils.Utils;
 import com.framgia.fsalon.utils.navigator.Navigator;
 import com.framgia.fsalon.utils.permission.PermissionUtils;
 import com.github.clans.fab.FloatingActionMenu;
-
 import java.io.File;
 
 import static android.app.Activity.RESULT_OK;
 import static android.view.View.GONE;
 import static android.view.View.VISIBLE;
 import static com.framgia.fsalon.data.model.BookingOder.STATUS_IN_PROGRESS;
-import static com.framgia.fsalon.screen.scheduler.detail.BookingDetailViewModel.SideCapture.SIDE_BEHIND;
-import static com.framgia.fsalon.screen.scheduler.detail.BookingDetailViewModel.SideCapture.SIDE_FRONT_UP;
-import static com.framgia.fsalon.screen.scheduler.detail.BookingDetailViewModel.SideCapture.SIDE_LEFT;
-import static com.framgia.fsalon.screen.scheduler.detail.BookingDetailViewModel.SideCapture.SIDE_RIGHT;
+import static com.framgia.fsalon.screen.scheduler.detail.BookingDetailViewModel.SideCapture
+    .SIDE_BEHIND;
+import static com.framgia.fsalon.screen.scheduler.detail.BookingDetailViewModel.SideCapture
+    .SIDE_FRONT_UP;
+import static com.framgia.fsalon.screen.scheduler.detail.BookingDetailViewModel.SideCapture
+    .SIDE_LEFT;
+import static com.framgia.fsalon.screen.scheduler.detail.BookingDetailViewModel.SideCapture
+    .SIDE_RIGHT;
 import static com.framgia.fsalon.utils.Constant.Permission.PERMISSION_MAIN_WORKER;
 import static com.framgia.fsalon.utils.Constant.RequestPermission.REQUEST_ADMIN_BOOKING_ACTIVITY;
 import static com.framgia.fsalon.utils.Constant.RequestPermission.REQUEST_CALL_PERMISSION;
@@ -55,6 +59,7 @@ import static com.framgia.fsalon.utils.ImagePicker.TEMP_IMAGE_NAME;
  */
 public class BookingDetailViewModel extends BaseObservable
     implements BookingDetailContract.ViewModel {
+
     private static final String EDIT_STATUS_DIALOG = "EDIT_STATUS_DIALOG";
     private BookingDetailContract.Presenter mPresenter;
     private BookingOder mBookingOder;
@@ -242,8 +247,8 @@ public class BookingDetailViewModel extends BaseObservable
             return;
         }
         FragmentTransaction ft = mActivity.getSupportFragmentManager().beginTransaction();
-        EditStatusDialogFragment newFragment = EditStatusDialogFragment.newInstance(mBookingOder
-            .getId(), mBookingOder.getStatus());
+        EditStatusDialogFragment newFragment =
+            EditStatusDialogFragment.newInstance(mBookingOder.getId(), mBookingOder.getStatus());
         newFragment.show(ft, EDIT_STATUS_DIALOG);
     }
 
@@ -253,7 +258,7 @@ public class BookingDetailViewModel extends BaseObservable
     }
 
     public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions,
-                                           @NonNull int[] grantResults) {
+        @NonNull int[] grantResults) {
         switch (requestCode) {
             case REQUEST_CALL_PERMISSION:
                 if (grantResults[0] != PackageManager.PERMISSION_GRANTED) {
@@ -266,8 +271,8 @@ public class BookingDetailViewModel extends BaseObservable
                 if (grantResults[0] != PackageManager.PERMISSION_GRANTED) {
                     onPermissionDenied();
                 } else {
-                    mNavigator.startActivityForResult(ImagePicker.getPickImageIntent(
-                        FSalonApplication.getInstant()),
+                    mNavigator.startActivityForResult(
+                        ImagePicker.getPickImageIntent(FSalonApplication.getInstant()),
                         REQUEST_PICK_IMAGE);
                 }
                 break;
@@ -307,8 +312,7 @@ public class BookingDetailViewModel extends BaseObservable
         if (PermissionUtils.checkCameraPermission(mActivity)) {
             setSidePhoto(sideCapture);
             mActivity.startActivityForResult(
-                ImagePicker.getPickImageIntent(FSalonApplication.getInstant()),
-                REQUEST_PICK_IMAGE);
+                ImagePicker.getPickImageIntent(FSalonApplication.getInstant()), REQUEST_PICK_IMAGE);
         }
     }
 
@@ -403,6 +407,24 @@ public class BookingDetailViewModel extends BaseObservable
         notifyPropertyChanged(BR.pathImageSideBehind);
     }
 
+    @Override
+    public void onUserClick() {
+        if (mBookingOder == null || TextUtils.isEmpty(mBookingOder.getPhone())) {
+            return;
+        }
+        mPresenter.getUserByPhone(mBookingOder.getPhone());
+    }
+
+    @Override
+    public void onGetUserSuccess(User user) {
+        mNavigator.startActivity(CustomerInfoActivity.getInstance(mNavigator.getContext(), user));
+    }
+
+    @Override
+    public void onGetUserFailed(String message) {
+        mNavigator.showToast(message);
+    }
+
     @Bindable
     public String getPathImageSideFrontUp() {
         return mPathImageSideFrontUp;
@@ -467,8 +489,9 @@ public class BookingDetailViewModel extends BaseObservable
     /**
      * Define all side of customer 's photos
      */
-    @IntDef({SIDE_LEFT, SIDE_RIGHT, SIDE_BEHIND, SIDE_FRONT_UP})
+    @IntDef({ SIDE_LEFT, SIDE_RIGHT, SIDE_BEHIND, SIDE_FRONT_UP })
     public @interface SideCapture {
+
         int SIDE_LEFT = 0;
         int SIDE_RIGHT = 1;
         int SIDE_BEHIND = 2;

@@ -2,10 +2,10 @@ package com.framgia.fsalon.screen.scheduler.detail;
 
 import com.framgia.fsalon.data.model.BookingOder;
 import com.framgia.fsalon.data.model.ImageResponse;
+import com.framgia.fsalon.data.model.User;
 import com.framgia.fsalon.data.model.UserRespone;
 import com.framgia.fsalon.data.source.BookingRepository;
 import com.framgia.fsalon.data.source.UserRepository;
-
 import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.annotations.NonNull;
 import io.reactivex.disposables.CompositeDisposable;
@@ -19,6 +19,7 @@ import io.reactivex.schedulers.Schedulers;
  * the UI as required.
  */
 final class BookingDetailPresenter implements BookingDetailContract.Presenter {
+
     private static final String TAG = BookingDetailPresenter.class.getName();
     private final BookingDetailContract.ViewModel mViewModel;
     private BookingRepository mBookingRepository;
@@ -26,7 +27,7 @@ final class BookingDetailPresenter implements BookingDetailContract.Presenter {
     private UserRepository mUserRepository;
 
     BookingDetailPresenter(BookingDetailContract.ViewModel viewModel,
-                           BookingRepository bookingRepository, UserRepository userRepository) {
+        BookingRepository bookingRepository, UserRepository userRepository) {
         mViewModel = viewModel;
         mBookingRepository = bookingRepository;
         mUserRepository = userRepository;
@@ -70,8 +71,7 @@ final class BookingDetailPresenter implements BookingDetailContract.Presenter {
     }
 
     @Override
-    public void postImageByStylist(@NonNull int bookingOrderId,
-                                   @NonNull ImageResponse image) {
+    public void postImageByStylist(@NonNull int bookingOrderId, @NonNull ImageResponse image) {
         Disposable disposable = mBookingRepository.postImageByStylist(bookingOrderId, image)
             .subscribeOn(Schedulers.io())
             .observeOn(AndroidSchedulers.mainThread())
@@ -100,8 +100,7 @@ final class BookingDetailPresenter implements BookingDetailContract.Presenter {
                 @Override
                 public void onNext(@NonNull UserRespone userRespone) {
                     if (userRespone.getUser() != null) {
-                        mViewModel.onDeterminePermissionSuccessfully(
-                            userRespone.getUser());
+                        mViewModel.onDeterminePermissionSuccessfully(userRespone.getUser());
                     }
                 }
 
@@ -111,6 +110,32 @@ final class BookingDetailPresenter implements BookingDetailContract.Presenter {
 
                 @Override
                 public void onComplete() {
+                }
+            });
+        mCompositeDisposable.add(disposable);
+    }
+
+    @Override
+    public void getUserByPhone(String phoneNumber) {
+        mViewModel.showProgressBar();
+        Disposable disposable = mUserRepository.getCustomerByPhone(phoneNumber)
+            .subscribeOn(Schedulers.io())
+            .observeOn(AndroidSchedulers.mainThread())
+            .subscribeWith(new DisposableObserver<User>() {
+                @Override
+                public void onNext(@NonNull User user) {
+                    mViewModel.onGetUserSuccess(user);
+                }
+
+                @Override
+                public void onError(@NonNull Throwable e) {
+                    mViewModel.onGetUserFailed(e.getMessage());
+                    mViewModel.hideProgressBar();
+                }
+
+                @Override
+                public void onComplete() {
+                    mViewModel.hideProgressBar();
                 }
             });
         mCompositeDisposable.add(disposable);

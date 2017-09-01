@@ -31,4 +31,5 @@
     <color name="color_white_transparent">#ccffffff</color>
     <color name="color_green_accent_400">#14cc75</color>
     <color name="color_transparent">#90000000</color>
+    <color name="color_deep_purple_accent_700">#2200CC</color>
 </resources>
