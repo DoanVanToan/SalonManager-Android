@@ -7,15 +7,15 @@ import android.support.v4.app.Fragment;
 
 import com.framgia.fsalon.BR;
 import com.framgia.fsalon.screen.homeadmin.HomePagerAdapter;
+import com.framgia.fsalon.screen.report.billbookingreport.BillBookingReportFragment;
 import com.framgia.fsalon.screen.report.customerreport.CustomerReportFragment;
-import com.framgia.fsalon.screen.report.reportsales.ReportSalesFragment;
 
 import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
 import java.util.ArrayList;
 import java.util.List;
 
-import static com.framgia.fsalon.screen.report.ReportViewModel.TabButton.TAB_BILLS;
+import static com.framgia.fsalon.screen.report.ReportViewModel.TabButton.TAB_BOOKING;
 import static com.framgia.fsalon.screen.report.ReportViewModel.TabButton.TAB_CUSTOMERS;
 import static com.framgia.fsalon.screen.report.ReportViewModel.TabButton.TAB_SALES;
 
@@ -29,25 +29,15 @@ public class ReportViewModel extends BaseObservable implements ReportContract.Vi
 
     public ReportViewModel(Fragment fragment) {
         List<Fragment> fragments = new ArrayList<>();
-        fragments.add(ReportSalesFragment.newInstance());
+        int status = 0;
         String testType = "day";
         long start = 1498900037;
         long end = 1501578437;
+        fragments.add(BillBookingReportFragment.newInstance(testType, status, start, end));
         fragments.add(CustomerReportFragment.newInstance(testType, start, end));
         fragments.add(new Fragment());
         mAdapter = new HomePagerAdapter(fragment.getChildFragmentManager(), fragments);
         setAdapter(mAdapter);
-    }
-
-    /**
-     * TabButton
-     */
-    @IntDef({TAB_SALES, TAB_CUSTOMERS, TAB_BILLS})
-    @Retention(RetentionPolicy.SOURCE)
-    public @interface TabButton {
-        int TAB_SALES = 0;
-        int TAB_CUSTOMERS = 1;
-        int TAB_BILLS = 2;
     }
 
     public void onTabFilterClick(@TabButton int tabPosition) {
@@ -87,5 +77,16 @@ public class ReportViewModel extends BaseObservable implements ReportContract.Vi
     @Override
     public void setPresenter(ReportContract.Presenter presenter) {
         mPresenter = presenter;
+    }
+
+    /**
+     * TabButton
+     */
+    @IntDef({TAB_SALES, TAB_CUSTOMERS, TAB_BOOKING})
+    @Retention(RetentionPolicy.SOURCE)
+    public @interface TabButton {
+        int TAB_SALES = 0;
+        int TAB_CUSTOMERS = 1;
+        int TAB_BOOKING = 2;
     }
 }
