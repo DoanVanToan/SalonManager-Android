@@ -20,6 +20,7 @@ import com.framgia.fsalon.BR;
 import com.framgia.fsalon.FSalonApplication;
 import com.framgia.fsalon.R;
 import com.framgia.fsalon.data.model.BookingOder;
+import com.framgia.fsalon.data.model.ImageResponse;
 import com.framgia.fsalon.data.model.Status;
 import com.framgia.fsalon.data.model.User;
 import com.framgia.fsalon.screen.customerinfo.CustomerInfoActivity;
@@ -40,10 +41,10 @@ import static android.app.Activity.RESULT_OK;
 import static android.view.View.GONE;
 import static android.view.View.VISIBLE;
 import static com.framgia.fsalon.data.model.BookingOder.STATUS_IN_PROGRESS;
-import static com.framgia.fsalon.screen.scheduler.detail.BookingDetailViewModel.SideCapture.SIDE_BEHIND;
-import static com.framgia.fsalon.screen.scheduler.detail.BookingDetailViewModel.SideCapture.SIDE_FRONT_UP;
-import static com.framgia.fsalon.screen.scheduler.detail.BookingDetailViewModel.SideCapture.SIDE_LEFT;
-import static com.framgia.fsalon.screen.scheduler.detail.BookingDetailViewModel.SideCapture.SIDE_RIGHT;
+import static com.framgia.fsalon.screen.scheduler.detail.BookingDetailViewModel.SideCapture.SIDE_FIRST;
+import static com.framgia.fsalon.screen.scheduler.detail.BookingDetailViewModel.SideCapture.SIDE_FOURTH;
+import static com.framgia.fsalon.screen.scheduler.detail.BookingDetailViewModel.SideCapture.SIDE_SECOND;
+import static com.framgia.fsalon.screen.scheduler.detail.BookingDetailViewModel.SideCapture.SIDE_THIRD;
 import static com.framgia.fsalon.utils.Constant.Permission.PERMISSION_ADMIN;
 import static com.framgia.fsalon.utils.Constant.Permission.PERMISSION_MAIN_WORKER;
 import static com.framgia.fsalon.utils.Constant.Permission.PERMISSION_NOMAL;
@@ -74,16 +75,12 @@ public class BookingDetailViewModel extends BaseObservable
     private boolean mIsChangeStatus;
     private AppCompatActivity mActivity;
     private int mSidePhoto;
-    private String mPathImageSideLeft;
-    private String mPathImageSideRight;
-    private String mPathImageSideBehind;
-    private String mPathImageSideFrontUp;
     private User mCurrentUser;
     private int mAddPhotoVisibility = GONE;
-    private File mPhotoLeft;
-    private File mPhotoRight;
-    private File mPhotoBehind;
-    private File mPhotoFrontUp;
+    private File mPhotoFirst;
+    private File mPhotoSecond;
+    private File mPhotoThird;
+    private File mPhotoFourth;
     private List<File> mPhotoCustomers = new ArrayList<>();
     private int mProgressBarUpdatePhoto = GONE;
     private String mFolderImage;
@@ -177,6 +174,46 @@ public class BookingDetailViewModel extends BaseObservable
         notifyPropertyChanged(BR.txtUpdateVisibility);
     }
 
+    @Bindable
+    public File getPhotoFirst() {
+        return mPhotoFirst;
+    }
+
+    public void setPhotoFirst(File photoFirst) {
+        mPhotoFirst = photoFirst;
+        notifyPropertyChanged(BR.photoFirst);
+    }
+
+    @Bindable
+    public File getPhotoSecond() {
+        return mPhotoSecond;
+    }
+
+    public void setPhotoSecond(File photoSecond) {
+        mPhotoSecond = photoSecond;
+        notifyPropertyChanged(BR.photoSecond);
+    }
+
+    @Bindable
+    public File getPhotoThird() {
+        return mPhotoThird;
+    }
+
+    public void setPhotoThird(File photoThird) {
+        mPhotoThird = photoThird;
+        notifyPropertyChanged(BR.photoThird);
+    }
+
+    @Bindable
+    public File getPhotoFourth() {
+        return mPhotoFourth;
+    }
+
+    public void setPhotoFourth(File photoFourth) {
+        mPhotoFourth = photoFourth;
+        notifyPropertyChanged(BR.photoFourth);
+    }
+
     @Override
     public void onStart() {
         mPresenter.onStart();
@@ -203,6 +240,7 @@ public class BookingDetailViewModel extends BaseObservable
         setBookingOder(bookingOder);
         setChangeStatus(Status.getStatuses(bookingOder.getStatus()).size() > 0);
         onSetupPermission(bookingOder);
+        onSetupCustomerPhotos(bookingOder);
     }
 
     private void onSetupPermission(BookingOder bookingOder) {
@@ -223,6 +261,28 @@ public class BookingDetailViewModel extends BaseObservable
             setPermission(PERMISSION_NOMAL);
             setCameraVisiblity(GONE);
             mPresenter.onShowPhotoCustomer(PERMISSION_NOMAL);
+        }
+    }
+
+    private void onSetupCustomerPhotos(BookingOder bookingOder) {
+        List<ImageResponse> imageResponses = bookingOder.getImages();
+        if (imageResponses == null) {
+            return;
+        }
+        for (ImageResponse image : imageResponses) {
+            if (mPhotoFirst == null) {
+                setPhotoFirst(new File(image.getPathOrigin()));
+                mPhotoCustomers.add(mPhotoFirst);
+            } else if (mPhotoSecond == null) {
+                setPhotoSecond(new File(image.getPathOrigin()));
+                mPhotoCustomers.add(mPhotoSecond);
+            } else if (mPhotoThird == null) {
+                setPhotoThird(new File(image.getPathOrigin()));
+                mPhotoCustomers.add(mPhotoThird);
+            } else if (mPhotoFourth == null) {
+                setPhotoFourth(new File(image.getPathOrigin()));
+                mPhotoCustomers.add(mPhotoFourth);
+            }
         }
     }
 
@@ -367,11 +427,11 @@ public class BookingDetailViewModel extends BaseObservable
         }
     }
 
-    public void pickImage(int sideCapture) {
+    public void pickImage(int sidePhoto) {
         if (mPermission == PERMISSION_MAIN_WORKER
             && PermissionUtils.checkWritePermission(mActivity)
             && PermissionUtils.checkCameraPermission(mActivity)) {
-            setSidePhoto(sideCapture);
+            setSidePhoto(sidePhoto);
             mActivity.startActivityForResult(
                 ImagePicker.getPickImageIntent(FSalonApplication.getInstant()), REQUEST_PICK_IMAGE);
         }
@@ -379,37 +439,33 @@ public class BookingDetailViewModel extends BaseObservable
 
     private void updateImage(Uri uri) {
         switch (mSidePhoto) {
-            case SIDE_LEFT:
-                if (mPhotoLeft != null) {
-                    mPhotoCustomers.remove(mPhotoLeft);
+            case SIDE_FIRST:
+                if (mPhotoFirst != null) {
+                    mPhotoCustomers.remove(mPhotoFirst);
                 }
-                setPathImageSideLeft(uri.toString());
-                mPhotoLeft = new File(Utils.getPathFromUri(FSalonApplication.getInstant(), uri));
-                mPhotoCustomers.add(mPhotoLeft);
+                mPhotoFirst = new File(Utils.getPathFromUri(FSalonApplication.getInstant(), uri));
+                mPhotoCustomers.add(mPhotoFirst);
                 break;
-            case SIDE_RIGHT:
-                if (mPhotoRight != null) {
-                    mPhotoCustomers.remove(mPhotoRight);
+            case SIDE_SECOND:
+                if (mPhotoSecond != null) {
+                    mPhotoCustomers.remove(mPhotoSecond);
                 }
-                setPathImageSideRight(uri.toString());
-                mPhotoRight = new File(Utils.getPathFromUri(FSalonApplication.getInstant(), uri));
-                mPhotoCustomers.add(mPhotoRight);
+                mPhotoSecond = new File(Utils.getPathFromUri(FSalonApplication.getInstant(), uri));
+                mPhotoCustomers.add(mPhotoSecond);
                 break;
-            case SIDE_BEHIND:
-                if (mPhotoBehind != null) {
-                    mPhotoCustomers.remove(mPhotoBehind);
+            case SIDE_THIRD:
+                if (mPhotoThird != null) {
+                    mPhotoCustomers.remove(mPhotoThird);
                 }
-                setPathImageSideBehind(uri.toString());
-                mPhotoBehind = new File(Utils.getPathFromUri(FSalonApplication.getInstant(), uri));
-                mPhotoCustomers.add(mPhotoBehind);
+                mPhotoThird = new File(Utils.getPathFromUri(FSalonApplication.getInstant(), uri));
+                mPhotoCustomers.add(mPhotoThird);
                 break;
-            case SIDE_FRONT_UP:
-                if (mPhotoFrontUp != null) {
-                    mPhotoCustomers.remove(mPhotoFrontUp);
+            case SIDE_FOURTH:
+                if (mPhotoFourth != null) {
+                    mPhotoCustomers.remove(mPhotoFourth);
                 }
-                setPathImageSideFrontUp(uri.toString());
-                mPhotoFrontUp = new File(Utils.getPathFromUri(FSalonApplication.getInstant(), uri));
-                mPhotoCustomers.add(mPhotoFrontUp);
+                mPhotoFourth = new File(Utils.getPathFromUri(FSalonApplication.getInstant(), uri));
+                mPhotoCustomers.add(mPhotoFourth);
                 break;
             default:
                 break;
@@ -500,33 +556,13 @@ public class BookingDetailViewModel extends BaseObservable
     }
 
     @Bindable
-    public String getPathImageSideLeft() {
-        return mPathImageSideLeft;
+    public List<File> getPhotoCustomers() {
+        return mPhotoCustomers;
     }
 
-    public void setPathImageSideLeft(String pathImageSideLeft) {
-        mPathImageSideLeft = pathImageSideLeft;
-        notifyPropertyChanged(BR.pathImageSideLeft);
-    }
-
-    @Bindable
-    public String getPathImageSideRight() {
-        return mPathImageSideRight;
-    }
-
-    public void setPathImageSideRight(String pathImageSideRight) {
-        mPathImageSideRight = pathImageSideRight;
-        notifyPropertyChanged(BR.pathImageSideRight);
-    }
-
-    @Bindable
-    public String getPathImageSideBehind() {
-        return mPathImageSideBehind;
-    }
-
-    public void setPathImageSideBehind(String pathImageSideBehind) {
-        mPathImageSideBehind = pathImageSideBehind;
-        notifyPropertyChanged(BR.pathImageSideBehind);
+    public void setPhotoCustomers(List<File> photoCustomers) {
+        mPhotoCustomers = photoCustomers;
+        notifyPropertyChanged(BR.photoCustomers);
     }
 
     @Override
@@ -545,16 +581,6 @@ public class BookingDetailViewModel extends BaseObservable
     @Override
     public void onGetUserFailed(String message) {
         mNavigator.showToast(message);
-    }
-
-    @Bindable
-    public String getPathImageSideFrontUp() {
-        return mPathImageSideFrontUp;
-    }
-
-    public void setPathImageSideFrontUp(String pathImageSideFrontUp) {
-        mPathImageSideFrontUp = pathImageSideFrontUp;
-        notifyPropertyChanged(BR.pathImageSideFrontUp);
     }
 
     public int getSidePhoto() {
@@ -641,12 +667,12 @@ public class BookingDetailViewModel extends BaseObservable
     /**
      * Define all side of customer 's photos
      */
-    @IntDef({SIDE_LEFT, SIDE_RIGHT, SIDE_BEHIND, SIDE_FRONT_UP})
+    @IntDef({SIDE_FIRST, SIDE_SECOND, SIDE_THIRD, SIDE_FOURTH})
     public @interface SideCapture {
-        int SIDE_LEFT = 0;
-        int SIDE_RIGHT = 1;
-        int SIDE_BEHIND = 2;
-        int SIDE_FRONT_UP = 3;
+        int SIDE_FIRST = 0;
+        int SIDE_SECOND = 1;
+        int SIDE_THIRD = 2;
+        int SIDE_FOURTH = 3;
     }
 }
 
