@@ -3,7 +3,6 @@ package com.framgia.fsalon.screen.scheduler.detail;
 import android.content.Intent;
 import android.support.annotation.NonNull;
 import android.view.View;
-import android.widget.LinearLayout;
 
 import com.framgia.fsalon.BasePresenter;
 import com.framgia.fsalon.BaseViewModel;
@@ -38,7 +37,7 @@ public interface BookingDetailContract {
         void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions,
                                         @NonNull int[] grantResults);
         void onActivityResult(int requestCode, int resultCode, Intent data);
-        void onAddPhoto(LinearLayout layoutPhoto, View view);
+        void onAddPhoto(View view);
         void onDeterminePermissionSuccessfully(User user);
         void onUserClick();
         void onGetUserSuccess(User user);
@@ -49,6 +48,8 @@ public interface BookingDetailContract {
         void onRequestEnoughPhotos();
         void onAddPhotoSucessfully();
         void onAddPhotoError();
+        void onFramePhotoVisibility(int visibility);
+        void onTxtUpdateVisibility(int visibility);
     }
 
     /**
@@ -61,5 +62,6 @@ public interface BookingDetailContract {
         void determinePermission();
         void getUserByPhone(String phoneNumber);
         boolean checkValidatePhoto(List<File> photos, int total);
+        void onShowPhotoCustomer(int permission);
     }
 }

@@ -17,6 +17,11 @@ import io.reactivex.functions.Consumer;
 import io.reactivex.observers.DisposableObserver;
 import io.reactivex.schedulers.Schedulers;
 
+import static android.view.View.GONE;
+import static android.view.View.VISIBLE;
+import static com.framgia.fsalon.utils.Constant.Permission.PERMISSION_ADMIN;
+import static com.framgia.fsalon.utils.Constant.Permission.PERMISSION_MAIN_WORKER;
+
 /**
  * Listens to user actions from the UI ({@link BookingDetailActivity}),
  * retrieves the data and updates
@@ -170,5 +175,23 @@ final class BookingDetailPresenter implements BookingDetailContract.Presenter {
             }
         }
         return true;
+    }
+
+    @Override
+    public void onShowPhotoCustomer(int permission) {
+        switch (permission) {
+            case PERMISSION_ADMIN:
+                mViewModel.onFramePhotoVisibility(VISIBLE);
+                mViewModel.onTxtUpdateVisibility(GONE);
+                break;
+            case PERMISSION_MAIN_WORKER:
+                mViewModel.onFramePhotoVisibility(GONE);
+                mViewModel.onTxtUpdateVisibility(GONE);
+                break;
+            default:
+                mViewModel.onFramePhotoVisibility(GONE);
+                mViewModel.onTxtUpdateVisibility(GONE);
+                break;
+        }
     }
 }

@@ -8,16 +8,20 @@
     <data>
 
         <import type="android.view.View"/>
+
         <variable
             name="viewModel"
             type="com.framgia.fsalon.screen.scheduler.detail.BookingDetailViewModel"
             />
+
         <variable
             name="sidePhoto"
             type="Integer"/>
+
         <variable
             name="pathPhoto"
             type="String"/>
+
         <variable
             name="titlePhoto"
             type="String"/>
@@ -45,7 +49,7 @@
                 android:layout_height="wrap_content"
                 android:layout_centerInParent="true"
                 android:alpha="@dimen/float_0.6"
-                android:visibility="@{pathPhoto != null ? View.GONE : View.VISIBLE}"
+                android:visibility="@{viewModel.cameraVisiblity}"
                 bind:srcCompat="@drawable/ic_camera_24dp"
                 tool:ignore="ContentDescription"/>
 

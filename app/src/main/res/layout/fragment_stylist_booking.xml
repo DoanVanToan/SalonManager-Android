@@ -260,7 +260,7 @@
                             android:layout_height="wrap_content"
                             android:checked="@={viewModel.inProgress}"
                             android:padding="@dimen/dp_10"
-                            android:text="@string/title_in_late"/>
+                            android:text="@string/title_in_progress"/>
 
                         <TextView
                             android:layout_width="match_parent"
