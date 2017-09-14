@@ -10,6 +10,8 @@ import com.framgia.fsalon.data.model.ListBillRespond;
 import com.framgia.fsalon.data.model.ManageBookingResponse;
 import com.framgia.fsalon.data.model.Salon;
 import com.framgia.fsalon.data.model.Service;
+import com.framgia.fsalon.data.model.ServiceBooking;
+import com.framgia.fsalon.data.model.ServiceBookingRespond;
 import com.framgia.fsalon.data.model.Stylist;
 import com.framgia.fsalon.data.model.User;
 import com.framgia.fsalon.data.model.UserRespone;
@@ -20,6 +22,8 @@ import java.util.Map;
 import framgia.retrofitservicecreator.api.model.Respone;
 import io.reactivex.Observable;
 import okhttp3.MultipartBody;
+import retrofit2.http.Body;
+import retrofit2.http.DELETE;
 import retrofit2.http.GET;
 import retrofit2.http.Multipart;
 import retrofit2.http.POST;
@@ -93,5 +97,12 @@ public interface FSalonApi {
                                                       @Part List<MultipartBody.Part> files);
     @GET("api/v0/report-bill")
     Observable<Respone<BillReportResponse>> getBillReport(@QueryMap Map<String, String> parrams);
+    @POST("api/v0/add-booking-service")
+    Observable<Respone<ServiceBookingRespond>> addServiceBooking(
+        @Body ServiceBooking serviceBooking);
+    @PUT("api/v0/add-booking-service")
+    Observable<Respone<List<Void>>> editServiceBooking(@Body ServiceBooking serviceBooking);
+    @DELETE("api/v0/add-booking-service/{order_item_id}")
+    Observable<Respone<List<Void>>> deleteServiceBooking(@Path("order_item_id") int id);
 }
 
