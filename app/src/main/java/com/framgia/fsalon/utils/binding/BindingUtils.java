@@ -56,7 +56,11 @@ import com.toptoche.searchablespinnerlibrary.SearchableSpinner;
 import java.util.ArrayList;
 import java.util.List;
 
+import static android.view.View.GONE;
+import static android.view.View.VISIBLE;
 import static com.framgia.fsalon.utils.Constant.NO_SCROLL;
+import static com.framgia.fsalon.utils.Constant.Permission.PERMISSION_ADMIN;
+import static com.framgia.fsalon.utils.Constant.Permission.PERMISSION_MAIN_WORKER;
 
 /**
  * Created by MyPC on 20/07/2017.
@@ -548,6 +552,24 @@ public class BindingUtils {
             Legend l = chart.getLegend();
             l.setForm(Legend.LegendForm.LINE);
             chart.invalidate();
+        }
+    }
+
+    @BindingAdapter({"permission", "updateImage"})
+    public static void onShowPhotoCustomer(View imageCustomer, int permission, View updateView) {
+        switch (permission) {
+            case PERMISSION_ADMIN:
+                imageCustomer.setVisibility(VISIBLE);
+                updateView.setVisibility(GONE);
+                break;
+            case PERMISSION_MAIN_WORKER:
+                imageCustomer.setVisibility(GONE);
+                updateView.setVisibility(GONE);
+                break;
+            default:
+                imageCustomer.setVisibility(GONE);
+                updateView.setVisibility(GONE);
+                break;
         }
     }
 }

@@ -9,6 +9,8 @@
 
         <import type="android.view.View"/>
 
+        <import type="java.io.File"/>
+
         <variable
             name="viewModel"
             type="com.framgia.fsalon.screen.scheduler.detail.BookingDetailViewModel"
@@ -19,12 +21,8 @@
             type="Integer"/>
 
         <variable
-            name="pathPhoto"
-            type="String"/>
-
-        <variable
-            name="titlePhoto"
-            type="String"/>
+            name="file"
+            type="File"/>
     </data>
 
     <android.support.v7.widget.CardView
@@ -41,7 +39,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:scaleType="centerCrop"
-                bind:imageUrl="@{pathPhoto}"
+                bind:imageUrl="@{file.getAbsolutePath()}"
                 tool:ignore="ContentDescription"/>
 
             <ImageView
@@ -52,17 +50,6 @@
                 android:visibility="@{viewModel.cameraVisiblity}"
                 bind:srcCompat="@drawable/ic_camera_24dp"
                 tool:ignore="ContentDescription"/>
-
-            <TextView
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_alignParentBottom="true"
-                android:alpha="@dimen/float_0.6"
-                android:background="@color/color_transparent"
-                android:gravity="center"
-                android:padding="@dimen/dp_1"
-                android:text="@{titlePhoto}"
-                android:textColor="@color/color_white"/>
         </RelativeLayout>
     </android.support.v7.widget.CardView>
 </layout>

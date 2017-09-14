@@ -37,6 +37,7 @@ import java.util.List;
 import static com.framgia.fsalon.data.model.BookingOder.STATUS_CANCELED;
 import static com.framgia.fsalon.data.model.BookingOder.STATUS_FINISHED;
 import static com.framgia.fsalon.data.model.BookingOder.STATUS_IN_LATE;
+import static com.framgia.fsalon.data.model.BookingOder.STATUS_IN_PROGRESS;
 import static com.framgia.fsalon.data.model.BookingOder.STATUS_WATTING;
 import static com.framgia.fsalon.data.source.remote.ManageBookingRemoteDataSource.FILTER_DAY;
 import static com.framgia.fsalon.data.source.remote.ManageBookingRemoteDataSource.FILTER_SPACE;
@@ -79,6 +80,7 @@ public class SchedulerViewModel extends BaseObservable
     private boolean mIsFinished = true;
     private boolean mIsCanceled = true;
     private boolean mIsInLate = true;
+    private boolean mIsInProgress = true;
     private int mSalonId;
     private String mStatus = "";
     private int mRadioButtonId;
@@ -322,6 +324,9 @@ public class SchedulerViewModel extends BaseObservable
         if (mIsInLate) {
             mStatus += "," + STATUS_IN_LATE;
         }
+        if (mIsInProgress) {
+            mStatus += "," + STATUS_IN_PROGRESS;
+        }
         mAdapter.clear();
         mPresenter.getSchedulers(mFilterChoice, mStatus, mStartDate, mEndDate, mSalonId);
     }
@@ -459,6 +464,16 @@ public class SchedulerViewModel extends BaseObservable
     public void setInLate(boolean inLate) {
         mIsInLate = inLate;
         notifyPropertyChanged(BR.inLate);
+    }
+
+    @Bindable
+    public boolean isInProgress() {
+        return mIsInProgress;
+    }
+
+    public void setInProgress(boolean inProgress) {
+        mIsInProgress = inProgress;
+        notifyPropertyChanged(BR.inProgress);
     }
 
     @Bindable

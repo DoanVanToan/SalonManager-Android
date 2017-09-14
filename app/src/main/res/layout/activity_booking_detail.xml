@@ -354,9 +354,8 @@
                                 android:layout_marginEnd="@dimen/dp_3"
                                 android:layout_marginRight="@dimen/dp_3"
                                 android:layout_weight="1"
-                                bind:pathPhoto="@{viewModel.pathImageSideLeft}"
-                                bind:sidePhoto="@{SideCapture.SIDE_LEFT}"
-                                bind:titlePhoto="@{@string/title_side_left_photo}"
+                                bind:file="@{viewModel.photoFirst}"
+                                bind:sidePhoto="@{SideCapture.SIDE_FIRST}"
                                 bind:viewModel="@{viewModel}"/>
 
                             <include
@@ -366,9 +365,8 @@
                                 android:layout_marginEnd="@dimen/dp_3"
                                 android:layout_marginRight="@dimen/dp_3"
                                 android:layout_weight="1"
-                                bind:pathPhoto="@{viewModel.pathImageSideRight}"
-                                bind:sidePhoto="@{SideCapture.SIDE_RIGHT}"
-                                bind:titlePhoto="@{@string/title_side_right_photo}"
+                                bind:file="@{viewModel.photoSecond}"
+                                bind:sidePhoto="@{SideCapture.SIDE_SECOND}"
                                 bind:viewModel="@{viewModel}"/>
 
                             <include
@@ -378,9 +376,8 @@
                                 android:layout_marginEnd="@dimen/dp_3"
                                 android:layout_marginRight="@dimen/dp_3"
                                 android:layout_weight="1"
-                                bind:pathPhoto="@{viewModel.pathImageSideBehind}"
-                                bind:sidePhoto="@{SideCapture.SIDE_BEHIND}"
-                                bind:titlePhoto="@{@string/title_side_behind_photo}"
+                                bind:file="@{viewModel.photoThird}"
+                                bind:sidePhoto="@{SideCapture.SIDE_THIRD}"
                                 bind:viewModel="@{viewModel}"/>
 
                             <include
@@ -388,13 +385,13 @@
                                 android:layout_width="0dp"
                                 android:layout_height="wrap_content"
                                 android:layout_weight="1"
-                                bind:pathPhoto="@{viewModel.pathImageSideFrontUp}"
-                                bind:sidePhoto="@{SideCapture.SIDE_FRONT_UP}"
-                                bind:titlePhoto="@{@string/title_side_front_up_photo}"
+                                bind:file="@{viewModel.photoFourth}"
+                                bind:sidePhoto="@{SideCapture.SIDE_FOURTH}"
                                 bind:viewModel="@{viewModel}"/>
                         </LinearLayout>
 
                         <TextView
+                            android:id="@+id/text_update_image"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_marginTop="@dimen/dp_10"

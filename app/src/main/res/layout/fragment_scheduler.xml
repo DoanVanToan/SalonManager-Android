@@ -37,14 +37,14 @@
             >
 
             <ImageView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginLeft="@dimen/dp_10"
-            android:layout_marginStart="@dimen/dp_10"
-            android:onClick="@{() -> viewModel.onFilterClick(drawerLayout)}"
-            android:padding="@dimen/dp_10"
-            app:srcCompat="@drawable/ic_filter_30dp"
-            tools:ignore="@null"/>
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="@dimen/dp_10"
+                android:layout_marginStart="@dimen/dp_10"
+                android:onClick="@{() -> viewModel.onFilterClick(drawerLayout)}"
+                android:padding="@dimen/dp_10"
+                app:srcCompat="@drawable/ic_filter_30dp"
+                tools:ignore="@null"/>
 
             <TextView
                 android:layout_width="0dp"
@@ -279,6 +279,13 @@
                             android:checked="@={viewModel.inLate}"
                             android:padding="@dimen/dp_10"
                             android:text="@string/title_in_late"/>
+
+                        <CheckBox
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:checked="@={viewModel.inProgress}"
+                            android:padding="@dimen/dp_10"
+                            android:text="@string/title_in_progress"/>
 
                         <TextView
                             android:layout_width="match_parent"
