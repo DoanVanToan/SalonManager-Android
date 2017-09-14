@@ -1,12 +1,13 @@
 <?xml version="1.0" encoding="utf-8"?>
 <layout
     xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:bind="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     >
 
     <data>
-
+        <import type="android.view.View"/>
         <variable
             name="viewModel"
             type="com.framgia.fsalon.screen.customerinfo.user.UserViewModel"
@@ -14,78 +15,331 @@
 
     </data>
 
-    <ScrollView
+    <android.support.v4.widget.NestedScrollView
         android:layout_width="match_parent"
         android:layout_height="match_parent">
 
-        <LinearLayout
+        <RelativeLayout
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="vertical"
-            tools:context="com.framgia.fsalon.screen.user.UserFragment"
-            >
+            android:layout_height="wrap_content">
 
+            <android.support.design.widget.FloatingActionButton
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentBottom="true"
+                android:layout_alignParentEnd="true"
+                android:layout_alignParentRight="true"
+                android:layout_margin="@dimen/dp_16"
+                app:srcCompat="@drawable/ic_edit"
+                android:onClick="@{() -> viewModel.onEditButtonClick()}"
+                app:fabSize="normal"
+                />
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="@dimen/dp_24"
-                android:orientation="vertical">
+                android:orientation="vertical"
+                tools:context="com.framgia.fsalon.screen.user.UserFragment"
+                >
 
                 <LinearLayout
                     android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:orientation="horizontal">
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/dp_24"
+                    android:orientation="vertical">
 
-                    <ImageView
-                        android:layout_width="@dimen/dp_100"
-                        android:layout_height="@dimen/dp_100"
-                        android:contentDescription="@null"
-                        android:padding="@dimen/dp_10"
-                        bind:srcCompat="@drawable/ic_customer"/>
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:orientation="horizontal">
+                        <RelativeLayout
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content">
+                            <ImageView
+                                android:layout_width="@dimen/dp_100"
+                                android:layout_height="@dimen/dp_100"
+                                android:contentDescription="@null"
+                                android:padding="@dimen/dp_10"
+                                android:visibility="@{viewModel.user.avatar == null ? View.VISIBLE : View.GONE}"
+                                bind:srcCompat="@drawable/ic_customer"/>
+                            <de.hdodenhof.circleimageview.CircleImageView
+                                android:layout_width="@dimen/dp_100"
+                                android:layout_height="@dimen/dp_100"
+                                android:layout_gravity="center_horizontal"
+                                android:visibility="@{viewModel.user.avatar != null ? View.VISIBLE : View.GONE}"
+                                bind:imageUrl="@{viewModel.user.avatar}"/>
+                        </RelativeLayout>
+
+                        <LinearLayout
+                            android:layout_width="0dp"
+                            android:layout_height="match_parent"
+                            android:layout_marginLeft="@dimen/dp_12"
+                            android:layout_marginRight="@dimen/dp_12"
+                            android:layout_weight="1"
+                            android:orientation="vertical"
+                            android:paddingTop="@dimen/dp_10">
+
+                            <!--user name-->
+                            <TextView
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:text="@{viewModel.user.name}"
+                                android:textColor="@color/colorPrimary"
+                                android:textSize="@dimen/sp_20"/>
+
+                            <!--user phone-->
+                            <TextView
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:text="@{viewModel.user.phone}"
+                                android:textSize="@dimen/sp_15"/>
+
+                            <!--user's point -->
+                            <TextView
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:gravity="start"
+                                android:text="@string/title_na"
+                                android:textColor="@color/color_red"
+                                android:textSize="@dimen/sp_15"/>
+
+                        </LinearLayout>
+
+                        <ImageView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginEnd="@dimen/dp_10"
+                            android:layout_marginRight="@dimen/dp_10"
+                            android:contentDescription="@null"
+                            bind:srcCompat="@drawable/ic_diamond_15dp"/>
+                    </LinearLayout>
+
+                    <View
+                        android:layout_width="match_parent"
+                        android:layout_height="@dimen/dp_1"
+                        android:background="?android:attr/listDivider"/>
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal">
 
                     <LinearLayout
                         android:layout_width="0dp"
-                        android:layout_height="match_parent"
-                        android:layout_marginLeft="@dimen/dp_12"
-                        android:layout_marginRight="@dimen/dp_12"
+                        android:layout_height="wrap_content"
                         android:layout_weight="1"
-                        android:orientation="vertical"
-                        android:paddingTop="@dimen/dp_10">
+                        android:gravity="center"
+                        android:onClick="@{() -> viewModel.onCallClick()}"
+                        android:orientation="horizontal"
+                        android:padding="@dimen/dp_8">
 
-                        <!--user name-->
-                        <TextView
-                            android:id="@+id/textView"
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:text="@{viewModel.user.name}"
-                            android:textColor="@color/colorPrimary"
-                            android:textSize="@dimen/sp_20"/>
+                        <ImageView
+                            android:layout_width="@dimen/dp_24"
+                            android:layout_height="@dimen/dp_24"
+                            android:layout_marginEnd="@dimen/dp_20"
+                            android:layout_marginRight="@dimen/dp_20"
+                            android:contentDescription="@null"
+                            android:tint="@color/colorPrimary"
+                            bind:srcCompat="@drawable/ic_phone_receiver_24dp"/>
 
-                        <!--user phone-->
                         <TextView
-                            android:layout_width="match_parent"
+                            android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:text="@{viewModel.user.phone}"
-                            android:textSize="@dimen/sp_15"/>
-
-                        <!--user's point -->
-                        <TextView
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:gravity="start"
-                            android:text="@string/title_na"
-                            android:textColor="@color/color_red"
-                            android:textSize="@dimen/sp_15"/>
+                            android:gravity="center"
+                            android:text="@string/title_call"/>
 
                     </LinearLayout>
 
-                    <ImageView
+                    <View
+                        android:layout_width="@dimen/dp_1"
+                        android:layout_height="match_parent"
+                        android:layout_marginLeft="@dimen/dp_5"
+                        android:layout_marginRight="@dimen/dp_5"
+                        android:background="?android:attr/listDivider"/>
+
+                    <LinearLayout
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:gravity="center"
+                        android:onClick="@{()->viewModel.onMessageClick()}"
+                        android:orientation="horizontal"
+                        android:padding="@dimen/dp_8">
+
+                        <ImageView
+                            android:layout_width="@dimen/dp_24"
+                            android:layout_height="@dimen/dp_24"
+                            android:layout_marginEnd="@dimen/dp_20"
+                            android:layout_marginRight="@dimen/dp_20"
+                            android:contentDescription="@null"
+                            android:tint="@color/colorPrimary"
+                            bind:srcCompat="@drawable/ic_message"/>
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:gravity="center"
+                            android:text="@string/title_message"/>
+                    </LinearLayout>
+                </LinearLayout>
+
+
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="@dimen/dp_1"
+                    android:background="?android:attr/listDivider"/>
+
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="@dimen/dp_15"
+                    android:background="@color/color_grey_200"/>
+
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="@dimen/dp_1"
+                    android:background="?android:attr/listDivider"/>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal"
+                    android:padding="@dimen/dp_10">
+
+                    <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_marginEnd="@dimen/dp_10"
-                        android:layout_marginRight="@dimen/dp_10"
-                        android:contentDescription="@null"
-                        bind:srcCompat="@drawable/ic_diamond_15dp"/>
+                        android:layout_marginEnd="@dimen/dp_24"
+                        android:layout_marginRight="@dimen/dp_24"
+                        android:padding="@dimen/dp_5"
+                        android:text="@string/title_phone"
+                        android:textSize="@dimen/sp_15"/>
+
+                    <TextView
+                        android:id="@+id/textView"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:gravity="end"
+                        android:padding="@dimen/dp_5"
+                        android:text="@{viewModel.user.phone}"
+                        android:textColor="@color/colorPrimary"
+                        android:textSize="@dimen/sp_18"/>
+
+
+                </LinearLayout>
+
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="@dimen/dp_1"
+                    android:background="?android:attr/listDivider"/>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal"
+                    android:padding="@dimen/dp_10">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginEnd="@dimen/dp_24"
+                        android:layout_marginRight="@dimen/dp_24"
+                        android:padding="@dimen/dp_5"
+                        android:text="@string/hint_email"
+                        android:textSize="@dimen/sp_15"/>
+
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:gravity="end"
+                        android:padding="@dimen/dp_5"
+                        android:text="@{viewModel.user.email}"
+                        android:textColor="@color/colorPrimary"
+                        android:textSize="@dimen/sp_18"/>
+
+                </LinearLayout>
+
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="@dimen/dp_1"
+                    android:background="?android:attr/listDivider"/>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal"
+                    android:padding="@dimen/dp_10">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginEnd="@dimen/dp_24"
+                        android:layout_marginRight="@dimen/dp_24"
+                        android:padding="@dimen/dp_5"
+                        android:text="@string/hint_birth"
+                        android:textSize="@dimen/sp_15"/>
+
+                    <TextView
+                        android:id="@+id/textView2"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:gravity="end"
+                        android:padding="@dimen/dp_5"
+                        android:text="@{viewModel.user.birthday}"
+                        android:textColor="@color/colorPrimary"
+                        android:textSize="@dimen/sp_18"/>
+
+                </LinearLayout>
+
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="@dimen/dp_1"
+                    android:background="?android:attr/listDivider"/>
+
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="@dimen/dp_15"
+                    android:background="@color/color_grey_200"/>
+
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="@dimen/dp_1"
+                    android:background="?android:attr/listDivider"/>
+
+
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="@dimen/dp_1"
+                    android:background="?android:attr/listDivider"/>
+
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="@dimen/dp_1"
+                    android:background="?android:attr/listDivider"/>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal"
+                    android:padding="@dimen/dp_10">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginEnd="@dimen/dp_24"
+                        android:layout_marginRight="@dimen/dp_24"
+                        android:padding="@dimen/dp_5"
+                        android:text="@string/title_note"
+                        android:textSize="@dimen/sp_15"/>
+
+                    <!--absence or came-->
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:gravity="end"
+                        android:padding="@dimen/dp_5"
+                        android:text="@string/title_na"
+                        android:textColor="@color/colorPrimary"
+                        android:textSize="@dimen/sp_18"/>
                 </LinearLayout>
 
                 <View
@@ -93,232 +347,8 @@
                     android:layout_height="@dimen/dp_1"
                     android:background="?android:attr/listDivider"/>
             </LinearLayout>
+        </RelativeLayout>
 
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:orientation="horizontal">
+    </android.support.v4.widget.NestedScrollView>
 
-                <LinearLayout
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="1"
-                    android:gravity="center"
-                    android:onClick="@{() -> viewModel.onCallClick()}"
-                    android:orientation="horizontal"
-                    android:padding="@dimen/dp_8">
-
-                    <ImageView
-                        android:layout_width="@dimen/dp_24"
-                        android:layout_height="@dimen/dp_24"
-                        android:layout_marginEnd="@dimen/dp_20"
-                        android:layout_marginRight="@dimen/dp_20"
-                        android:contentDescription="@null"
-                        android:tint="@color/colorPrimary"
-                        bind:srcCompat="@drawable/ic_phone_receiver_24dp"/>
-
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:gravity="center"
-                        android:text="@string/title_call"/>
-
-                </LinearLayout>
-
-                <View
-                    android:layout_width="@dimen/dp_1"
-                    android:layout_height="match_parent"
-                    android:layout_marginLeft="@dimen/dp_5"
-                    android:layout_marginRight="@dimen/dp_5"
-                    android:background="?android:attr/listDivider"/>
-
-                <LinearLayout
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="1"
-                    android:gravity="center"
-                    android:onClick="@{()->viewModel.onMessageClick()}"
-                    android:orientation="horizontal"
-                    android:padding="@dimen/dp_8">
-
-                    <ImageView
-                        android:layout_width="@dimen/dp_24"
-                        android:layout_height="@dimen/dp_24"
-                        android:layout_marginEnd="@dimen/dp_20"
-                        android:layout_marginRight="@dimen/dp_20"
-                        android:contentDescription="@null"
-                        android:tint="@color/colorPrimary"
-                        bind:srcCompat="@drawable/ic_message"/>
-
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:gravity="center"
-                        android:text="@string/title_message"/>
-                </LinearLayout>
-            </LinearLayout>
-
-
-            <View
-                android:layout_width="match_parent"
-                android:layout_height="@dimen/dp_1"
-                android:background="?android:attr/listDivider"/>
-
-            <View
-                android:layout_width="match_parent"
-                android:layout_height="@dimen/dp_15"
-                android:background="@color/color_grey_200"/>
-
-            <View
-                android:layout_width="match_parent"
-                android:layout_height="@dimen/dp_1"
-                android:background="?android:attr/listDivider"/>
-
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:orientation="horizontal"
-                android:padding="@dimen/dp_10">
-
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginEnd="@dimen/dp_24"
-                    android:layout_marginRight="@dimen/dp_24"
-                    android:padding="@dimen/dp_5"
-                    android:text="@string/title_phone"
-                    android:textSize="@dimen/sp_15"/>
-
-                <TextView
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:gravity="end"
-                    android:padding="@dimen/dp_5"
-                    android:text="@{viewModel.user.phone}"
-                    android:textColor="@color/colorPrimary"
-                    android:textSize="@dimen/sp_18"/>
-
-            </LinearLayout>
-
-            <View
-                android:layout_width="match_parent"
-                android:layout_height="@dimen/dp_1"
-                android:background="?android:attr/listDivider"/>
-
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:orientation="horizontal"
-                android:padding="@dimen/dp_10">
-
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginEnd="@dimen/dp_24"
-                    android:layout_marginRight="@dimen/dp_24"
-                    android:padding="@dimen/dp_5"
-                    android:text="@string/hint_email"
-                    android:textSize="@dimen/sp_15"/>
-
-                <TextView
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:gravity="end"
-                    android:padding="@dimen/dp_5"
-                    android:text="@{viewModel.user.email}"
-                    android:textColor="@color/colorPrimary"
-                    android:textSize="@dimen/sp_18"/>
-
-            </LinearLayout>
-
-            <View
-                android:layout_width="match_parent"
-                android:layout_height="@dimen/dp_1"
-                android:background="?android:attr/listDivider"/>
-
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:orientation="horizontal"
-                android:padding="@dimen/dp_10">
-
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginEnd="@dimen/dp_24"
-                    android:layout_marginRight="@dimen/dp_24"
-                    android:padding="@dimen/dp_5"
-                    android:text="@string/hint_birth"
-                    android:textSize="@dimen/sp_15"/>
-
-                <TextView
-                    android:id="@+id/textView2"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:gravity="end"
-                    android:padding="@dimen/dp_5"
-                    android:text="@{viewModel.user.birthday}"
-                    android:textColor="@color/colorPrimary"
-                    android:textSize="@dimen/sp_18"/>
-
-            </LinearLayout>
-
-            <View
-                android:layout_width="match_parent"
-                android:layout_height="@dimen/dp_1"
-                android:background="?android:attr/listDivider"/>
-
-            <View
-                android:layout_width="match_parent"
-                android:layout_height="@dimen/dp_15"
-                android:background="@color/color_grey_200"/>
-
-            <View
-                android:layout_width="match_parent"
-                android:layout_height="@dimen/dp_1"
-                android:background="?android:attr/listDivider"/>
-
-
-            <View
-                android:layout_width="match_parent"
-                android:layout_height="@dimen/dp_1"
-                android:background="?android:attr/listDivider"/>
-
-            <View
-                android:layout_width="match_parent"
-                android:layout_height="@dimen/dp_1"
-                android:background="?android:attr/listDivider"/>
-
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:orientation="horizontal"
-                android:padding="@dimen/dp_10">
-
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginEnd="@dimen/dp_24"
-                    android:layout_marginRight="@dimen/dp_24"
-                    android:padding="@dimen/dp_5"
-                    android:text="@string/title_note"
-                    android:textSize="@dimen/sp_15"/>
-
-                <!--absence or came-->
-                <TextView
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:gravity="end"
-                    android:padding="@dimen/dp_5"
-                    android:text="@string/title_na"
-                    android:textColor="@color/colorPrimary"
-                    android:textSize="@dimen/sp_18"/>
-            </LinearLayout>
-
-            <View
-                android:layout_width="match_parent"
-                android:layout_height="@dimen/dp_1"
-                android:background="?android:attr/listDivider"/>
-        </LinearLayout>
-    </ScrollView>
 </layout>

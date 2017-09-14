@@ -1,0 +1,327 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:bind="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    >
+
+    <data>
+
+        <import type="android.view.View"/>
+
+        <variable
+            name="viewModel"
+            type="com.framgia.fsalon.screen.editcustomerinfo.EditcustomerinfoViewModel"
+            />
+
+    </data>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical">
+
+        <LinearLayout
+            android:id="@+id/linear_layout"
+            android:layout_width="match_parent"
+            android:layout_height="?attr/actionBarSize"
+            android:background="@color/colorPrimary"
+            android:gravity="center_vertical"
+            android:orientation="horizontal">
+
+            <ImageView
+                android:contentDescription="@null"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="@dimen/dp_10"
+                android:layout_marginStart="@dimen/dp_10"
+                android:onClick="@{() -> viewModel.onCancelClick()}"
+                android:padding="@dimen/dp_10"
+                app:srcCompat="@drawable/ic_left_arrow"
+                tools:ignore="@null"/>
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginEnd="@dimen/dp_10"
+                android:layout_marginLeft="@dimen/dp_40"
+                android:layout_marginRight="@dimen/dp_10"
+                android:layout_marginStart="@dimen/dp_40"
+                android:gravity="end"
+                android:onClick="@{() -> viewModel.onUpdateClick()}"
+                android:text="@string/update"
+                android:textColor="@color/color_white"
+                android:textSize="@dimen/sp_15"/>
+        </LinearLayout>
+
+        <ProgressBar
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_horizontal"
+            android:visibility="@{viewModel.progressBarVisibility == false ? View.GONE : View.VISIBLE}"
+            />
+
+        <android.support.v4.widget.NestedScrollView
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                >
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical">
+
+                    <RelativeLayout
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center_horizontal|center_vertical"
+                        >
+
+                        <android.support.design.widget.FloatingActionButton
+                            android:layout_width="@dimen/dp_40"
+                            android:layout_height="@dimen/dp_40"
+                            android:layout_centerHorizontal="true"
+                            android:layout_centerVertical="true"
+                            android:layout_margin="@dimen/dp_16"
+                            android:onClick="@{() -> viewModel.onUpdateAvatarButtonClick()}"
+                            app:fabSize="normal"
+                            app:srcCompat="@drawable/ic_edit"
+                            />
+
+                        <ImageView
+                            android:layout_width="@dimen/dp_100"
+                            android:layout_height="@dimen/dp_100"
+                            android:contentDescription="@null"
+                            android:padding="@dimen/dp_10"
+                            android:src="@drawable/ic_customer"
+                            android:visibility="@{viewModel.user.avatar == null ? View.VISIBLE : View.GONE}"/>
+
+                        <de.hdodenhof.circleimageview.CircleImageView
+                            android:layout_width="@dimen/dp_100"
+                            android:layout_height="@dimen/dp_100"
+                            android:layout_gravity="center_horizontal"
+                            android:visibility="@{viewModel.user.avatar != null ? View.VISIBLE : View.GONE}"
+                            bind:imageUrl="@{viewModel.user.avatar}"/>
+                    </RelativeLayout>
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="@dimen/dp_24"
+                        android:orientation="vertical">
+
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent"
+                            android:orientation="horizontal">
+
+
+                            <LinearLayout
+                                android:layout_width="match_parent"
+                                android:layout_height="match_parent"
+                                android:layout_marginLeft="@dimen/dp_12"
+                                android:layout_marginRight="@dimen/dp_12"
+                                android:orientation="vertical"
+                                android:paddingTop="@dimen/dp_10">
+
+                                <!--user name-->
+                                <TextView
+                                    android:layout_width="match_parent"
+                                    android:layout_height="wrap_content"
+                                    android:text="@{viewModel.user.name}"
+                                    android:textColor="@color/colorPrimary"
+                                    android:textSize="@dimen/sp_20"/>
+
+                                <!--user phone-->
+                                <TextView
+                                    android:layout_width="match_parent"
+                                    android:layout_height="wrap_content"
+                                    android:text="@{viewModel.user.phone}"
+                                    android:textSize="@dimen/sp_15"/>
+
+                                <!--user's point -->
+                                <TextView
+                                    android:layout_width="match_parent"
+                                    android:layout_height="wrap_content"
+                                    android:gravity="start"
+                                    android:text="@string/title_na"
+                                    android:textColor="@color/color_red"
+                                    android:textSize="@dimen/sp_15"/>
+
+                            </LinearLayout>
+
+                            <ImageView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_marginEnd="@dimen/dp_10"
+                                android:layout_marginRight="@dimen/dp_10"
+                                android:contentDescription="@null"
+                                bind:srcCompat="@drawable/ic_diamond_15dp"/>
+                        </LinearLayout>
+
+                        <View
+                            android:layout_width="match_parent"
+                            android:layout_height="@dimen/dp_1"
+                            android:background="?android:attr/listDivider"/>
+                    </LinearLayout>
+
+
+                    <View
+                        android:layout_width="match_parent"
+                        android:layout_height="@dimen/dp_1"
+                        android:background="?android:attr/listDivider"/>
+
+                    <View
+                        android:layout_width="match_parent"
+                        android:layout_height="@dimen/dp_15"
+                        android:background="@color/color_grey_200"/>
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="horizontal"
+                        android:padding="@dimen/dp_10">
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginEnd="@dimen/dp_24"
+                            android:layout_marginRight="@dimen/dp_24"
+                            android:padding="@dimen/dp_5"
+                            android:text="@string/hint_name"
+                            android:textSize="@dimen/sp_15"/>
+
+                        <android.support.design.widget.TextInputLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content">
+
+                            <EditText
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:gravity="end"
+                                android:inputType="text"
+                                android:text="@={viewModel.user.name}"
+                                android:textColor="@color/colorPrimary"
+                                android:textSize="@dimen/sp_18"/>
+                        </android.support.design.widget.TextInputLayout>
+
+
+                    </LinearLayout>
+
+                    <View
+                        android:layout_width="match_parent"
+                        android:layout_height="@dimen/dp_1"
+                        android:background="?android:attr/listDivider"/>
+
+
+                    <View
+                        android:layout_width="match_parent"
+                        android:layout_height="@dimen/dp_1"
+                        android:background="?android:attr/listDivider"/>
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="horizontal"
+                        android:padding="@dimen/dp_10">
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_gravity="center_horizontal"
+                            android:layout_marginEnd="@dimen/dp_24"
+                            android:layout_marginRight="@dimen/dp_24"
+                            android:padding="@dimen/dp_5"
+                            android:text="@string/title_phone"
+                            android:textSize="@dimen/sp_15"/>
+
+                        <android.support.design.widget.TextInputLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content">
+
+                            <EditText
+                                android:id="@+id/textView"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:gravity="end"
+                                android:inputType="text"
+                                android:padding="@dimen/dp_5"
+                                android:text="@={viewModel.user.phone}"
+                                android:textColor="@color/colorPrimary"
+                                android:textSize="@dimen/sp_18"/>
+                        </android.support.design.widget.TextInputLayout>
+
+                    </LinearLayout>
+
+                    <View
+                        android:layout_width="match_parent"
+                        android:layout_height="@dimen/dp_1"
+                        android:background="?android:attr/listDivider"/>
+
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="horizontal"
+                        android:padding="@dimen/dp_10">
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginEnd="@dimen/dp_24"
+                            android:layout_marginRight="@dimen/dp_24"
+                            android:padding="@dimen/dp_5"
+                            android:text="@string/hint_birth"
+                            android:textSize="@dimen/sp_15"/>
+
+                        <TextView
+                            android:id="@+id/textView2"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:gravity="end"
+                            android:onClick="@{() -> viewModel.onSelectDateClick()}"
+                            android:padding="@dimen/dp_5"
+                            android:text="@{viewModel.user.birthday}"
+                            android:textColor="@color/colorPrimary"
+                            android:textSize="@dimen/sp_18"/>
+
+                    </LinearLayout>
+
+                    <View
+                        android:layout_width="match_parent"
+                        android:layout_height="@dimen/dp_1"
+                        android:background="?android:attr/listDivider"/>
+
+                    <View
+                        android:layout_width="match_parent"
+                        android:layout_height="@dimen/dp_15"
+                        android:background="@color/color_grey_200"/>
+
+                    <View
+                        android:layout_width="match_parent"
+                        android:layout_height="@dimen/dp_1"
+                        android:background="?android:attr/listDivider"/>
+
+
+                    <View
+                        android:layout_width="match_parent"
+                        android:layout_height="@dimen/dp_1"
+                        android:background="?android:attr/listDivider"/>
+
+                    <View
+                        android:layout_width="match_parent"
+                        android:layout_height="@dimen/dp_1"
+                        android:background="?android:attr/listDivider"/>
+
+
+                </LinearLayout>
+            </RelativeLayout>
+
+        </android.support.v4.widget.NestedScrollView>
+    </LinearLayout>
+</layout>

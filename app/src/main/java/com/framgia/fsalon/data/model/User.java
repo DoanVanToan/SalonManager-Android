@@ -1,15 +1,18 @@
 package com.framgia.fsalon.data.model;
 
+import android.databinding.BaseObservable;
+import android.databinding.Bindable;
 import android.os.Parcel;
 import android.os.Parcelable;
 
+import com.framgia.fsalon.BR;
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 
 /**
  * Created by MyPC on 20/07/2017.
  */
-public class User implements Parcelable {
+public class User extends BaseObservable implements Parcelable {
     @Expose
     @SerializedName("id")
     private int mId;
@@ -67,6 +70,7 @@ public class User implements Parcelable {
         mDepartmentId = in.readInt();
         mCreatedAt = in.readString();
         mUpdatedAt = in.readString();
+        mBirthday = in.readString();
     }
 
     public User() {
@@ -91,13 +95,14 @@ public class User implements Parcelable {
     public void setId(int id) {
         mId = id;
     }
-
+    @Bindable
     public String getName() {
         return mName;
     }
 
     public void setName(String name) {
         mName = name;
+        notifyPropertyChanged(BR.name);
     }
 
     public String getEmail() {
@@ -107,29 +112,33 @@ public class User implements Parcelable {
     public void setEmail(String email) {
         mEmail = email;
     }
-
+    @Bindable
     public String getPhone() {
         return mPhone;
     }
 
     public void setPhone(String phone) {
         mPhone = phone;
+        notifyPropertyChanged(BR.phone);
     }
-
+    @Bindable
     public String getBirthday() {
         return mBirthday;
     }
 
     public void setBirthday(String birthday) {
         mBirthday = birthday;
+        notifyPropertyChanged(BR.birthday);
     }
 
+    @Bindable
     public String getAvatar() {
         return mAvatar;
     }
 
     public void setAvatar(String avatar) {
         mAvatar = avatar;
+        notifyPropertyChanged(BR.avatar);
     }
 
     public String getGender() {
@@ -216,5 +225,6 @@ public class User implements Parcelable {
         dest.writeInt(mDepartmentId);
         dest.writeString(mCreatedAt);
         dest.writeString(mUpdatedAt);
+        dest.writeString(mBirthday);
     }
 }
