@@ -160,6 +160,9 @@ public interface BillModel {
         @Expose
         @SerializedName("row_total")
         protected float mRowTotal;
+        @Expose
+        @SerializedName("discount")
+        protected float mDiscount;
 
         public int getId() {
             return mId;
@@ -207,6 +210,14 @@ public interface BillModel {
 
         public void setRowTotal(float rowTotal) {
             mRowTotal = rowTotal;
+        }
+
+        public float getDiscount() {
+            return mDiscount;
+        }
+
+        public void setDiscount(float discount) {
+            mDiscount = discount;
         }
     }
 }

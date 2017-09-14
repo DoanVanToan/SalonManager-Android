@@ -1,6 +1,8 @@
 package com.framgia.fsalon.data.source;
 
 import com.framgia.fsalon.data.model.Service;
+import com.framgia.fsalon.data.model.ServiceBooking;
+import com.framgia.fsalon.data.model.ServiceBookingRespond;
 
 import java.util.List;
 
@@ -19,5 +21,21 @@ public class ServiceRepository implements ServiceDataSource {
     @Override
     public Observable<List<Service>> getAllServices() {
         return mRemoteDatSource.getAllServices();
+    }
+
+    @Override
+    public Observable<ServiceBookingRespond> addServiceBookingByStylistAdmin(
+        ServiceBooking serviceBooking) {
+        return mRemoteDatSource.addServiceBookingByStylistAdmin(serviceBooking);
+    }
+
+    @Override
+    public Observable<List<Void>> editServiceBookingByStylistAdmin(ServiceBooking serviceBooking) {
+        return mRemoteDatSource.editServiceBookingByStylistAdmin(serviceBooking);
+    }
+
+    @Override
+    public Observable<List<Void>> deleteServiceBookingByStylistAdmin(int id) {
+        return mRemoteDatSource.deleteServiceBookingByStylistAdmin(id);
     }
 }
