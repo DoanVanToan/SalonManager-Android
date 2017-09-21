@@ -25,472 +25,480 @@
         bind:listener="@{viewModel.listener}"
         >
 
-        <RelativeLayout
+        <android.support.v4.widget.NestedScrollView
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            >
+            android:layout_height="match_parent">
 
-            <ProgressBar
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_centerInParent="true"
-                android:visibility="@{viewModel.progressBarVisibility}"
-                />
-
-            <android.support.v7.widget.Toolbar
-                android:id="@+id/toolbar_admin_booking_detail"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:background="@color/colorPrimary"
-                android:theme="@style/ToolbarColoredBackArrow"
-                />
-
-            <android.support.design.widget.CoordinatorLayout
+            <RelativeLayout
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:layout_below="@+id/toolbar_admin_booking_detail"
                 >
 
-                <LinearLayout
-                    android:id="@+id/layout_admin_booking_detail"
+                <ProgressBar
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_centerInParent="true"
+                    android:visibility="@{viewModel.progressBarVisibility}"
+                    />
+
+                <android.support.v7.widget.Toolbar
+                    android:id="@+id/toolbar_admin_booking_detail"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:background="@color/colorPrimary"
+                    android:theme="@style/ToolbarColoredBackArrow"
+                    />
+
+                <android.support.design.widget.CoordinatorLayout
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
-                    android:layout_marginTop="@dimen/dp_10"
-                    android:orientation="vertical"
-                    android:paddingLeft="@dimen/dp_12"
-                    android:paddingRight="@dimen/dp_12"
+                    android:layout_below="@+id/toolbar_admin_booking_detail"
                     >
 
                     <LinearLayout
+                        android:id="@+id/layout_admin_booking_detail"
                         android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:layout_marginBottom="@dimen/dp_24"
+                        android:layout_height="match_parent"
                         android:layout_marginTop="@dimen/dp_10"
-                        android:onClick="@{()-> viewModel.onUserClick()}"
-                        android:orientation="horizontal"
+                        android:orientation="vertical"
+                        android:paddingLeft="@dimen/dp_12"
+                        android:paddingRight="@dimen/dp_12"
                         >
-
-                        <ImageView
-                            android:layout_width="@dimen/dp_24"
-                            android:layout_height="@dimen/dp_24"
-                            android:layout_gravity="center"
-                            android:contentDescription="@null"
-                            android:scaleType="fitCenter"
-                            android:tint="@android:color/holo_orange_light"
-                            bind:srcCompat="@drawable/ic_user"
-                            />
 
                         <LinearLayout
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            android:layout_marginLeft="@dimen/dp_12"
-                            android:layout_marginStart="@dimen/dp_12"
-                            android:background="@drawable/bg_details"
-                            android:orientation="vertical"
-                            android:paddingBottom="@dimen/dp_5"
+                            android:layout_marginBottom="@dimen/dp_24"
+                            android:layout_marginTop="@dimen/dp_10"
+                            android:onClick="@{()-> viewModel.onUserClick()}"
+                            android:orientation="horizontal"
                             >
 
-                            <TextView
-                                android:layout_width="match_parent"
-                                android:layout_height="wrap_content"
-                                android:layout_marginBottom="@dimen/dp_5"
-                                android:text="@string/title_name"
-                                android:textColor="@color/colorAccent"
-                                android:textSize="@dimen/sp_15"
+                            <ImageView
+                                android:layout_width="@dimen/dp_24"
+                                android:layout_height="@dimen/dp_24"
+                                android:layout_gravity="center"
+                                android:contentDescription="@null"
+                                android:scaleType="fitCenter"
+                                android:tint="@android:color/holo_orange_light"
+                                bind:srcCompat="@drawable/ic_user"
                                 />
 
-                            <com.framgia.fsalon.wiget.UnderlineTextView
+                            <LinearLayout
                                 android:layout_width="match_parent"
                                 android:layout_height="wrap_content"
-                                android:layout_marginEnd="@dimen/dp_8"
-                                android:layout_marginRight="@dimen/dp_8"
-                                android:gravity="end"
-                                android:text="@{viewModel.bookingOder.name}"
-                                android:textColor="@color/color_deep_purple_accent_700"
-                                android:textSize="@dimen/sp_18"
-                                />
-                        </LinearLayout>
-
-                    </LinearLayout>
-
-                    <LinearLayout
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:layout_marginBottom="@dimen/dp_24"
-                        android:onClick="@{()-> viewModel.onUserClick()}"
-                        android:orientation="horizontal"
-                        >
-
-                        <ImageView
-                            android:layout_width="@dimen/dp_24"
-                            android:layout_height="@dimen/dp_24"
-                            android:layout_gravity="center"
-                            android:contentDescription="@null"
-                            android:scaleType="fitCenter"
-                            android:tint="@color/colorAccent"
-                            bind:srcCompat="@drawable/ic_phone"
-                            />
-
-                        <LinearLayout
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:layout_marginLeft="@dimen/dp_12"
-                            android:layout_marginStart="@dimen/dp_12"
-                            android:background="@drawable/bg_details"
-                            android:orientation="vertical"
-                            android:paddingBottom="@dimen/dp_5"
-                            >
-
-                            <TextView
-                                android:layout_width="match_parent"
-                                android:layout_height="wrap_content"
-                                android:layout_marginBottom="@dimen/dp_5"
-                                android:text="@string/title_phone"
-                                android:textColor="@color/colorAccent"
-                                android:textSize="@dimen/sp_15"
-                                />
-
-                            <com.framgia.fsalon.wiget.UnderlineTextView
-                                android:layout_width="match_parent"
-                                android:layout_height="wrap_content"
-                                android:layout_marginEnd="@dimen/dp_8"
-                                android:layout_marginRight="@dimen/dp_8"
-                                android:gravity="end"
-                                android:text="@{viewModel.bookingOder.phone}"
-                                android:textColor="@color/color_deep_purple_accent_700"
-                                android:textSize="@dimen/sp_18"
-                                />
-                        </LinearLayout>
-
-                    </LinearLayout>
-
-                    <LinearLayout
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:layout_marginBottom="@dimen/dp_24"
-                        android:orientation="horizontal"
-                        >
-
-                        <ImageView
-                            android:layout_width="@dimen/dp_24"
-                            android:layout_height="@dimen/dp_24"
-                            android:layout_gravity="center"
-                            android:contentDescription="@null"
-                            android:scaleType="fitCenter"
-                            android:tint="@android:color/holo_red_light"
-                            bind:srcCompat="@drawable/ic_calendar"
-                            />
-
-                        <LinearLayout
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:layout_marginLeft="@dimen/dp_12"
-                            android:layout_marginStart="@dimen/dp_12"
-                            android:background="@drawable/bg_details"
-                            android:orientation="vertical"
-                            android:paddingBottom="@dimen/dp_5"
-                            >
-
-                            <TextView
-                                android:layout_width="match_parent"
-                                android:layout_height="wrap_content"
-                                android:layout_marginBottom="@dimen/dp_5"
-                                android:text="@string/title_appointment"
-                                android:textColor="@color/colorAccent"
-                                android:textSize="@dimen/sp_15"
-                                />
-
-                            <RelativeLayout
-                                android:layout_width="match_parent"
-                                android:layout_height="wrap_content"
+                                android:layout_marginLeft="@dimen/dp_12"
+                                android:layout_marginStart="@dimen/dp_12"
+                                android:background="@drawable/bg_details"
+                                android:orientation="vertical"
+                                android:paddingBottom="@dimen/dp_5"
                                 >
 
                                 <TextView
-                                    android:layout_width="wrap_content"
+                                    android:layout_width="match_parent"
+                                    android:layout_height="wrap_content"
+                                    android:layout_marginBottom="@dimen/dp_5"
+                                    android:text="@string/title_name"
+                                    android:textColor="@color/colorAccent"
+                                    android:textSize="@dimen/sp_15"
+                                    />
+
+                                <com.framgia.fsalon.wiget.UnderlineTextView
+                                    android:layout_width="match_parent"
                                     android:layout_height="wrap_content"
                                     android:layout_marginEnd="@dimen/dp_8"
                                     android:layout_marginRight="@dimen/dp_8"
-                                    android:layout_toLeftOf="@+id/text_time_start"
-                                    android:layout_toStartOf="@+id/text_time_start"
-                                    android:text="@{viewModel.bookingOder.render.day}"
-                                    android:textColor="@color/color_black"
+                                    android:gravity="end"
+                                    android:text="@{viewModel.bookingOder.name}"
+                                    android:textColor="@color/color_deep_purple_accent_700"
                                     android:textSize="@dimen/sp_18"
+                                    />
+                            </LinearLayout>
+
+                        </LinearLayout>
+
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginBottom="@dimen/dp_24"
+                            android:onClick="@{()-> viewModel.onUserClick()}"
+                            android:orientation="horizontal"
+                            >
+
+                            <ImageView
+                                android:layout_width="@dimen/dp_24"
+                                android:layout_height="@dimen/dp_24"
+                                android:layout_gravity="center"
+                                android:contentDescription="@null"
+                                android:scaleType="fitCenter"
+                                android:tint="@color/colorAccent"
+                                bind:srcCompat="@drawable/ic_phone"
+                                />
+
+                            <LinearLayout
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:layout_marginLeft="@dimen/dp_12"
+                                android:layout_marginStart="@dimen/dp_12"
+                                android:background="@drawable/bg_details"
+                                android:orientation="vertical"
+                                android:paddingBottom="@dimen/dp_5"
+                                >
+
+                                <TextView
+                                    android:layout_width="match_parent"
+                                    android:layout_height="wrap_content"
+                                    android:layout_marginBottom="@dimen/dp_5"
+                                    android:text="@string/title_phone"
+                                    android:textColor="@color/colorAccent"
+                                    android:textSize="@dimen/sp_15"
+                                    />
+
+                                <com.framgia.fsalon.wiget.UnderlineTextView
+                                    android:layout_width="match_parent"
+                                    android:layout_height="wrap_content"
+                                    android:layout_marginEnd="@dimen/dp_8"
+                                    android:layout_marginRight="@dimen/dp_8"
+                                    android:gravity="end"
+                                    android:text="@{viewModel.bookingOder.phone}"
+                                    android:textColor="@color/color_deep_purple_accent_700"
+                                    android:textSize="@dimen/sp_18"
+                                    />
+                            </LinearLayout>
+
+                        </LinearLayout>
+
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginBottom="@dimen/dp_24"
+                            android:orientation="horizontal"
+                            >
+
+                            <ImageView
+                                android:layout_width="@dimen/dp_24"
+                                android:layout_height="@dimen/dp_24"
+                                android:layout_gravity="center"
+                                android:contentDescription="@null"
+                                android:scaleType="fitCenter"
+                                android:tint="@android:color/holo_red_light"
+                                bind:srcCompat="@drawable/ic_calendar"
+                                />
+
+                            <LinearLayout
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:layout_marginLeft="@dimen/dp_12"
+                                android:layout_marginStart="@dimen/dp_12"
+                                android:background="@drawable/bg_details"
+                                android:orientation="vertical"
+                                android:paddingBottom="@dimen/dp_5"
+                                >
+
+                                <TextView
+                                    android:layout_width="match_parent"
+                                    android:layout_height="wrap_content"
+                                    android:layout_marginBottom="@dimen/dp_5"
+                                    android:text="@string/title_appointment"
+                                    android:textColor="@color/colorAccent"
+                                    android:textSize="@dimen/sp_15"
+                                    />
+
+                                <RelativeLayout
+                                    android:layout_width="match_parent"
+                                    android:layout_height="wrap_content"
+                                    >
+
+                                    <TextView
+                                        android:layout_width="wrap_content"
+                                        android:layout_height="wrap_content"
+                                        android:layout_marginEnd="@dimen/dp_8"
+                                        android:layout_marginRight="@dimen/dp_8"
+                                        android:layout_toLeftOf="@+id/text_time_start"
+                                        android:layout_toStartOf="@+id/text_time_start"
+                                        android:text="@{viewModel.bookingOder.render.day}"
+                                        android:textColor="@color/color_black"
+                                        android:textSize="@dimen/sp_18"
+                                        />
+
+                                    <TextView
+                                        android:id="@+id/text_time_start"
+                                        android:layout_width="wrap_content"
+                                        android:layout_height="wrap_content"
+                                        android:layout_alignParentEnd="true"
+                                        android:layout_alignParentRight="true"
+                                        android:layout_marginEnd="@dimen/dp_8"
+                                        android:layout_marginRight="@dimen/dp_8"
+                                        android:text="@{viewModel.bookingOder.render.timeStart}"
+                                        android:textColor="@color/color_black"
+                                        android:textSize="@dimen/sp_18"
+                                        />
+                                </RelativeLayout>
+
+                            </LinearLayout>
+
+                        </LinearLayout>
+
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginBottom="@dimen/dp_24"
+                            android:orientation="horizontal"
+                            >
+
+                            <ImageView
+                                android:layout_width="@dimen/dp_24"
+                                android:layout_height="@dimen/dp_24"
+                                android:layout_gravity="center"
+                                android:contentDescription="@null"
+                                android:scaleType="fitCenter"
+                                android:tint="@android:color/holo_green_light"
+                                bind:srcCompat="@drawable/ic_salon"
+                                />
+
+                            <LinearLayout
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:layout_marginLeft="@dimen/dp_12"
+                                android:layout_marginStart="@dimen/dp_12"
+                                android:background="@drawable/bg_details"
+                                android:orientation="vertical"
+                                android:paddingBottom="@dimen/dp_5"
+                                >
+
+                                <TextView
+                                    android:layout_width="match_parent"
+                                    android:layout_height="wrap_content"
+                                    android:layout_marginBottom="@dimen/dp_5"
+                                    android:text="@string/title_salon"
+                                    android:textColor="@color/colorAccent"
+                                    android:textSize="@dimen/sp_15"
                                     />
 
                                 <TextView
-                                    android:id="@+id/text_time_start"
-                                    android:layout_width="wrap_content"
+                                    android:layout_width="match_parent"
                                     android:layout_height="wrap_content"
-                                    android:layout_alignParentEnd="true"
-                                    android:layout_alignParentRight="true"
                                     android:layout_marginEnd="@dimen/dp_8"
                                     android:layout_marginRight="@dimen/dp_8"
-                                    android:text="@{viewModel.bookingOder.render.timeStart}"
+                                    android:gravity="end"
+                                    android:text="@{viewModel.bookingOder.department.address}"
                                     android:textColor="@color/color_black"
                                     android:textSize="@dimen/sp_18"
                                     />
-                            </RelativeLayout>
+                            </LinearLayout>
 
                         </LinearLayout>
-
-                    </LinearLayout>
-
-                    <LinearLayout
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:layout_marginBottom="@dimen/dp_24"
-                        android:orientation="horizontal"
-                        >
-
-                        <ImageView
-                            android:layout_width="@dimen/dp_24"
-                            android:layout_height="@dimen/dp_24"
-                            android:layout_gravity="center"
-                            android:contentDescription="@null"
-                            android:scaleType="fitCenter"
-                            android:tint="@android:color/holo_green_light"
-                            bind:srcCompat="@drawable/ic_salon"
-                            />
 
                         <LinearLayout
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            android:layout_marginLeft="@dimen/dp_12"
-                            android:layout_marginStart="@dimen/dp_12"
-                            android:background="@drawable/bg_details"
-                            android:orientation="vertical"
-                            android:paddingBottom="@dimen/dp_5"
-                            >
-
-                            <TextView
-                                android:layout_width="match_parent"
-                                android:layout_height="wrap_content"
-                                android:layout_marginBottom="@dimen/dp_5"
-                                android:text="@string/title_salon"
-                                android:textColor="@color/colorAccent"
-                                android:textSize="@dimen/sp_15"
-                                />
-
-                            <TextView
-                                android:layout_width="match_parent"
-                                android:layout_height="wrap_content"
-                                android:layout_marginEnd="@dimen/dp_8"
-                                android:layout_marginRight="@dimen/dp_8"
-                                android:gravity="end"
-                                android:text="@{viewModel.bookingOder.department.address}"
-                                android:textColor="@color/color_black"
-                                android:textSize="@dimen/sp_18"
-                                />
-                        </LinearLayout>
-
-                    </LinearLayout>
-
-                    <LinearLayout
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:layout_marginBottom="@dimen/dp_24"
-                        android:orientation="horizontal"
-                        >
-
-                        <ImageView
-                            android:layout_width="@dimen/dp_24"
-                            android:layout_height="@dimen/dp_24"
-                            android:layout_gravity="center"
-                            android:contentDescription="@null"
-                            android:scaleType="fitCenter"
-                            android:tint="@android:color/black"
-                            bind:srcCompat="@drawable/ic_hairdresser"
-                            />
-
-                        <LinearLayout
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:layout_marginLeft="@dimen/dp_12"
-                            android:layout_marginStart="@dimen/dp_12"
-                            android:background="@drawable/bg_details"
-                            android:orientation="vertical"
-                            android:paddingBottom="@dimen/dp_5"
-                            >
-
-                            <TextView
-                                android:layout_width="match_parent"
-                                android:layout_height="wrap_content"
-                                android:layout_marginBottom="@dimen/dp_5"
-                                android:text="@string/title_stylist"
-                                android:textColor="@color/colorAccent"
-                                android:textSize="@dimen/sp_15"
-                                />
-
-                            <TextView
-                                android:layout_width="match_parent"
-                                android:layout_height="wrap_content"
-                                android:layout_marginEnd="@dimen/dp_8"
-                                android:layout_marginRight="@dimen/dp_8"
-                                android:gravity="end"
-                                android:text="@{viewModel.bookingOder.stylist.name}"
-                                android:textColor="@color/color_black"
-                                android:textSize="@dimen/sp_18"
-                                />
-                        </LinearLayout>
-                    </LinearLayout>
-
-                    <LinearLayout
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:orientation="vertical">
-
-                        <LinearLayout
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:baselineAligned="false"
+                            android:layout_marginBottom="@dimen/dp_24"
                             android:orientation="horizontal"
-                            android:visibility="@{viewModel.photoFrameVisibility}"
                             >
 
-                            <include
-                                layout="@layout/item_photo"
-                                android:layout_width="0dp"
-                                android:layout_height="wrap_content"
-                                android:layout_marginEnd="@dimen/dp_3"
-                                android:layout_marginRight="@dimen/dp_3"
-                                android:layout_weight="1"
-                                bind:file="@{viewModel.photoFirst}"
-                                bind:sidePhoto="@{SideCapture.SIDE_FIRST}"
-                                bind:viewModel="@{viewModel}"/>
+                            <ImageView
+                                android:layout_width="@dimen/dp_24"
+                                android:layout_height="@dimen/dp_24"
+                                android:layout_gravity="center"
+                                android:contentDescription="@null"
+                                android:scaleType="fitCenter"
+                                android:tint="@android:color/black"
+                                bind:srcCompat="@drawable/ic_hairdresser"
+                                />
 
-                            <include
-                                layout="@layout/item_photo"
-                                android:layout_width="0dp"
+                            <LinearLayout
+                                android:layout_width="match_parent"
                                 android:layout_height="wrap_content"
-                                android:layout_marginEnd="@dimen/dp_3"
-                                android:layout_marginRight="@dimen/dp_3"
-                                android:layout_weight="1"
-                                bind:file="@{viewModel.photoSecond}"
-                                bind:sidePhoto="@{SideCapture.SIDE_SECOND}"
-                                bind:viewModel="@{viewModel}"/>
+                                android:layout_marginLeft="@dimen/dp_12"
+                                android:layout_marginStart="@dimen/dp_12"
+                                android:background="@drawable/bg_details"
+                                android:orientation="vertical"
+                                android:paddingBottom="@dimen/dp_5"
+                                >
 
-                            <include
-                                layout="@layout/item_photo"
-                                android:layout_width="0dp"
-                                android:layout_height="wrap_content"
-                                android:layout_marginEnd="@dimen/dp_3"
-                                android:layout_marginRight="@dimen/dp_3"
-                                android:layout_weight="1"
-                                bind:file="@{viewModel.photoThird}"
-                                bind:sidePhoto="@{SideCapture.SIDE_THIRD}"
-                                bind:viewModel="@{viewModel}"/>
+                                <TextView
+                                    android:layout_width="match_parent"
+                                    android:layout_height="wrap_content"
+                                    android:layout_marginBottom="@dimen/dp_5"
+                                    android:text="@string/title_stylist"
+                                    android:textColor="@color/colorAccent"
+                                    android:textSize="@dimen/sp_15"
+                                    />
 
-                            <include
-                                layout="@layout/item_photo"
-                                android:layout_width="0dp"
-                                android:layout_height="wrap_content"
-                                android:layout_weight="1"
-                                bind:file="@{viewModel.photoFourth}"
-                                bind:sidePhoto="@{SideCapture.SIDE_FOURTH}"
-                                bind:viewModel="@{viewModel}"/>
+                                <TextView
+                                    android:layout_width="match_parent"
+                                    android:layout_height="wrap_content"
+                                    android:layout_marginEnd="@dimen/dp_8"
+                                    android:layout_marginRight="@dimen/dp_8"
+                                    android:gravity="end"
+                                    android:text="@{viewModel.bookingOder.stylist.name}"
+                                    android:textColor="@color/color_black"
+                                    android:textSize="@dimen/sp_18"
+                                    />
+                            </LinearLayout>
                         </LinearLayout>
 
-                        <TextView
-                            android:id="@+id/text_update_image"
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:orientation="vertical">
+
+                            <LinearLayout
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:baselineAligned="false"
+                                android:orientation="horizontal"
+                                android:visibility="@{viewModel.photoFrameVisibility}"
+                                >
+
+                                <include
+                                    layout="@layout/item_photo"
+                                    android:layout_width="0dp"
+                                    android:layout_height="wrap_content"
+                                    android:layout_marginEnd="@dimen/dp_3"
+                                    android:layout_marginRight="@dimen/dp_3"
+                                    android:layout_weight="1"
+                                    bind:cameraVisibility="@{viewModel.cameraFirstVisibility}"
+                                    bind:file="@{viewModel.photoFirst}"
+                                    bind:sidePhoto="@{SideCapture.SIDE_FIRST}"
+                                    bind:viewModel="@{viewModel}"/>
+
+                                <include
+                                    layout="@layout/item_photo"
+                                    android:layout_width="0dp"
+                                    android:layout_height="wrap_content"
+                                    android:layout_marginEnd="@dimen/dp_3"
+                                    android:layout_marginRight="@dimen/dp_3"
+                                    android:layout_weight="1"
+                                    bind:cameraVisibility="@{viewModel.cameraSecondVisibility}"
+                                    bind:file="@{viewModel.photoSecond}"
+                                    bind:sidePhoto="@{SideCapture.SIDE_SECOND}"
+                                    bind:viewModel="@{viewModel}"/>
+
+                                <include
+                                    layout="@layout/item_photo"
+                                    android:layout_width="0dp"
+                                    android:layout_height="wrap_content"
+                                    android:layout_marginEnd="@dimen/dp_3"
+                                    android:layout_marginRight="@dimen/dp_3"
+                                    android:layout_weight="1"
+                                    bind:cameraVisibility="@{viewModel.cameraThirdVisibility}"
+                                    bind:file="@{viewModel.photoThird}"
+                                    bind:sidePhoto="@{SideCapture.SIDE_THIRD}"
+                                    bind:viewModel="@{viewModel}"/>
+
+                                <include
+                                    layout="@layout/item_photo"
+                                    android:layout_width="0dp"
+                                    android:layout_height="wrap_content"
+                                    android:layout_weight="1"
+                                    bind:cameraVisibility="@{viewModel.cameraFourthVisibility}"
+                                    bind:file="@{viewModel.photoFourth}"
+                                    bind:sidePhoto="@{SideCapture.SIDE_FOURTH}"
+                                    bind:viewModel="@{viewModel}"/>
+                            </LinearLayout>
+
+                            <TextView
+                                android:id="@+id/text_update_image"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_marginBottom="@dimen/dp_7"
+                                android:layout_marginTop="@dimen/dp_10"
+                                android:onClick="@{()->viewModel.onUpdatePhotos()}"
+                                android:text="@string/title_update_photo"
+                                android:textColor="@color/colorPrimaryDark"
+                                android:textStyle="italic"
+                                android:visibility="@{viewModel.txtUpdateVisibility}"/>
+                        </LinearLayout>
+
+                        <ProgressBar
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:layout_marginTop="@dimen/dp_10"
-                            android:onClick="@{()->viewModel.onUpdatePhotos()}"
-                            android:text="@string/title_update_photo"
-                            android:textColor="@color/colorPrimaryDark"
-                            android:textStyle="italic"
-                            android:visibility="@{viewModel.txtUpdateVisibility}"/>
-
+                            android:layout_gravity="bottom|center"
+                            android:layout_marginBottom="@dimen/dp_3"
+                            android:visibility="@{viewModel.progressBarUpdatePhoto}"/>
                     </LinearLayout>
 
-                    <ProgressBar
-                        android:layout_width="wrap_content"
+                    <com.github.clans.fab.FloatingActionMenu
+                        android:id="@+id/menu_yellow"
+                        android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:layout_gravity="bottom|center"
-                        android:layout_marginBottom="@dimen/dp_3"
-                        android:visibility="@{viewModel.progressBarUpdatePhoto}"/>
-                </LinearLayout>
+                        android:layout_gravity="bottom|end"
+                        android:paddingBottom="@dimen/dp_10"
+                        android:paddingEnd="@dimen/dp_16"
+                        android:paddingLeft="@dimen/dp_16"
+                        android:paddingRight="@dimen/dp_16"
+                        android:paddingStart="@dimen/dp_16"
+                        bind:menu_animationDelayPerItem="0"
+                        bind:menu_backgroundColor="@color/color_white_transparent"
+                        bind:menu_colorNormal="@color/colorPrimaryDark"
+                        bind:menu_colorPressed="@color/colorPrimary"
+                        bind:menu_fab_size="normal"
+                        bind:menu_icon="@drawable/ic_add"
+                        bind:menu_labels_position="left"
+                        bind:selected="@{viewModel.selected}"
+                        >
 
-                <com.github.clans.fab.FloatingActionMenu
-                    android:id="@+id/menu_yellow"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_gravity="bottom|end"
-                    android:paddingBottom="@dimen/dp_10"
-                    android:paddingEnd="@dimen/dp_16"
-                    android:paddingLeft="@dimen/dp_16"
-                    android:paddingRight="@dimen/dp_16"
-                    android:paddingStart="@dimen/dp_16"
-                    bind:menu_animationDelayPerItem="0"
-                    bind:menu_backgroundColor="@color/color_white_transparent"
-                    bind:menu_colorNormal="@color/colorPrimaryDark"
-                    bind:menu_colorPressed="@color/colorPrimary"
-                    bind:menu_fab_size="normal"
-                    bind:menu_icon="@drawable/ic_add"
-                    bind:menu_labels_position="left"
-                    bind:selected="@{viewModel.selected}"
-                    >
+                        <com.github.clans.fab.FloatingActionButton
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:onClick="@{(view)->viewModel.editBooking(view)}"
+                            android:src="@drawable/ic_edit"
+                            bind:fab_colorNormal="@color/color_white"
+                            bind:fab_label="@string/title_edit_detail"
+                            bind:fab_size="mini"
+                            bind:rippleColor="@color/color_white"
+                            tool:ignore="VectorDrawableCompat"
+                            />
 
-                    <com.github.clans.fab.FloatingActionButton
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:onClick="@{(view)->viewModel.editBooking(view)}"
-                        android:src="@drawable/ic_edit"
-                        bind:fab_colorNormal="@color/color_white"
-                        bind:fab_label="@string/title_edit_detail"
-                        bind:fab_size="mini"
-                        bind:rippleColor="@color/color_white"
-                        tool:ignore="VectorDrawableCompat"
-                        />
+                        <com.github.clans.fab.FloatingActionButton
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:onClick="@{(view)->viewModel.messageCustomer(view)}"
+                            android:src="@drawable/ic_message"
+                            bind:fab_colorNormal="@color/color_white"
+                            bind:fab_label="@string/title_message"
+                            bind:fab_size="mini"
+                            tool:ignore="VectorDrawableCompat"
+                            />
 
-                    <com.github.clans.fab.FloatingActionButton
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:onClick="@{(view)->viewModel.messageCustomer(view)}"
-                        android:src="@drawable/ic_message"
-                        bind:fab_colorNormal="@color/color_white"
-                        bind:fab_label="@string/title_message"
-                        bind:fab_size="mini"
-                        tool:ignore="VectorDrawableCompat"
-                        />
+                        <com.github.clans.fab.FloatingActionButton
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:onClick="@{(view)->viewModel.callCustomer(view)}"
+                            android:src="@drawable/ic_phone_receiver_24dp"
+                            bind:fab_colorNormal="@color/color_white"
+                            bind:fab_label="@string/title_call"
+                            bind:fab_size="mini"
+                            tool:ignore="VectorDrawableCompat"
+                            />
 
-                    <com.github.clans.fab.FloatingActionButton
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:onClick="@{(view)->viewModel.callCustomer(view)}"
-                        android:src="@drawable/ic_phone_receiver_24dp"
-                        bind:fab_colorNormal="@color/color_white"
-                        bind:fab_label="@string/title_call"
-                        bind:fab_size="mini"
-                        tool:ignore="VectorDrawableCompat"
-                        />
+                        <com.github.clans.fab.FloatingActionButton
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:onClick="@{(view) -> viewModel.onChangeStatusClick(view)}"
+                            android:src="@drawable/ic_shuffle_24dp"
+                            android:visibility="@{viewModel.changeStatus ? View.INVISIBLE : View.GONE}"
+                            bind:fab_colorNormal="@color/color_white"
+                            bind:fab_label="@string/action_change_status"
+                            bind:fab_size="mini"
+                            tool:ignore="VectorDrawableCompat"
+                            />
 
-                    <com.github.clans.fab.FloatingActionButton
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:onClick="@{(view) -> viewModel.onChangeStatusClick(view)}"
-                        android:src="@drawable/ic_shuffle_24dp"
-                        android:visibility="@{viewModel.changeStatus ? View.INVISIBLE : View.GONE}"
-                        bind:fab_colorNormal="@color/color_white"
-                        bind:fab_label="@string/action_change_status"
-                        bind:fab_size="mini"
-                        tool:ignore="VectorDrawableCompat"
-                        />
-
-                    <com.github.clans.fab.FloatingActionButton
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:onClick="@{(view)->viewModel.onAddPhoto(view)}"
-                        android:src="@drawable/ic_camera_24dp"
-                        android:visibility="@{viewModel.addPhotoVisibility}"
-                        bind:fab_colorNormal="@color/color_white"
-                        bind:fab_label="@string/action_add_photo"
-                        bind:fab_size="mini"
-                        tool:ignore="VectorDrawableCompat"
-                        />
-                </com.github.clans.fab.FloatingActionMenu>
-            </android.support.design.widget.CoordinatorLayout>
-        </RelativeLayout>
+                        <com.github.clans.fab.FloatingActionButton
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:onClick="@{(view)->viewModel.onAddPhoto(view)}"
+                            android:src="@drawable/ic_camera_24dp"
+                            android:visibility="@{viewModel.addPhotoVisibility}"
+                            bind:fab_colorNormal="@color/color_white"
+                            bind:fab_label="@string/action_add_photo"
+                            bind:fab_size="mini"
+                            tool:ignore="VectorDrawableCompat"
+                            />
+                    </com.github.clans.fab.FloatingActionMenu>
+                </android.support.design.widget.CoordinatorLayout>
+            </RelativeLayout>
+        </android.support.v4.widget.NestedScrollView>
     </android.support.v4.widget.SwipeRefreshLayout>
-
 </layout>

@@ -6,7 +6,6 @@ import android.databinding.InverseBindingAdapter;
 import android.databinding.InverseBindingListener;
 import android.graphics.Color;
 import android.graphics.DashPathEffect;
-import android.graphics.drawable.Drawable;
 import android.support.design.widget.BottomNavigationView;
 import android.support.design.widget.TabLayout;
 import android.support.design.widget.TextInputLayout;
@@ -167,17 +166,13 @@ public class BindingUtils {
         view.setTextColor(view.getResources().getColor(colorId));
     }
 
-    @BindingAdapter(value = {"bind:imageUrl", "bind:error"}, requireAll = false)
-    public static void loadImage(ImageView view, String imageUrl, Drawable error) {
-        if (error == null) {
-            Glide.with(view.getContext())
-                .load(imageUrl)
-                .centerCrop()
-                .placeholder(R.drawable.ic_no_image)
-                .into(view);
-        } else {
-            Glide.with(view.getContext()).load(imageUrl).centerCrop().placeholder(error).into(view);
-        }
+    @BindingAdapter(value = "bind:imageUrl")
+    public static void loadImage(ImageView view, String imageUrl) {
+        Glide.with(view.getContext())
+            .load(imageUrl)
+            .centerCrop()
+            .placeholder(R.drawable.ic_no_image)
+            .into(view);
     }
 
     @BindingAdapter("lineChartData")
