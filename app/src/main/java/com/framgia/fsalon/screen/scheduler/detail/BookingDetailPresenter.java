@@ -5,15 +5,18 @@ import com.framgia.fsalon.data.model.User;
 import com.framgia.fsalon.data.model.UserRespone;
 import com.framgia.fsalon.data.source.BookingRepository;
 import com.framgia.fsalon.data.source.UserRepository;
+import com.google.gson.Gson;
 
 import java.io.File;
 import java.util.List;
 
+import io.reactivex.Observable;
 import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.annotations.NonNull;
 import io.reactivex.disposables.CompositeDisposable;
 import io.reactivex.disposables.Disposable;
 import io.reactivex.functions.Consumer;
+import io.reactivex.functions.Function;
 import io.reactivex.observers.DisposableObserver;
 import io.reactivex.schedulers.Schedulers;
 
@@ -86,6 +89,14 @@ final class BookingDetailPresenter implements BookingDetailContract.Presenter {
             return;
         }
         Disposable disposable = mBookingRepository.postMultiImages(images, mediaType, folder)
+            .flatMap(new Function<List<String>, Observable<BookingOder>>() {
+                @Override
+                public Observable<BookingOder> apply(@NonNull List<String> strings)
+                    throws Exception {
+                    return mBookingRepository
+                        .postImageByStylist(bookingOrderId, new Gson().toJson(strings));
+                }
+            })
             .subscribeOn(Schedulers.io())
             .observeOn(AndroidSchedulers.mainThread())
             .doOnSubscribe(new Consumer<Disposable>() {
@@ -94,10 +105,9 @@ final class BookingDetailPresenter implements BookingDetailContract.Presenter {
                     mViewModel.onShowUpdatePhoto();
                 }
             })
-            .subscribeWith(new DisposableObserver<List<String>>() {
+            .subscribeWith(new DisposableObserver<BookingOder>() {
                 @Override
-                public void onNext(@NonNull List<String> strings) {
-                    mBookingRepository.postImageByStylist(bookingOrderId, strings.toString());
+                public void onNext(@NonNull BookingOder bookingOder) {
                 }
 
                 @Override
@@ -185,8 +195,8 @@ final class BookingDetailPresenter implements BookingDetailContract.Presenter {
                 mViewModel.onTxtUpdateVisibility(GONE);
                 break;
             case PERMISSION_MAIN_WORKER:
-                mViewModel.onFramePhotoVisibility(GONE);
-                mViewModel.onTxtUpdateVisibility(GONE);
+                mViewModel.onFramePhotoVisibility(VISIBLE);
+                mViewModel.onTxtUpdateVisibility(VISIBLE);
                 break;
             default:
                 mViewModel.onFramePhotoVisibility(GONE);

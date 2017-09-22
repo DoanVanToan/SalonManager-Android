@@ -84,19 +84,19 @@ public class StylistBookingViewModel extends BaseObservable
     private void makeStatusFilter() {
         mStatusId = "";
         if (mIsCanceled) {
-            mStatusId += "," + STATUS_CANCELED;
+            mStatusId += STATUS_CANCELED + ",";
         }
         if (mIsWatting) {
-            mStatusId += "," + STATUS_WATTING;
+            mStatusId += STATUS_WATTING + ",";
         }
         if (mIsFinished) {
-            mStatusId += "," + STATUS_FINISHED;
+            mStatusId += STATUS_FINISHED + ",";
         }
         if (mIsInLate) {
-            mStatusId += "," + STATUS_IN_LATE;
+            mStatusId += STATUS_IN_LATE + ",";
         }
         if (mIsInProgress) {
-            mStatusId += "," + STATUS_IN_PROGRESS;
+            mStatusId += STATUS_IN_PROGRESS + ",";
         }
         mStatusId = mStatusId.substring(0, mStatusId.length() - 1);
     }

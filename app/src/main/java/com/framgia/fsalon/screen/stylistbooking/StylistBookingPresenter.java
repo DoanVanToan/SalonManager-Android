@@ -14,6 +14,11 @@ import io.reactivex.functions.Consumer;
 import io.reactivex.observers.DisposableObserver;
 import io.reactivex.schedulers.Schedulers;
 
+import static com.framgia.fsalon.data.model.BookingOder.STATUS_CANCELED;
+import static com.framgia.fsalon.data.model.BookingOder.STATUS_FINISHED;
+import static com.framgia.fsalon.data.model.BookingOder.STATUS_IN_LATE;
+import static com.framgia.fsalon.data.model.BookingOder.STATUS_IN_PROGRESS;
+import static com.framgia.fsalon.data.model.BookingOder.STATUS_WATTING;
 import static com.framgia.fsalon.data.source.remote.ManageBookingRemoteDataSource.FILTER_DAY;
 import static com.framgia.fsalon.screen.scheduler.SchedulerViewModel.TabFilter.TAB_TODAY;
 import static com.framgia.fsalon.utils.Constant.OUT_OF_INDEX;
@@ -24,6 +29,11 @@ import static com.framgia.fsalon.utils.Constant.OUT_OF_INDEX;
  */
 public class StylistBookingPresenter implements StylistBookingContract.Presenter {
     private static final String TAG = StylistBookingPresenter.class.getName();
+    private static final String STATUS = String.valueOf(STATUS_CANCELED)
+        + STATUS_WATTING
+        + STATUS_FINISHED
+        + STATUS_IN_LATE
+        + STATUS_IN_PROGRESS;
     private final StylistBookingContract.ViewModel mViewModel;
     private CompositeDisposable mCompositeDisposable;
     private ManageBookingRepository mRepository;
@@ -33,7 +43,7 @@ public class StylistBookingPresenter implements StylistBookingContract.Presenter
         mViewModel = viewModel;
         mRepository = repository;
         mCompositeDisposable = new CompositeDisposable();
-        filterBookings(Utils.createTimeStamp(TAB_TODAY), null);
+        filterBookings(Utils.createTimeStamp(TAB_TODAY), STATUS);
     }
 
     @Override

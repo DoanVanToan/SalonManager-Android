@@ -39,6 +39,7 @@ import java.util.List;
 
 import static android.app.Activity.RESULT_OK;
 import static android.view.View.GONE;
+import static android.view.View.INVISIBLE;
 import static android.view.View.VISIBLE;
 import static com.framgia.fsalon.data.model.BookingOder.STATUS_IN_PROGRESS;
 import static com.framgia.fsalon.screen.scheduler.detail.BookingDetailViewModel.SideCapture.SIDE_FIRST;
@@ -81,12 +82,15 @@ public class BookingDetailViewModel extends BaseObservable
     private File mPhotoSecond;
     private File mPhotoThird;
     private File mPhotoFourth;
+    private int mCameraFirstVisibility = GONE;
+    private int mCameraSecondVisibility = GONE;
+    private int mCameraThirdVisibility = GONE;
+    private int mCameraFourthVisibility = GONE;
     private List<File> mPhotoCustomers = new ArrayList<>();
     private int mProgressBarUpdatePhoto = GONE;
     private String mFolderImage;
     private boolean mWriteStorageGranted = false;
     private int mPermission;
-    private int mCameraVisiblity;
     private int mPhotoFrameVisibility = GONE;
     private int mTxtUpdateVisibility = GONE;
     private SwipeRefreshLayout.OnRefreshListener mListener =
@@ -214,6 +218,46 @@ public class BookingDetailViewModel extends BaseObservable
         notifyPropertyChanged(BR.photoFourth);
     }
 
+    @Bindable
+    public int getCameraFirstVisibility() {
+        return mCameraFirstVisibility;
+    }
+
+    public void setCameraFirstVisibility(int cameraFirstVisibility) {
+        mCameraFirstVisibility = cameraFirstVisibility;
+        notifyPropertyChanged(BR.cameraFirstVisibility);
+    }
+
+    @Bindable
+    public int getCameraSecondVisibility() {
+        return mCameraSecondVisibility;
+    }
+
+    public void setCameraSecondVisibility(int cameraSecondVisibility) {
+        mCameraSecondVisibility = cameraSecondVisibility;
+        notifyPropertyChanged(BR.cameraSecondVisibility);
+    }
+
+    @Bindable
+    public int getCameraThirdVisibility() {
+        return mCameraThirdVisibility;
+    }
+
+    public void setCameraThirdVisibility(int cameraThirdVisibility) {
+        mCameraThirdVisibility = cameraThirdVisibility;
+        notifyPropertyChanged(BR.cameraThirdVisibility);
+    }
+
+    @Bindable
+    public int getCameraFourthVisibility() {
+        return mCameraFourthVisibility;
+    }
+
+    public void setCameraFourthVisibility(int cameraFourthVisibility) {
+        mCameraFourthVisibility = cameraFourthVisibility;
+        notifyPropertyChanged(BR.cameraFourthVisibility);
+    }
+
     @Override
     public void onStart() {
         mPresenter.onStart();
@@ -232,7 +276,6 @@ public class BookingDetailViewModel extends BaseObservable
     @Override
     public void onGetBookingError(String msg) {
         mNavigator.showToast(msg);
-        setCameraVisiblity(GONE);
     }
 
     @Override
@@ -247,19 +290,16 @@ public class BookingDetailViewModel extends BaseObservable
         if (mCurrentUser.getPermission() == PERMISSION_MAIN_WORKER
             && bookingOder.getStatus() == STATUS_IN_PROGRESS
             && mCurrentUser.getId() == bookingOder.getStylistId()) {
-            setAddPhotoVisibility(VISIBLE);
+            setAddPhotoVisibility(INVISIBLE);
             setPermission(PERMISSION_MAIN_WORKER);
-            mPresenter.onShowPhotoCustomer(PERMISSION_MAIN_WORKER);
             mFolderImage = FOlDER_PHOTO.concat(String.valueOf(bookingOder.getStylistId()))
                 .concat("-")
                 .concat(String.valueOf(mId));
         } else if (mCurrentUser.getPermission() == PERMISSION_ADMIN) {
             setPermission(PERMISSION_ADMIN);
             mPresenter.onShowPhotoCustomer(PERMISSION_ADMIN);
-            setCameraVisiblity(GONE);
         } else if (mCurrentUser.getPermission() == PERMISSION_NOMAL) {
             setPermission(PERMISSION_NOMAL);
-            setCameraVisiblity(GONE);
             mPresenter.onShowPhotoCustomer(PERMISSION_NOMAL);
         }
     }
@@ -272,15 +312,19 @@ public class BookingDetailViewModel extends BaseObservable
         for (ImageResponse image : imageResponses) {
             if (mPhotoFirst == null) {
                 setPhotoFirst(new File(image.getPathOrigin()));
+                setCameraFirstVisibility(GONE);
                 mPhotoCustomers.add(mPhotoFirst);
             } else if (mPhotoSecond == null) {
                 setPhotoSecond(new File(image.getPathOrigin()));
+                setCameraSecondVisibility(GONE);
                 mPhotoCustomers.add(mPhotoSecond);
             } else if (mPhotoThird == null) {
                 setPhotoThird(new File(image.getPathOrigin()));
+                setCameraThirdVisibility(GONE);
                 mPhotoCustomers.add(mPhotoThird);
             } else if (mPhotoFourth == null) {
                 setPhotoFourth(new File(image.getPathOrigin()));
+                setCameraFourthVisibility(GONE);
                 mPhotoCustomers.add(mPhotoFourth);
             }
         }
@@ -428,8 +472,7 @@ public class BookingDetailViewModel extends BaseObservable
     }
 
     public void pickImage(int sidePhoto) {
-        if (mPermission == PERMISSION_MAIN_WORKER
-            && PermissionUtils.checkWritePermission(mActivity)
+        if (PermissionUtils.checkWritePermission(mActivity)
             && PermissionUtils.checkCameraPermission(mActivity)) {
             setSidePhoto(sidePhoto);
             mActivity.startActivityForResult(
@@ -443,28 +486,28 @@ public class BookingDetailViewModel extends BaseObservable
                 if (mPhotoFirst != null) {
                     mPhotoCustomers.remove(mPhotoFirst);
                 }
-                mPhotoFirst = new File(Utils.getPathFromUri(FSalonApplication.getInstant(), uri));
+                setPhotoFirst(new File(Utils.getPathFromUri(FSalonApplication.getInstant(), uri)));
                 mPhotoCustomers.add(mPhotoFirst);
                 break;
             case SIDE_SECOND:
                 if (mPhotoSecond != null) {
                     mPhotoCustomers.remove(mPhotoSecond);
                 }
-                mPhotoSecond = new File(Utils.getPathFromUri(FSalonApplication.getInstant(), uri));
+                setPhotoSecond(new File(Utils.getPathFromUri(FSalonApplication.getInstant(), uri)));
                 mPhotoCustomers.add(mPhotoSecond);
                 break;
             case SIDE_THIRD:
                 if (mPhotoThird != null) {
                     mPhotoCustomers.remove(mPhotoThird);
                 }
-                mPhotoThird = new File(Utils.getPathFromUri(FSalonApplication.getInstant(), uri));
+                setPhotoThird(new File(Utils.getPathFromUri(FSalonApplication.getInstant(), uri)));
                 mPhotoCustomers.add(mPhotoThird);
                 break;
             case SIDE_FOURTH:
                 if (mPhotoFourth != null) {
                     mPhotoCustomers.remove(mPhotoFourth);
                 }
-                mPhotoFourth = new File(Utils.getPathFromUri(FSalonApplication.getInstant(), uri));
+                setPhotoFourth(new File(Utils.getPathFromUri(FSalonApplication.getInstant(), uri)));
                 mPhotoCustomers.add(mPhotoFourth);
                 break;
             default:
@@ -476,8 +519,7 @@ public class BookingDetailViewModel extends BaseObservable
     public void onAddPhoto(View view) {
         FloatingActionMenu fapMenu = (FloatingActionMenu) view.getParent();
         fapMenu.close(true);
-        setPermission(PERMISSION_MAIN_WORKER);
-        setCameraVisiblity(VISIBLE);
+        mPresenter.onShowPhotoCustomer(mPermission);
     }
 
     @Override
@@ -629,16 +671,6 @@ public class BookingDetailViewModel extends BaseObservable
     public void setPermission(int permission) {
         mPermission = permission;
         notifyPropertyChanged(BR.permission);
-    }
-
-    @Bindable
-    public int getCameraVisiblity() {
-        return mCameraVisiblity;
-    }
-
-    public void setCameraVisiblity(int cameraVisiblity) {
-        mCameraVisiblity = cameraVisiblity;
-        notifyPropertyChanged(BR.cameraVisiblity);
     }
 
     private Uri getPickImageResultUri(Intent data) {
